@@ -1,0 +1,95 @@
+Metrological Test Suite - 2017 (c) Metrological
+
+Report for:        rpi2
+Software firmware: 2.0.0-9cc89f5f8
+Date of report:    2017-03-10T11:20:02-08:00
+
+--------- Test summary --------- 
+ Tests run:        1
+ Tests OK:         0
+ Tests failed:     1
+ Tests timed out:  0
+ Tests NA          0
+ Tests took:      a few seconds
+
+Short summary:
+ OK 0% / NOK 1% / TIMEOUT 0 / RUN 1% / TOTAL 75 tests
+
+--------------------------------
+
+FRAMEWORK-CONTROLLER-001                          FAILED
+  ReferenceError: Ï is not defined
+FRAMEWORK-CONTROLLER-002                          Not started
+FRAMEWORK-CONTROLLER-003                          Not started
+FRAMEWORK-DEVICEINFO-001                          Not started
+FRAMEWORK-DEVICEINFO-002                          Not started
+FRAMEWORK-DIAL-001                                Not started
+FRAMEWORK-PROVISIONING-001                        Not started
+FRAMEWORK-PROVISIONING-002                        Not started
+FRAMEWORK-PROVISIONING-003                        Not started
+FRAMEWORK-PROVISIONING-004                        Not started
+FRAMEWORK-SNAPSHOT-001                            Not started
+FRAMEWORK-SNAPSHOT-002                            Not started
+FRAMEWORK-SNAPSHOT-003                            Not started
+FRAMEWORK-SNAPSHOT-004                            Not started
+FRAMEWORK-SNAPSHOT-005                            Not started
+FRAMEWORK-STABILITY-001                           Not started
+FRAMEWORK-STABILITY-002                           Not started
+FRAMEWORK-STABILITY-003                           Not started
+FRAMEWORK-STARTUP-001                             Not started
+FRAMEWORK-SWITCH-001                              Not started
+FRAMEWORK-SWITCH-002                              Not started
+FRAMEWORK-SWITCH-003                              Not started
+FRAMEWORK-SWITCH-004                              Not started
+HORIZON-NETFLIX-001                               Not started
+HORIZON-NETFLIX-002                               Not started
+HORIZON-NETFLIX-003                               Not started
+HORIZON-NETFLIX-004                               Not started
+HORIZON-NETFLIX-005                               Not started
+HORIZON-NETFLIX-006                               Not started
+NETFLIX-DIAL-001                                  Not started
+NETFLIX-DIAL-002                                  Not started
+NETFLIX-DIAL-003                                  Not started
+NETFLIX-PROVISIONING-001                          Not started
+NETFLIX-PROVISIONING-002                          Not started
+NETFLIX-PROVISIONING-003                          Not started
+NETFLIX-PROVISIONING-004                          Not started
+NETFLIX-STARTUP-001                               Not started
+NETFLIX-STARTUP-002                               Not started
+WEBDRIVER-BENCHMARK-001                           Not started
+WEBDRIVER-STARTUP-001                             Not started
+WEBDRIVER-STARTUP-002                             Not started
+WEBDRIVER-STARTUP-003                             Not started
+WEBKIT-PERFORMANCE-001                            Not started
+WEBKIT-PERFORMANCE-002                            Not started
+WEBKIT-PERFORMANCE-003                            Not started
+WEBKIT-PERFORMANCE-004                            Not started
+WEBKIT-PERFORMANCE-005                            Not started
+WEBKIT-PERFORMANCE-006                            Not started
+WEBKIT-PERFORMANCE-007                            Not started
+WEBKIT-PERFORMANCE-008                            Not started
+WEBKIT-PERFORMANCE-009                            Not started
+WEBKIT-PERFORMANCE-010                            Not started
+WEBKIT-PERFORMANCE-011                            Not started
+WEBKIT-PERFORMANCE-012                            Not started
+WEBKIT-PERFORMANCE-013                            Not started
+WEBKIT-PERFORMANCE-014                            Not started
+WEBKIT-STARTUP-001                                Not started
+WEBKIT-STARTUP-002                                Not started
+WEBKIT-STRESS-001                                 Not started
+WEBKIT-STRESS-002                                 Not started
+WEBKIT-STRESS-003                                 Not started
+WEBSERVER-STARTUP-001                             Not started
+WEBSERVER-STARTUP-002                             Not started
+YOUTUBE-DIAL-001                                  Not started
+YOUTUBE-DIAL-002                                  Not started
+YOUTUBE-DIAL-003                                  Not started
+YOUTUBE-EME-001                                   Not started
+YOUTUBE-EME-002                                   Not started
+YOUTUBE-MSE-001                                   Not started
+YOUTUBE-MSE-002                                   Not started
+YOUTUBE-PLAYBACK-001                              Not started
+YOUTUBE-PLAYBACK-002                              Not started
+YOUTUBE-RANDOM-001                                Not started
+YOUTUBE-RANDOM-002                                Not started
+YOUTUBE-STARTUP-001                               Not started
