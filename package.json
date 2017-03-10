@@ -1,0 +1,45 @@
+{
+  "name": "WPETestFramework",
+  "version": "0.2.0",
+  "description": "Metrological automated build and test runner",
+  "main": "WPETestFramework.js",
+  "scripts": {
+    "start": "node WPETestFramework.js"
+  },
+  "dependencies": {
+    "async": "~1.5.x",
+    "cli-color": "~1.1.x",
+    "express": "~4.14.x",
+    "http-server": "~0.9.x",
+    "minimist": "~1.2.x",
+    "moment": "^2.15.2",
+    "peer-dial": "0.0.7",
+    "readline-sync": "~1.2.x",
+    "selenium-webdriver": "^2.53.3",
+    "serialport": "^2.0.x",
+    "shelljs": "~0.5.x",
+    "socket.io": "^1.5.0",
+    "socket.io-client": "^1.5.0",
+    "ssh2": "~0.4.x",
+    "sudo": "~1.0.3",
+    "telnet-client": "~0.9.x",
+    "xml2js": "^0.4.17",
+    "snyk": "^1.19.1",
+    "pngjs": "3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebPlatformForEmbedded/WPETestFramework.git"
+  },
+  "keywords": [
+    "node",
+    "automation"
+  ],
+  "bugs": {
+    "url": "https://github.com/WebPlatformForEmbedded/WPETestFramework/issues"
+  },
+  "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
+  "author": "",
+  "license": "ISC",
+  "snyk": true
+}
