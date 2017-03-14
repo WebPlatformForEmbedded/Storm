@@ -48,7 +48,7 @@ module.exports = {
     	'step5' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:8080/tests/perf.html`;
+                var _url = `http://${task.server}:8080/perf.html`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
@@ -58,7 +58,7 @@ module.exports = {
             'description'   : 'Check if app is loaded on WPEWebkit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:8080/tests/perf.html`)
+                if (resp === `http://${task.server}:8080/perf.html`)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8" />
+
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: #1e1e1e;
+            width: 1280px;
+            height: 720px;
+            /*background: url('img/background-temp.png') no-repeat;*/
+        }
+    </style>
+    <script src="js/src/fw/Utils.js?v=21"></script>
+    <script src="js/src/fw/StageUtils.js?v=21"></script>
+    <script src="js/src/fw/GeometryUtils.js?v=21"></script>
+    <script src="js/src/fw/Stage.js?v=21"></script>
+    <script src="js/src/fw/Renderer.js?v=21"></script>
+    <script src="js/src/fw/TextureManager.js?v=21"></script>
+    <script src="js/src/fw/Texture.js?v=21"></script>
+    <script src="js/src/fw/TextureSource.js?v=21"></script>
+    <script src="js/src/fw/TextureAtlas.js?v=21"></script>
+    <script src="js/src/fw/TextureAtlasTree.js?v=21"></script>
+    <script src="js/src/fw/Component.js?v=21"></script>
+    <script src="js/src/fw/ComponentText.js?v=21"></script>
+    <script src="js/src/fw/TextRenderer.js?v=21"></script>
+    <script src="js/src/fw/TextRendererSettings.js?v=21"></script>
+    <script src="js/src/fw/EventType.js?v=21"></script>
+    <script src="js/src/fw/EventData.js?v=21"></script>
+    <script src="js/src/fw/Transition.js?v=21"></script>
+    <script src="js/src/fw/Animation.js?v=21"></script>
+    <script src="js/src/fw/AnimationAction.js?v=21"></script>
+    <script src="js/src/fw/TimedAnimation.js?v=21"></script>
+    <script src="js/src/fw/CustomAnimation.js?v=21"></script>
+    <script src="js/src/fw/Utils.js?v=21"></script>
+
+    <script src="js/src/fw/WebAdapter.js?v=21"></script>
+    <!--<script src="js/src/fw-turbo/UComponent.js?v=21"></script>-->
+    <!--<script src="js/src/fw-turbo/UComponentContext.js?v=21"></script>-->
+    <script src="js/src/fw/UComponent.js?v=21"></script>
+    <script src="js/src/fw/UComponentContext.js?v=21"></script>
+    <!--<script src="../js/src/fw/inspect.js?v=21"></script>-->
+
+    <script src="FakeGuide.js?v=21"></script>
+</head>
+<body>
+
+
+<script>
+    var stage = new Stage({w: 1280, h: 720, measureDetails: false, measure: false, useTextureAtlas: true, debugTextureAtlas: false, defaultFontFace: "Arial", fixedDt: 0.016667});
+    document.body.appendChild(stage.getCanvas());
+    var guide = new Guide(stage);
+    guide.init();
+    stage.root.addChild(guide.ctr);
+    guide.show();
+
+    var s;
+    stage.onFrameStart.listen(function() {
+        if (stage.frameCounter >= 60) {
+            var f = stage.frameCounter - 60;
+            if (f == 0) {
+                s = (new Date()).getTime();
+            }
+            var t = Math.floor(f / 300);
+            var tf = f % 300;
+            var tt = Math.floor(f / 30);
+            var sc = f % 60 === 0;
+            var scvf = f % 5 === 0;
+            var scvF = Math.floor(f / 5);
+            var scf = f % 20 === 0;
+            var scF = Math.floor(f / 20);
+            if (t == 0) {
+                if (sc) {
+                    // Scroll forward (slowly).
+                    guide.handleKey({keyCode: Ui.KEYS.RIGHT});
+                }
+            } else if (t == 1) {
+                if (scvf) {
+                    // Scroll forward (fast).
+                    guide.handleKey({keyCode: Ui.KEYS.RIGHT});
+                }
+            } else if (t == 2) {
+                if (scvf) {
+                    // Scroll backward (already loaded).
+                    guide.handleKey({keyCode: Ui.KEYS.LEFT});
+                }
+            } else if (t == 3 || t == 4) {
+                if (tf == 0) {
+                    //guide.handleKey({keyCode: Ui.KEYS.RIGHT});
+                }
+                // Scroll back&forward.
+                if (scf) {
+                    if (scF % 2) {
+                        guide.handleKey({keyCode: Ui.KEYS.RIGHT});
+                    } else {
+                        guide.handleKey({keyCode: Ui.KEYS.LEFT});
+                    }
+                }
+            } else if (t == 5) {
+                // Finished.
+                if (tf == 0) {
+                    var delta = (new Date()).getTime() - s;
+                    var frames = Math.round((delta / 0.016666667) / 1000);
+                    console.log('frame misses (60fps): ' + (frames - f));
+                }
+            }
+        }
+    });
+    window.addEventListener('keydown', function(e) {
+        var obj = {keyCode: e.keyCode, preventDefault: function() {}};
+        if (obj.keyCode == 166) {
+            obj.keyCode = Ui.KEYS.BACKSPACE;
+        }
+        if (obj.keyCode == 93) {
+            obj.keyCode = Ui.KEYS.MENU;
+        }
+        var preventDefault = guide.handleKey(obj);
+        if (preventDefault === true || obj.keyCode == Ui.KEYS.BACKSPACE) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

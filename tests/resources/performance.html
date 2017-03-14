@@ -1,0 +1,166 @@
+<html>
+<head>
+    <script src="js/src/fw/Utils.js?v=161"></script>
+    <script src="js/src/fw/StageUtils.js?v=161"></script>
+    <script src="js/src/fw/GeometryUtils.js?v=161"></script>
+    <script src="js/src/fw/Stage.js?v=161"></script>
+    <script src="js/src/fw/Renderer.js?v=161"></script>
+    <script src="js/src/fw/TextureManager.js?v=161"></script>
+    <script src="js/src/fw/Texture.js?v=161"></script>
+    <script src="js/src/fw/TextureSource.js?v=161"></script>
+    <script src="js/src/fw/TextureAtlas.js?v=161"></script>
+    <script src="js/src/fw/TextureAtlasTree.js?v=161"></script>
+    <script src="js/src/fw/UComponent.js?v=161"></script>
+    <script src="js/src/fw/UComponentContext.js?v=161"></script>
+    <script src="js/src/fw/Component.js?v=161"></script>
+    <script src="js/src/fw/ComponentText.js?v=161"></script>
+    <script src="js/src/fw/TextRenderer.js?v=161"></script>
+    <script src="js/src/fw/TextRendererSettings.js?v=161"></script>
+    <script src="js/src/fw/EventType.js?v=161"></script>
+    <script src="js/src/fw/EventData.js?v=161"></script>
+    <script src="js/src/fw/Transition.js?v=161"></script>
+    <script src="js/src/fw/Animation.js?v=161"></script>
+    <script src="js/src/fw/AnimationAction.js?v=161"></script>
+    <script src="js/src/fw/TimedAnimation.js?v=161"></script>
+    <script src="js/src/fw/CustomAnimation.js?v=161"></script>
+    <!--<script src="js/src/fw/inspect.js?v=161"></script>-->
+
+    <script src="js/src/fw/WebAdapter.js?v=3"></script>
+    <!--<script src="test.js"></script>-->
+</head>
+<body>
+
+<script>
+    window.onload = function() {
+        var stage = new Stage({w: 1280, h: 720, measureDetails: true, measure: false, debug: false, useTextureAtlas: false});
+//        var s = stage.create({x: 10, y: 10, w: 100, h: 100, rect: true, color: 0xffff0000, borderWidth: 10, borderColor: 0xff000000});
+//        s.setTransition('x', {duration: 5});
+//        s.setTransition('alpha', {duration: 5});
+//        s.setTransition('rotation', {duration: 5});
+//        s.x = 1000;
+//        s.rotation = 2;
+//        //s.alpha = 0.5;
+//        stage.root.addChild(s);
+
+        document.body.appendChild(stage.adapter.canvas);
+
+//        setTimeout(function() {
+//            var bunny2 = stage.c({text: {text: "hello"}, x:0, y: 100, color: 0xff000000});
+//            stage.root.addChild(bunny2);
+//            bunny2.text = "hello wolrd";
+//        }, 2000);
+
+//        bunny.texture.load();
+//        var l = bunny.text.renderInfo.lines;
+////        var bunny = stage.c({src: 'bunny.png'});
+//        stage.root.addChild(bunny);
+//
+//        var k;
+//        setTimeout(function() {
+//            k = stage.renderer.vboTextureSources.slice();
+//            stage.root.removeChild(bunny);
+//        }, 2000);
+//
+//        setTimeout(function() {
+//            stage.textureManager.freeUnusedTextureSources([]);
+//        }, 3000);
+//
+//        setTimeout(function() {
+//            stage.root.addChild(bunny);
+//        }, 4000);
+//
+
+        var bunnies = [];
+
+        var speedX = [];
+        var speedY = [];
+
+        var m = 5000;
+        var n = 1;
+        var o = 0;
+
+        var specialBunny = null;
+        for (var i = 0; i < n; i++) {
+//      var ss = stage.c();
+//      stage.root.addChild(ss);
+//      if (o > 0) {
+//        var s = stage.c();
+//        stage.root.addChild(s);
+//        ss = s;
+//        for (var k = 1; k < o; k++) {
+//          s = stage.c();
+//          ss.addChild(s);
+//          ss = s;
+//        }
+//      }
+            for (var j = 0; j < m; j++) {
+                speedX.push(1 * (Math.random() - 0.5));
+                speedY.push(1 * (Math.random() - 0.5));
+
+                // create a new Sprite using the texture
+                var bunny = stage.c({src: 'bunny.png'});
+
+
+                // move the sprite to the center of the screen
+                bunny.x = Math.random() * 1280;
+                bunny.y = Math.random() * 720;
+                bunny.pivotX = 0.5;
+                bunny.pivotY = 0.5;
+                stage.root.addChild(bunny);
+
+//        ss.addChild(bunny);
+                bunnies.push(bunny);
+            }
+        }
+
+        // start animating
+//    function animate() {
+//      for (var i = 0; i < n; i++) {
+//        var bunny = bunnies[i];
+//        bunny.x += speedX[i];
+//        if (bunny.x > 1280 || bunny.x < 0) {
+//          speedX[i] = -speedX[i];
+//        }
+//        bunny.y += speedY[i];
+//        if (bunny.y > 720 || bunny.y < 0) {
+//          speedY[i] = -speedY[i];
+//        }
+//      }
+//
+//      requestAnimationFrame(animate);
+//    }
+//    animate();
+
+        // start animating
+//    function animate() {
+//      for (var i = 0; i < n; i++) {
+//        var bunny = bunnies[i];
+//        bunny.x += speedX[i];
+//        if (bunny.x > 1280 || bunny.x < 0) {
+//          speedX[i] = -speedX[i];
+//        }
+//        bunny.y += speedY[i];
+//        if (bunny.y > 720 || bunny.y < 0) {
+//          speedY[i] = -speedY[i];
+//        }
+//      }
+//    }
+
+        function animate() {
+            stage.root.x += 0.1;
+        }
+
+        stage.onFrameStart.listen(animate);
+
+        setTimeout(function() {
+            console.profile();
+        }, 5000);
+
+        setTimeout(function() {
+            console.profileEnd();
+        }, 10000);
+    }
+
+</script>
+</body>
+</html>
