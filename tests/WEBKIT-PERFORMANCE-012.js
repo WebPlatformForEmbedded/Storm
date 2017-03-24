@@ -2,13 +2,31 @@
  * WPETestFramework test
  */
 /*jslint esnext: true*/
+const fs = require('fs');
+require('shelljs/global');
 
 module.exports = {
 	'title'         : 'WPEWebkit performance test using perf.html',
     'description'   : 'Loads perf.html test page and runs fake guide',
     'samples'       : [],
-    'minFPS'        : 50, // minimum FPS or this test will fail
+    'minFPS'        : 45, // minimum FPS or this test will fail
     'steps'         : {
+        'init0' : {
+            'description'   : 'check if wpe-test repository is present',
+            'timeout'       : 5 * 60,
+            'test'          : (resp) => {
+                if (fs.existsSync('./tests/resources/maf-ui-hzn4/')) {
+                    console.log('folder exists');
+                    resp();
+                }
+                else {
+                    //console.log('Cloning wpe-tests into resources folder....');
+                    exec('git clone git@github.com:Metrological/maf-ui-hzn4.git ./tests/resources/maf-ui-hzn4/', function (code, stdout, stderr) {
+                        resp();
+                    });
+                }
+            }
+        },
         'init1' : {
             'description'   : 'Start file server',
             'timeout'		: 60,
@@ -48,17 +66,17 @@ module.exports = {
     	'step5' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:8080/perf.html`;
+                var _url = `http://${task.server}:8080/maf-ui-hzn4/tests/perf.html`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
         },
     	'step6' : {
-            'sleep'         : 3,
+            'sleep'         : 5,
             'description'   : 'Check if app is loaded on WPEWebkit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:8080/perf.html`)
+                if (resp === `http://${task.server}:8080/maf-ui-hzn4/tests/perf.html`)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');
@@ -80,7 +98,7 @@ module.exports = {
             }
         },
         'step8' : {
-            'description'   : 'Repeat get FPS a couple of times to get samples',
+            'description'   : 'Repeat get FPS to get samples',
             'goto'          : 'step7',
             'repeat'        : 10,
         },
