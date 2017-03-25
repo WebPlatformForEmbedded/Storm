@@ -1,4 +1,4 @@
-Ï/**
+/**
  * WPETestFramework test
  */
 /*jslint esnext: true*/
