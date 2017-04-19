@@ -48,8 +48,6 @@ module.exports = {
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
                         else if (module === 'WebServer')
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
-                        else if (module === 'Snapshot')
-                            task.urls.push( { method: 'GET', path: '/Service/' + module, res: 405 } );
                         else
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 200 } );
                     } else {
@@ -61,8 +59,6 @@ module.exports = {
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
                         else if (module === 'WebServer')
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
-                        else if (module === 'Snapshot')
-                            task.urls.push( { method: 'GET', path: '/Service/' + module, res: 405 } );
                         else
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 200 } );
 
@@ -72,7 +68,7 @@ module.exports = {
 
                 // screenshot
                 if (modules.indexOf('Snapshot') !== -1)
-                    task.urls.push( { method: 'PUT', path: '/Service/Snapshot/Capture', res: 202 } );
+                    task.urls.push( { method: 'GET', path: '/Service/Snapshot/Capture', res: 202 } );
 
                 // invalid urls
                 task.urls.push( { method: 'GET', path: '/Service', res: 400 } );
