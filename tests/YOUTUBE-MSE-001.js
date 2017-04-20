@@ -121,7 +121,7 @@ module.exports = {
                 });
             },
             'validate'      : (results) => {
-                if (results.failed.amount.length === 0 && results.timedout.amount.length === 0 && results.testsRun === task.testCount)
+                if (results.failed.amount === 0 && results.timedout.amount === 0 && results.testsRun === task.testCount)
                     return true;
 
 
