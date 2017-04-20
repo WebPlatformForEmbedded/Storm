@@ -44,25 +44,18 @@ module.exports = {
         },
         'step3' : {
             'description'   : 'Start Provisioning & Netflix',
-            'test'          : startPlugins,
-            'params'        : ['Netflix', 'Provisioning'],
+            'test'          : startPlugin,
+            'params'        : 'Netflix',
             'validate'      : httpResponseSimple,
         },
         'step4' : {
-            'sleep'         : 10,
-            'description'   : 'Check if Provisioning is started succesfully',
-            'test'          : getPluginState,
-            'params'        : 'Provisioning',
-            'assert'        : 'activated'
-        },
-        'step6' : {
             'sleep'         : 30,
             'description'   : 'Check if Netflix is started succesfully',
             'test'          : getPluginState,
             'params'        : 'Netflix',
             'validate'      : checkResumedOrActivated,
         },
-        'step7' : {
+        'step5' : {
             'description'   : 'Check if Netflix is started without a valid ESN (screen stays blank)',
             'test'          : getPlugin,
             'params'        : 'Netflix',
@@ -78,10 +71,16 @@ module.exports = {
                     throw new Error('Expected Netflix to not have an ESN, yet it does');
             }
         },
-        'step8' : {
+        'step6' : {
             'description'   : 'Cleanup, stop Netflix',
             'test'          : stopPlugin,
             'params'        : 'Netflix',
+            'validate'      : httpResponseSimple
+        },
+        'step7' : {
+            'description'   : 'Cleanup, start provisioning module',
+            'test'          : startPlugin,
+            'params'        : 'Provisioning',
             'validate'      : httpResponseSimple
         }
     }
