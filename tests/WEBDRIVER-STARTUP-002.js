@@ -4,9 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WebDriver StartUp',
-    'description'   : 'Load the WebDriver plugin and check the status',
-    'steps'         : {
+    'title'             : 'WebDriver StartUp',
+    'description'       : 'Load the WebDriver plugin and check the status',
+    'requiredPlugins'   : ['WebDriver'],
+    'steps'             : {
         'init0'  : {
             'description'   : 'Check if WebDriver Plugin is present',
             'test'          : getPlugin,

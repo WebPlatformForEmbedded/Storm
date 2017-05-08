@@ -4,9 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'YouTube startup robustness test',
-    'description'   : 'Starts and stops the YouTube plugin repeatedly and checks if everything is started correctly',
-    'steps'         : {
+    'title'             : 'YouTube startup robustness test',
+    'description'       : 'Starts and stops the YouTube plugin repeatedly and checks if everything is started correctly',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'steps'             : {
         'init0'  : {
             'description'   : 'Check if YouTube Plugin is present',
             'test'          : getPlugin,

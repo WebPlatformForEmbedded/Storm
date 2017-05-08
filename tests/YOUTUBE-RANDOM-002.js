@@ -6,6 +6,7 @@
 module.exports = {
     'title'             : 'YouTube Random Key test',
     'description'       : 'Send random keys to youtube, only to navigate the the UI. No enter is send so the device will never start playback',
+    'requiredPlugins'   : ['WebKitBrowser'],
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
     'prevScreenshot'    : undefined,

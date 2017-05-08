@@ -4,31 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Netflix provisioning tests',
-    'description'   : 'Validate if Framework does not crash if you start Netflix without the provisioning module being active',
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
-        'init1'  : {
-            'description'   : 'Check if Provisioning Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Provisioning',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Provisioning');
-            }
-        },
+    'title'             : 'Netflix provisioning tests',
+    'description'       : 'Validate if Framework does not crash if you start Netflix without the provisioning module being active',
+    'requiredPlugins'   : ['Netflix', 'Provisioning'],
+    'steps'             : {
         'step1' : {
             'description'   : 'Stop Provisioning & Netflix',
             'test'          : stopPlugins,

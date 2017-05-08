@@ -4,42 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'YouTube/Netflix switch robustness test',
-    'description'   : 'Switches between YouTube/Netflix and checks if everything is started and suspended correctly',
+    'title'             : 'YouTube/Netflix switch robustness test',
+    'description'       : 'Switches between YouTube/Netflix and checks if everything is started and suspended correctly',
+    'requiredPlugins'   : ['Switch', 'Netflix'],
     'steps'         : {
-        'init'  : {
-            'description'   : 'Check if Switch Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Switch',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Switch');
-            }
-        },
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
-        'init1'  : {
-            'description'   : 'Check if YouTube Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'YouTube',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support YouTube');
-            }
-        },
         'init2' : {
             'description'   : 'Stop YouTube, Netflix & WPEWebkit',
             'timeout'       : 180, //seconds

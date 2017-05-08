@@ -4,20 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Framework request provision stress test',
-    'description'   : 'Perform multiple device provision requests and see if it is still running',
+    'title'             : 'Framework request provision stress test',
+    'description'       : 'Perform multiple device provision requests and see if it is still running',
+    'requiredPlugins'   : ['Provisioning'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Provisioning Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Provisioning',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Provisioning');
-            }
-        },
         'step1' : {
             'description'   : 'Stop Provisioning module',
             'test'          : stopPlugin,

@@ -4,12 +4,13 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WPEWebkit performance fishietank',
-    'description'   : 'Loads the Fish IE tank canvas animation and measures its performance',
-    'samples'       : [],
-    'minFPS'        : 2, // minimum FPS or this test will fail
-    'extends'       : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
-    'steps'         : {
+    'title'             : 'WPEWebkit performance fishietank',
+    'description'       : 'Loads the Fish IE tank canvas animation and measures its performance',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'samples'           : [],
+    'minFPS'            : 2, // minimum FPS or this test will fail
+    'extends'           : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
+    'steps'             : {
         'step5' : {
             'description'   : 'Load http://ie.microsoft.com/testdrive/performance/fishietank/',
             'timeout'       : 180, //seconds

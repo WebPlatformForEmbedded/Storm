@@ -3,14 +3,12 @@
  */
 /*jslint esnext: true*/
 
-if (devicetype.slice(0,3) !== 'rpi')
-    NotApplicable('Snapshot is only supported on Raspberry PI devices');
-
 var PNG = require('pngjs').PNG;
 
 module.exports = {
-    'title'         : 'Framework snapshot test',
-    'description'   : 'Test if the snapshot returns a valid PNG',
+    'title'             : 'Framework snapshot test',
+    'description'       : 'Test if the snapshot returns a valid PNG',
+    'requiredPlugins'   : ['Snapshot'],
     'screenshot'    : undefined,
     'steps'         : {
         'init0'  : {

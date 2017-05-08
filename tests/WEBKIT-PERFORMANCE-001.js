@@ -4,11 +4,12 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WPEWebkit performance poster circle',
-    'description'   : 'Loads the Poster Circle CSS3 animation and measures its performance',
-    'samples'       : [],
-    'minFPS'        : 40, // minimum FPS or this test will fail
-    'steps'         : {
+    'title'             : 'WPEWebkit performance poster circle',
+    'description'       : 'Loads the Poster Circle CSS3 animation and measures its performance',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'samples'           : [],
+    'minFPS'            : 40, // minimum FPS or this test will fail
+    'steps'             : {
         'init1' : {
             'description'   : 'Disable monitor',
             'test'          : stopPlugin,

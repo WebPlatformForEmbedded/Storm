@@ -4,22 +4,12 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WebDriver HTML5 score test',
-    'description'   : 'Load beta.html5test.com and get the score',
-    'samples'       : [],
-    'minScore'      : 405, // minimum FPS or this test will fail
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if WebDriver Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'WebDriver',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support WebDriver');
-            }
-        },
+    'title'             : 'WebDriver HTML5 score test',
+    'description'       : 'Load beta.html5test.com and get the score',
+    'requiredPlugins'   : ['WebDriver'],
+    'samples'           : [],
+    'minScore'          : 405, // minimum FPS or this test will fail
+    'steps'             : {
         /*
         'init'  : {
             'description'   : 'Make sure WPEWebkit is stopped',

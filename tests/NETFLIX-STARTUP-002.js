@@ -6,18 +6,8 @@
 module.exports = {
     'title'         : 'Netflix shutdown of Framework robustness test',
     'description'   : 'Starts Netflix and stops Framework. Checks if everything is shutdown correctly',
+    'requiredPlugins'   : ['Netflix'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
         'init1' : {
             'description'   : 'Stop WPEWebkit, YouTube & Netflix',
             'timeout'       : 180, //seconds

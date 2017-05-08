@@ -7,17 +7,18 @@ const fs = require('fs');
 const url = require('url');
 
 module.exports = {
-    'title'         : 'WPEWebkit stability images test',
-    'description'   : 'Stress loads the system with images and see if the WPEWebkit process continues to operate nominally',
-    'port'          : null,
-    'server'        : null,
-    'image'         : null,
-    'app'           : null,
-    'appRequested'  : false,
-    'imageRequested': false,
-    'notFoundReq'   : false,
-    'extends'       : 'WEBKIT-STRESS-001.js',
-    'steps'         : {
+    'title'             : 'WPEWebkit stability images test',
+    'description'       : 'Stress loads the system with images and see if the WPEWebkit process continues to operate nominally',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'port'              : null,
+    'server'            : null,
+    'image'             : null,
+    'app'               : null,
+    'appRequested'      : false,
+    'imageRequested'    : false,
+    'notFoundReq'       : false,
+    'extends'           : 'WEBKIT-STRESS-001.js',
+    'steps'             : {
         'init1' : {
             'description'   : 'Load resources to start the test',
             'test'          : function(x, callback) {

@@ -3,22 +3,20 @@
  */
 /*jslint esnext: true*/
 
-if (devicetype.slice(0,3) !== 'rpi')
-    NotApplicable('Snapshot is only supported on Raspberry PI devices');
-
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
 
 module.exports = {
-    'title'         : 'loads eme.html tests',
-    'description'   : 'runs eme.html test page and runs tests',
-    'port'          : undefined,
-    'server'        : undefined,
+    'title'             : 'loads eme.html tests',
+    'description'       : 'runs eme.html test page and runs tests',
+    'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],
+    'port'              : undefined,
+    'server'            : undefined,
     'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'prevScreenshot': undefined,
-    'extends'       : 'WEBKIT-EME-STRESS-001.js', // use WEBKIT-EME-STRESS-001.js as base, extend just the required functions
+    'prevScreenshot'    : undefined,
+    'extends'           : 'WEBKIT-EME-STRESS-001.js', // use WEBKIT-EME-STRESS-001.js as base, extend just the required functions
     'steps'         : {
         'step1' : {
             'description'   : 'Load the app on WebKit',

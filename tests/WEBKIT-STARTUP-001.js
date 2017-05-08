@@ -4,8 +4,9 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WPEWebkit startup robustness test',
-    'description'   : 'Starts and stops the WPEWebkit plugin repeatedly and checks if everything is started correctly',
+    'title'             : 'WPEWebkit startup robustness test',
+    'description'       : 'Starts and stops the WPEWebkit plugin repeatedly and checks if everything is started correctly',
+    'requiredPlugins'   : ['WebKitBrowser'],
     'steps'         : {
         'step1' : {
             'description'   : 'Stop WPEWebkit',

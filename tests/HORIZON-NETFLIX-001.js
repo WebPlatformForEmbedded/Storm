@@ -9,20 +9,10 @@ if (devicetype !== 'horizon')
 var firstRun = true;
 
 module.exports = {
-    'title'         : 'Horizon Netflix suspend/resume test case',
-    'description'   : 'Repeatedly goes into Netflix, plays a movie and during playback presses Main Menu. Netflix should suspend, Cisco should take over and no artifacts should be seen. Upon re-entering Netflix, Netflix should resume, no spinner show be shown and usr should land on the resume movie section',
+    'title'             : 'Horizon Netflix suspend/resume test case',
+    'description'       : 'Repeatedly goes into Netflix, plays a movie and during playback presses Main Menu. Netflix should suspend, Cisco should take over and no artifacts should be seen. Upon re-entering Netflix, Netflix should resume, no spinner show be shown and usr should land on the resume movie section',
+    'requiredPlugins'   : ['Netflix'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
          'init1' : {
             'description'   : 'Stop Netflix',
             'test'          : stopPlugin,

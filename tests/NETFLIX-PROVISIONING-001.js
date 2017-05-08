@@ -4,31 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Netflix provisioning tests',
-    'description'   : 'Validate if the device is correctly provisioned for Netflix',
+    'title'             : 'Netflix provisioning tests',
+    'description'       : 'Validate if the device is correctly provisioned for Netflix',
+    'requiredPlugins'   : ['Netflix', 'Provisioning'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
-        'init1'  : {
-            'description'   : 'Check if Provisioning Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Provisioning',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Provisioning');
-            }
-        },
         'init2' : {
             'description'   : 'Stop Netflix',
             'test'          : stopPlugin,

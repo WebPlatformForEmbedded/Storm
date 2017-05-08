@@ -4,10 +4,11 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'YouTube Encrupted Media conformance test',
-    'description'   : 'Loads the YouTube EME 2016 conformance test and captures the output',
-    'testCount'     : 18,
-    'steps'         : {
+    'title'             : 'YouTube Encrupted Media conformance test',
+    'description'       : 'Loads the YouTube EME 2016 conformance test and captures the output',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'testCount'         : 18,
+    'steps'             : {
        'step1' : {
             'description'   : 'Stop WPEWebkit',
             'test'          : stopPlugin,

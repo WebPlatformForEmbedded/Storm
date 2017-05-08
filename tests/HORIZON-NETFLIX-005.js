@@ -7,20 +7,10 @@ if (devicetype !== 'horizon')
     NotApplicable('This test only applies to a Horizon device');
 
 module.exports = {
-    'title'         : 'Horizon Netflix RW/FF on playback',
-    'description'   : 'RW/FW multiple times on a Netflix video',
+    'title'             : 'Horizon Netflix RW/FF on playback',
+    'description'       : 'RW/FW multiple times on a Netflix video',
+    'requiredPlugins'   : ['Netflix'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
         'init1' : {
             'description'   : 'Stop Netflix',
             'test'          : stopPlugin,

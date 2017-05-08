@@ -4,20 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WebServer startup robustness test',
-    'description'   : 'Starts and stops the webserver plugin repeatedly and checks if everything is started correctly',
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if WebServer Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'WebServer',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support WebServer');
-            }
-        },
+    'title'             : 'WebServer startup robustness test',
+    'description'       : 'Starts and stops the webserver plugin repeatedly and checks if everything is started correctly',
+    'requiredPlugins'   : ['WebServer'],
+    'steps'             : {
         'step1' : {
             'description'   : 'Stop WebServer',
             'test'          : stopPlugin,

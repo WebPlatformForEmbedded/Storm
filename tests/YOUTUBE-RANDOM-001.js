@@ -4,12 +4,13 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'YouTube Random Key test',
-    'description'   : 'Sends random keys to YouTube and checks if YouTube is still working',
+    'title'             : 'YouTube Random Key test',
+    'description'       : 'Sends random keys to YouTube and checks if YouTube is still working',
+    'requiredPlugins'   : ['WebKitBrowser'],
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'prevScreenshot': undefined,
-    'steps'         : {
+    'prevScreenshot'    : undefined,
+    'steps'             : {
         'init0'  : {
             'description'   : 'Check if YouTube Plugin is present',
             'test'          : getPlugin,
