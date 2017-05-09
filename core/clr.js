@@ -25,7 +25,6 @@ for (var i=0; i<tests.length; i++) {
 }
 
 function runTest(test, callback) {
-	var childProcess = undefined;
 	var args = [];
 	args.push('-t');
 	args.push(test);
@@ -33,18 +32,18 @@ function runTest(test, callback) {
 	args.push(type);
 	args.push('--host');
 	args.push(host);
+
 	console.log(`Launching task with args: ${args}`);
 	var childProcess = fork('./core/task.js', args);
-	childProcess;
 	console.log('task_start');
-	
+
 	childProcess.on('close', (code) => {
 		console.log('task_closed', code);
-		callback(null, 'This was a success');
+		callback();
 	});
 	childProcess.on('error', (err) => {
 		console.log('task_error', `Task exited with ${err}`);
-		callback();
+		callback(err);
 	});
 
 	childProcess.on('message', (message) => {
