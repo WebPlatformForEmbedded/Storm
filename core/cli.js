@@ -528,6 +528,9 @@ class Report {
     }
 
     writeResults(print) {
+        if (fs.existsSync('./reports') === false)
+            fs.mkdir('./reports');
+
         var filename = './reports/report-' + this.deviceType + '-' + this.fwVersion + '.txt';
         var header = 'Metrological Test Suite - 2017 (c) Metrological\n\n';
 
@@ -1046,7 +1049,7 @@ function parseCommand(command) {
             showprog=false;
             // fall through
         case 'dummy':
-            newDummyDevice = new Device('0', '0', 'localhost', 'rpi2', { modelName : 'dummy', manufacturer : 'metrological' });
+            newDummyDevice = new Device('0', '0', 'localhost:81', 'rpi2', { modelName : 'dummy', manufacturer : 'metrological' });
             curAgent.activateDevice(newDummyDevice, 'rpi2');
 
             // enable dummy mode

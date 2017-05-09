@@ -7,15 +7,16 @@ const fs = require('fs');
 const url = require('url');
 
 module.exports = {
-    'title'         : 'WPEWebkit stability redirect test',
-    'description'   : 'Stress loads the system with redirects and see if the WPEWebkit process continues to operate nominally',
-    'port'          : undefined,
-    'server'        : undefined,
-    'app'           : undefined,
-    'appRequested'  : false,
-    'timedout'      : false,
-    'timer'         : undefined,
-    'extends'       : 'WEBKIT-STRESS-001.js',
+    'title'             : 'WPEWebkit stability redirect test',
+    'description'       : 'Stress loads the system with redirects and see if the WPEWebkit process continues to operate nominally',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'port'              : undefined,
+    'server'            : undefined,
+    'app'               : undefined,
+    'appRequested'      : false,
+    'timedout'          : false,
+    'timer'             : undefined,
+    'extends'           : 'WEBKIT-STRESS-001.js',
     'steps'         : {
         'init1' : {
             'description'   : 'Load resources to start the test',

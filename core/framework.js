@@ -111,6 +111,14 @@ module.exports = {
         };
         http(opts, cb);
     },
+    // get list of plugins
+    getPlugins(x, cb) {
+        var opts = {
+            url     : `http://${host}:80/Service/Controller/Plugins`,
+            method  : 'GET',
+        };
+        http(opts, cb);
+    },
     // get the state of a plugin, Activated or Deactivated
     getPluginState(plugin, cb) {
         getPlugin('Controller', (response) => {

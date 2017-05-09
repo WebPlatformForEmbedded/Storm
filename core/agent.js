@@ -169,7 +169,9 @@ function Agent(userId, config) {
             var response = '';
             res.on('data', function(chunk){ response += chunk; });
             res.on('end', function(){
-                sendMessage('deviceInfo_response', (JSON.parse(response)));
+                try {
+                    sendMessage('deviceInfo_response', (JSON.parse(response)));
+                } catch (e) {}
             });
         }).on('error', function (e){
             sendMessage('deviceInfo_response_error', e);

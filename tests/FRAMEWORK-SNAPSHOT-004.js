@@ -3,25 +3,12 @@
  */
 /*jslint esnext: true*/
 
-if (devicetype.slice(0,3) !== 'rpi')
-    NotApplicable('Snapshot is only supported on Raspberry PI devices');
-
 module.exports = {
-    'title'         : 'Framework snapshot test',
-    'description'   : 'Tests if the Framework snapshot module works by updating the WPEWebkit and checking if it changed',
-    'screenshot'    : undefined,
+    'title'             : 'Framework snapshot test',
+    'description'       : 'Tests if the Framework snapshot module works by updating the WPEWebkit and checking if it changed',
+    'requiredPlugins'   : ['Snapshot'],
+    'screenshot'        : undefined,
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Snapshot Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Snapshot',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Snapshot');
-            }
-        },
         'step1' : {
             'description'   : 'Stop Snapshot module',
             'test'          : stopPlugin,

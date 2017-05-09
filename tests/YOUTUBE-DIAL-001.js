@@ -4,31 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Framework DIAL YouTube test',
-    'description'   : 'Tests the DIAL server for the YouTube application',
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if YouTube Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'YouTube',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support YouTube');
-            }
-        },
-        'init1'  : {
-            'description'   : 'Check if DIALServer Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'DIALServer',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support DIALServer');
-            }
-        },
+    'title'             : 'Framework DIAL YouTube test',
+    'description'       : 'Tests the DIAL server for the YouTube application',
+    'requiredPlugins'   : ['YouTube', 'DIALServer'],
+    'steps'             : {
         'step1' : {
             'sleep'         : 15,
             'description'   : 'Start the DIAL server plugin',

@@ -4,21 +4,11 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Framework Device Info test',
-    'description'   : 'Validates functionality of the Device Info plugin',
-    'plugin'        : '', //place holder to store selected plugin value
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if DeviceInfo Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'DeviceInfo',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support DeviceInfo');
-            }
-        },
+    'title'             : 'Framework Device Info test',
+    'description'       : 'Validates functionality of the Device Info plugin',
+    'requiredPlugins'   : ['DeviceInfo'],
+    'plugin'            : '', //place holder to store selected plugin value
+    'steps'             : {
         'step1' : {
             'description'   : 'Stop DeviceInfo plugin',
             'timeout'       : 60, //seconds

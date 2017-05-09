@@ -4,8 +4,9 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WPEWebkit shutdown of Framework robustness test',
-    'description'   : 'Starts WPEWebkit and stops Framework. Checks if everything is shutdown correctly',
+    'title'             : 'WPEWebkit shutdown of Framework robustness test',
+    'description'       : 'Starts WPEWebkit and stops Framework. Checks if everything is shutdown correctly',
+    'requiredPlugins'   : ['WebKitBrowser'],
     'steps'         : {
         'init1' : {
             'description'   : 'Stop Netflix & YouTube',

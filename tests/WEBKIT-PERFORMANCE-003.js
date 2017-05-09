@@ -4,12 +4,13 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WPEWebkit performance falling leaves',
-    'description'   : 'Loads the falling leaves CSS3 animation and measures its performance',
-    'samples'       : [],
-    'minFPS'        : 40, // minimum FPS or this test will fail
-    'extends'       : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
-    'steps'         : {
+    'title'             : 'WPEWebkit performance falling leaves',
+    'description'       : 'Loads the falling leaves CSS3 animation and measures its performance',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'samples'           : [],
+    'minFPS'            : 40, // minimum FPS or this test will fail
+    'extends'           : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
+    'steps'             : {
         'step5' : {
             'description'   : 'Load https://webkit.org/blog-files/leaves/',
             'timeout'       : 180, //seconds

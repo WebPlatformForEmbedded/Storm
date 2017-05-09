@@ -159,6 +159,7 @@ if (build === true || install === true){
         process.exit();
     }, devicetype, build === true ? doClean : skipCopy);
 } else {
+    if (task === undefined || task.steps === undefined) { process_end(1); return; }
 
     if (task && task.extends !== undefined){
         try {
@@ -174,31 +175,60 @@ if (build === true || install === true){
     }
 
     if (testIsNA !== true)
+        checkRequiredPlugins();
+}
+
+
+function checkRequiredPlugins() {
+    if (task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
+        getPlugins(null, (response) => {
+            try {
+                var responseObj = JSON.parse(response.body);
+                var plugins = responseObj.plugins;
+                var enabledPlugins = [];
+                for (var i=0; i<plugins.length; i++) {
+                    enabledPlugins.push(plugins[i].callsign);
+                }
+
+                for (var j=0; j<task.requiredPlugins.length; j++) {
+                    if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
+                        NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
+                    }
+
+                    if (j === task.requiredPlugins.length-1)
+                        startTask();
+                }
+            } catch(e) {
+                process_end('Failed to retrieve plugins from Framework while checking requiredPlugins');
+            }
+        });
+    } else {
         startTask();
+    }
 }
 
 /******************************************************************************/
 /*****************************    TASK hander    ******************************/
 /******************************************************************************/
 
-function startTask(){
-    if (task === undefined || task.steps === undefined) { process_end(); return; }
 
+function startTask() {
     stepList = Object.keys(task.steps);
     maxSteps = stepList.length;
 
     log('step_count', maxSteps-1);
     log('task_start');
+
     lookForNextStep();
 }
 
-function timedout(step){
+function timedout(step) {
     log('task_timedout', { 'step' : step } ,  () => {
         process_end('Task timed out');
     });
 }
 
-function process_end(error){
+function process_end(error) {
     // fail safe
     if (processEndRequested === true)
         process.exit(1);
@@ -239,7 +269,7 @@ process.on('uncaughtException', (e) => {
 });
 
 
-function lookForNextStep(){
+function lookForNextStep() {
     clearTimeout(timer);
 
     var nextIdx = curIdx+1;

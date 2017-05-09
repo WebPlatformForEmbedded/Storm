@@ -6,11 +6,12 @@ const fs = require('fs');
 require('shelljs/global');
 
 module.exports = {
-	'title'         : 'WPEWebkit performance test using perf.html',
-    'description'   : 'Loads perf.html test page and runs fake guide',
-    'samples'       : [],
-    'minFPS'        : 45, // minimum FPS or this test will fail
-    'steps'         : {
+	'title'             : 'WPEWebkit performance test using perf.html',
+    'description'       : 'Loads perf.html test page and runs fake guide',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'samples'           : [],
+    'minFPS'            : 45, // minimum FPS or this test will fail
+    'steps'             : {
         'init0' : {
             'description'   : 'check if wpe-test repository is present',
             'timeout'       : 5 * 60,

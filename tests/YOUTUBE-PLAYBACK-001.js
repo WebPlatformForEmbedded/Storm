@@ -4,23 +4,13 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'YouTube Playback test',
-    'description'   : 'Start playback of a movie on YouTube and let it run for 12 hours',
+    'title'             : 'YouTube Playback test',
+    'description'       : 'Start playback of a movie on YouTube and let it run for 12 hours',
+    'requiredPlugins'   : ['WebKitBrowser'],
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'prevScreenshot': undefined,
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if YouTube Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'YouTube',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support YouTube');
-            }
-        },
+    'prevScreenshot'    : undefined,
+    'steps'             : {
         'step1' : {
             'description'   : 'Stop WPEWebkit',
             'test'          : stopPlugin,

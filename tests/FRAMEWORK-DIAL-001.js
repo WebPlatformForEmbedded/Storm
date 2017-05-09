@@ -4,20 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Framework DIAL test 01',
-    'description'   : 'Tests if the host is discoverable on DIAL and returns a list of applications',
-    'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if DIALServer Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'DIALServer',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support DIALServer');
-            }
-        },
+    'title'             : 'Framework DIAL test 01',
+    'description'       : 'Tests if the host is discoverable on DIAL and returns a list of applications',
+    'requiredPlugins'   : ['DIALServer'],
+    'steps'             : {
         'step1' : {
             'description'   : 'Start the DIAL server plugin',
             'test'          : startPlugin,

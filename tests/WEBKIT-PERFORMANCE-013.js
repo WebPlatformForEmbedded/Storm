@@ -4,12 +4,13 @@
 /*jslint esnext: true*/
 
 module.exports = {
-	'title'         : 'WPEWebkit performance test using performance.html',
-    'description'   : 'Loads performance.html test page and calculates FPS',
-    'samples'       : [],
-    'minFPS'        : 25, // minimum FPS or this test will fail
-    'extends'       : 'WEBKIT-PERFORMANCE-012.js', // use WEBKIT-PERFORMANCE-012.js as base, extend just the required functions
-    'steps'         : {
+	'title'             : 'WPEWebkit performance test using performance.html',
+    'description'       : 'Loads performance.html test page and calculates FPS',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'samples'           : [],
+    'minFPS'            : 25, // minimum FPS or this test will fail
+    'extends'           : 'WEBKIT-PERFORMANCE-012.js', // use WEBKIT-PERFORMANCE-012.js as base, extend just the required functions
+    'steps'             : {
     	'step5' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {

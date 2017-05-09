@@ -11,15 +11,16 @@ const url = require('url');
 const querystring = require('querystring');
 
 module.exports = {
-    'title'         : 'Stress test using eme.html test',
-    'description'   : 'Loads eme.html test page and runs stress tests by playing a video for 3 hours',
-    'port'          : undefined,
-    'server'        : undefined,
+    'title'             : 'Stress test using eme.html test',
+    'description'       : 'Loads eme.html test page and runs stress tests by playing a video for 3 hours',
+    'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],
+    'port'              : undefined,
+    'server'            : undefined,
     'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'prevScreenshot': undefined,
-    'extends'       : 'WEBKIT-EME-STRESS-001.js', // use WEBKIT-EME-STRESS-001.js as base, extend just the required functions
-    'steps'         : {
+    'prevScreenshot'    : undefined,
+    'extends'           : 'WEBKIT-EME-STRESS-001.js', // use WEBKIT-EME-STRESS-001.js as base, extend just the required functions
+    'steps'             : {
         'step1' : {
             'description'   : 'Load the app on WebKit',
             'test'          : function (x, cb) {

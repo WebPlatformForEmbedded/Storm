@@ -4,31 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'Framework DIAL Netflix test',
-    'description'   : 'Tests the DIAL server for the Netflix application',
+    'title'             : 'Framework DIAL Netflix test',
+    'description'       : 'Tests the DIAL server for the Netflix application',
+    'requiredPlugins'   : ['Netflix', 'DIALServer'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
-        'init1'  : {
-            'description'   : 'Check if DIALServer Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'DIALServer',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support DIALServer');
-            }
-        },
         'init2' : {
             'description'   : 'Start WPEWebkit & DIALServer',
             'timeout'       : 180, //seconds

@@ -4,9 +4,10 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'WPEWebkit Peacekeeper Benchmark test',
-    'description'   : 'Loads the Peacekeeper Benchmark test and get the results',
-    'steps'         : {
+    'title'             : 'WPEWebkit Peacekeeper Benchmark test',
+    'description'       : 'Loads the Peacekeeper Benchmark test and get the results',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'steps'             : {
         'init1' : {
             'description'   : 'Disable monitor',
             'test'          : stopPlugin,

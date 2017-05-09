@@ -7,15 +7,16 @@ const fs = require('fs');
 const url = require('url');
 
 module.exports = {
-    'title'         : 'WPEWebkit stability xmlhttprequest test',
-    'description'   : 'Stress loads the system with xmlhttprequests and see if the WPEWebkit process continues to operate nominally',
-    'port'          : undefined,
-    'server'        : undefined,
-    'app'           : undefined,
-    'appRequested'  : false,
-    'timedout'      : false,
-    'timer'         : undefined,
-    'steps'         : {
+    'title'             : 'WPEWebkit stability xmlhttprequest test',
+    'description'       : 'Stress loads the system with xmlhttprequests and see if the WPEWebkit process continues to operate nominally',
+    'requiredPlugins'   : ['WebKitBrowser'],
+    'port'              : undefined,
+    'server'            : undefined,
+    'app'               : undefined,
+    'appRequested'      : false,
+    'timedout'          : false,
+    'timer'             : undefined,
+    'steps'             : {
         'init1' : {
             'description'   : 'Load resources to start the test',
             'test'          : function(x, callback) {

@@ -9,20 +9,10 @@ if (devicetype !== 'horizon')
 var firstRun = true;
 
 module.exports = {
-    'title'         : 'Horizon Netflix exit within Netflix test case',
-    'description'   : 'Repeatedly goes into Netflix, do not play a movie and exits from within Netflix. Netflix should suspend and from the App Store it should resume when the user decides to go into Netflix again',
+    'title'             : 'Horizon Netflix exit within Netflix test case',
+    'description'       : 'Repeatedly goes into Netflix, do not play a movie and exits from within Netflix. Netflix should suspend and from the App Store it should resume when the user decides to go into Netflix again',
+    'requiredPlugins'   : ['Netflix'],
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if Netflix Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'Netflix',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support Netflix');
-            }
-        },
         'init1' : {
             'description'   : 'Press menu to go to main menu',
             'test'          : key,
