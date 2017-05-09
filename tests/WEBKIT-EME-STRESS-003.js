@@ -3,9 +3,6 @@
  */
 /*jslint esnext: true*/
 
-if (devicetype.slice(0,3) !== 'rpi')
-    NotApplicable('Snapshot is only supported on Raspberry PI devices');
-
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
@@ -45,7 +42,7 @@ module.exports = {
 
 
 function readApp(callback){
-    fs.readFile('./tests/resources/wpe-tests/eme.html', function(err, data){
+    fs.readFile('./tests/resources/wpe-test-metrological/eme.html', function(err, data){
         if (err){
             throw err;
         } else {

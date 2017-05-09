@@ -96,7 +96,7 @@ module.exports = {
 
 
 function readApp(callback){
-    fs.readFile('./tests/resources/wpe-tests/me.html', function(err, data){
+    fs.readFile('./tests/resources/wpe-test-metrological/eme.html', function(err, data){
         if (err){
             throw err;
         } else {

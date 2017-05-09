@@ -8,7 +8,7 @@ require('shelljs/global');
 module.exports = {
 	'title'             : 'WPEWebkit performance test using perf.html',
     'description'       : 'Loads perf.html test page and runs fake guide',
-    'requiredPlugins'   : ['WebKitBrowser'],
+    'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],
     'samples'           : [],
     'minFPS'            : 45, // minimum FPS or this test will fail
     'steps'             : {
@@ -18,7 +18,9 @@ module.exports = {
             'test'          : (resp) => {
                 if (fs.existsSync('./tests/resources/maf-ui-hzn4/')) {
                     console.log('folder exists');
-                    resp();
+                    exec('git -C tests/resources/maf-ui-hzn4/ pull', function (code, stdout, stderr) {
+                        resp();
+                    });
                 }
                 else {
                     //console.log('Cloning wpe-tests into resources folder....');

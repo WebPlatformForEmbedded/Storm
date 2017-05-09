@@ -24,11 +24,13 @@ module.exports = {
             'test'          : (resp) => {
                 if (fs.existsSync('./tests/resources/wpe-tests/')) {
                     console.log('folder exists');
-                    resp();
+                    exec('git -C tests/resources/wpe-test-metrological/ pull', function (code, stdout, stderr) {
+                        resp();
+                    });
                 }
                 else {
                     //console.log('Cloning wpe-tests into resources folder....');
-                    exec('git clone git@github.com:Metrological/wpe-tests.git ./tests/resources/wpe-tests/', function (code, stdout, stderr) {
+                    exec('git clone git@github.com:Metrological/wpe-test-metrological.git ./tests/resources/wpe-test-metrological/', function (code, stdout, stderr) {
                         resp();
                     });
                 }
@@ -200,7 +202,7 @@ module.exports = {
 
 
 function readApp(callback){
-    fs.readFile('./tests/resources/wpe-tests/eme.html', function(err, data){
+    fs.readFile('./tests/resources/wpe-test-metrological/eme.html', function(err, data){
         if (err){
             throw err;
         } else {

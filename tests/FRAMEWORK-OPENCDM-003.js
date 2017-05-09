@@ -3,9 +3,6 @@
  */
  /*jslint esnext: true*/
 
-if (devicetype.slice(0,3) !== 'rpi')
-    NotApplicable('Snapshot is only supported on Raspberry PI devices');
-
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
@@ -14,7 +11,7 @@ require('shelljs/global');
 module.exports = {
     'title'             : 'OpenCDMi robustnest test',
     'description'       : 'Starts and stops OpenCDMi module repeatedly and checks if everything is started correctly',
-    'requiredPlugins'   : ['OpenCDMi', 'WPEWebkit'],
+    'requiredPlugins'   : ['OpenCDMi', 'WebKitBrowser'],
     'port'              : undefined,
     'server'            : undefined,
     'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
