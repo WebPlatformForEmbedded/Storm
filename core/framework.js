@@ -10,7 +10,7 @@ const _http     = require('http');
 
 module.exports = {
     // key definitions
-    up : '0x0001', down : '0x0002', right : '0x0003', left : '0x0004', enter : '0x002B', esc : '0x0009', 
+    up : '0x0001', down : '0x0002', right : '0x0003', left : '0x0004', enter : '0x002B', esc : '0x0009',
     // send key to Framework
     key(key, cb) {
         var opts = {
@@ -205,6 +205,7 @@ module.exports = {
             }
         });
     },
+    // get system memory usage
     getMemoryUsage(x, cb) {
         getPlugin('DeviceInfo', (response) => {
             var resp = JSON.parse(response.body);
@@ -222,6 +223,24 @@ module.exports = {
             }
 
             cb(Math.round( (free/total) * 100));
+        });
+    },
+    // get memory usage from monitor
+    getMemoryUsageForPlugin(requestedPlugin, cb) {
+        getPlugin('Monitor', (response) => {
+            var resp = JSON.parse(response.body);
+
+            for (var i=0; i<resp.length; i++) {
+                var plugin = resp[i];
+                console.log('Checking ' + plugin.name + ' === ' + requestedPlugin);
+                if (plugin.name === requestedPlugin) {
+                    cb(plugin);
+                    return;
+                }
+            }
+
+            // we failed to find it
+            throw Error(`Cannot find ${plugin} in data returned by Monitor`);
         });
     },
     // start Framework in background mode

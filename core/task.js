@@ -241,7 +241,7 @@ function process_end(error) {
         log('task_error', '' + error);
 
     // check if task has a cleanup function defined, run it if we encountered an error
-    if (error !== undefined && task.cleanup !== undefined) {
+    if (error !== undefined && task && task.cleanup !== undefined) {
         log('task_cleanup');
         task.cleanup( (result) => {
             if (result !== undefined)
