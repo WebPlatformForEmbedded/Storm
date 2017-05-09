@@ -25,6 +25,10 @@ for (var i=0; i<tests.length; i++) {
 }
 
 function runTest(test, callback) {
+	var steps = 0,
+		curStep = 0,
+		description = '';
+
 	var args = [];
 	args.push('-t');
 	args.push(test);
@@ -33,21 +37,54 @@ function runTest(test, callback) {
 	args.push('--host');
 	args.push(host);
 
-	console.log(`Launching task with args: ${args}`);
+	console.log(`Launching test ${test}`);
 	var childProcess = fork('./core/task.js', args);
-	console.log('task_start');
 
 	childProcess.on('close', (code) => {
-		console.log('task_closed', code);
+		if (code === 0)
+			console.log(`Test ${test} completed succesfully`);
+
+		console.log();
 		callback();
 	});
 	childProcess.on('error', (err) => {
-		console.log('task_error', `Task exited with ${err}`);
 		callback(err);
 	});
 
-	childProcess.on('message', (message) => {
-		console.log(message);
+	childProcess.on('message', (e) => {
+		//console.log(e);
+
+		if (e.event === 'step_count')
+			steps = e.msg;
+
+		if (e.event === 'step_start' && e.msg !== undefined) {
+			curStep = e.msg.step;
+			description = e.msg.description.slice(0, 50);
+		}
+
+		if (e.event === 'step_repeat')
+			console.log(`   Repeating step ${e.msg.toIdx} to ${e.msg.fromIdx} for ${e.msg.repeatTotal !== undefined ? e.msg.repeatTotal : e.msg.repeatUntil} times`);
+
+		if (e.event === 'step_result') {
+            var requiredPadding = 50 - description.length;
+            var padding = '';
+
+            for (var j=0; j<requiredPadding; j++) {
+                padding += '.';
+            }
+
+			console.log(`   Step [ ${curStep < 9 ? '0' + curStep : curStep}/${steps < 9 ? '0' + steps : steps} ] - ${description} ${padding} ${e.msg.result} `);
+		}
+
+		if (e.event === 'task_error')
+			console.error(`Error: ` + e.msg);
+
+		if (e.event === 'task_timedout')
+			console.error(`Test timed out`);
+
+		if (e.event === 'task_notapplicable')
+			console.log('Test is not applicable');
+
 	});
 }
 
