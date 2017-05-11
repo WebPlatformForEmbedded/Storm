@@ -123,7 +123,6 @@ module.exports = {
             'params'        : 'WebKitBrowser',
             'validate'      : checkResumedOrActivated,
         },
-        
         'step7' : {
             'description'   : 'Load the app on WebKit',
             'test'          : function (x, cb) {
@@ -167,7 +166,7 @@ module.exports = {
             'goto'          : 'step9',
             'repeat'        : 5,
         }
-    }
+    },
     'cleanup'       : restartFramework,
 };
 
