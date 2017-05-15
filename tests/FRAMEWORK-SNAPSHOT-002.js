@@ -3,9 +3,6 @@
  */
 /*jslint esnext: true*/
 
-if (devicetype.slice(0,3) !== 'rpi')
-    NotApplicable('Snapshot is only supported on Raspberry PI devices');
-
 module.exports = {
     'title'             : 'Framework snapshot test with multiple start/stops',
     'description'       : 'Tests if the Framework snapshot module works',
