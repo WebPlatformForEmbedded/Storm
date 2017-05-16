@@ -14,8 +14,14 @@ var argv = require('minimist')(process.argv.slice(2));
 
 var type = argv.deviceType;
 var host = argv.host;
-var tests = argv.t.split(',');
+var tests;
+var testManifest = argv.testManifest;
 var args = [];
+
+if (testManifest !== undefined)
+	tests = require('../manifests/' + testManifest + '.json');
+else
+	tests = argv.t.split(',');
 
 var testsToBeRunObject = {}
 
