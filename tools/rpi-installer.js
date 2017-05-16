@@ -5,6 +5,8 @@
 const username = 'root';
 const password = 'root';
 
+var url = require('url');
+var path = require('path');
 var async = require('async');
 require('shelljs/global');
 
@@ -15,6 +17,7 @@ var cwd = process.cwd();
 var argv = require('minimist')(process.argv.slice(2));
 
 // arguments needed
+var imageUrl = argv.imageUrl;
 var imageLocation = argv.imageLocation;
 host = argv.host;
 
@@ -37,6 +40,7 @@ globalize('../core/framework.js');
 // run install
 async.series({
     'checkSrcFile'      : checkSrcFile.bind(null),
+    'extractSrcFile'    : extractSrcFile.bind(null),
     'currentVersion'    : getFirmwareVersion.bind(null),
     'flashzImage'       : flashzImage.bind(null),
     'flashFirmware'     : flashFirmware.bind(null),
@@ -44,6 +48,11 @@ async.series({
     'reboot'            : reboot.bind(null),
     'newVersion'        : getFirmwareVersion.bind(null)
 }, function (err, results){
+    if (test('-d', './temp')) {
+        console.log('Cleaning up temp directory');
+        rm('-rf', './temp');
+    }
+
     if (err) {
         console.error(err);
         process.exit(1);
@@ -56,16 +65,64 @@ async.series({
 
 function checkSrcFile(callback){
     var err;
-    var srcFile = imageLocation + '/zImage';
 
-    console.log(srcFile);
-    // check if there is a zImage on the disk, if not bail out
-    if (!test('-f', srcFile)) {
-        console.error('zImage not found or does not exist, we cannot flash without an zImage.');
-        callback('zImage not found');
+    if (imageLocation !== undefined) {
+        var srcFile = imageLocation + '/zImage';
+        console.log('Using directory: ' + srcFile);
+        // check if there is a zImage on the disk, if not bail out
+        if (!test('-f', srcFile)) {
+            console.error('zImage not found or does not exist, we cannot flash without an zImage.');
+            callback('zImage not found');
+        } else {
+            callback();
+        }
+    } else if (imageUrl !== undefined) {
+        mkdir('./temp');
+        cd('./temp');
+
+        console.log('Downloading ' + imageUrl);
+
+        exec('wget ' + imageUrl, (code, stdout, stderr) => {
+            cd(cwd);
+
+            console.log('Finished downloading with code ' + code);
+
+            if (code === 0)
+                callback();
+            else
+                callback('Failed downloading tar from: ' + imageUrl);
+        });
     } else {
-        callback();
+        callback('No image location or url provided')
     }
+}
+
+function extractSrcFile(callback){
+    if (imageLocation) {
+        callback();
+        return;
+    }
+
+    var parsed = url.parse(imageUrl);
+    var filename = path.basename(parsed.pathname);
+
+    console.log('Extracting ' + filename);
+
+    cd('./temp');
+    exec('tar xvf ' + filename, (code, stdout, stderr) => {
+        imageLocation = process.cwd();
+        cd(cwd);
+
+        console.log('Finished extracting the tar with code ' + code);
+
+        if (code === 0) {
+            callback();
+        } else {
+            callback('Failed extracting tar');
+        }
+
+    });
+
 }
 
 function getFirmwareVersion(callback){
