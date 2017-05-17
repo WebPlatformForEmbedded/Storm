@@ -46,8 +46,8 @@ class AttachToLogs {
         }).connect({
             host: host,
             port: 22,
-            username: devices[devicetype].username,
-            password: devices[devicetype].password
+            username: 'root',
+            password: 'root'
         });
 
         conn.on('error', function(err){
@@ -93,8 +93,8 @@ module.exports = {
         }).connect({
             host: host,
             port: 22,
-            username: devices[devicetype].username,
-            password: devices[devicetype].password
+            username: 'root',
+            password: 'root'
         });
 
         conn.on('timeout', function(e) {
