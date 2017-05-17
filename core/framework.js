@@ -10,7 +10,7 @@ const _http     = require('http');
 
 module.exports = {
     // key definitions
-    up : '0x0001', down : '0x0002', right : '0x0003', left : '0x0004', enter : '0x002B', esc : '0x0009',
+    up : '0x0001', down : '0x0002', right : '0x0004', left : '0x0003', enter : '0x002B', esc : '0x0009',
     // send key to Framework
     key(key, cb) {
         var opts = {
