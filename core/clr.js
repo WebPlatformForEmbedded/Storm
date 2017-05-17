@@ -18,6 +18,8 @@ var tests;
 var testManifest = argv.testManifest;
 var args = [];
 
+var testsFailed = 0;
+
 if (testManifest !== undefined)
 	tests = require('../manifests/' + testManifest + '.json');
 else
@@ -47,8 +49,12 @@ function runTest(test, callback) {
 	var childProcess = fork('./core/task.js', args);
 
 	childProcess.on('close', (code) => {
-		if (code === 0)
+		if (code === 0) {
 			console.log(`Test ${test} completed succesfully`);
+		} else {
+			console.error(`Test ${test} completed with errors`);
+			testsFailed++;
+		}
 
 		console.log();
 		callback();
@@ -95,10 +101,14 @@ function runTest(test, callback) {
 }
 
 async.series(testsToBeRunObject, function (err, results) {
+	var msg = `\nCompleted ${tests.length} tests of which ${testsFailed} failed`;
 
-	if (err)
+	if (err || testsFailed > 0) {
+		console.error(msg);
 		process.exit(1);
-	else
+	} else {
+		console.log(msg);
 		process.exit(0);
+	}
 
 });
