@@ -9,9 +9,9 @@ const querystring = require('querystring');
 require('shelljs/global');
 
 module.exports = {
-    'title'             : 'OpenCDMi robustnest test',
-    'description'       : 'Starts and stops OpenCDMi module repeatedly and checks if everything is started correctly',
-    'requiredPlugins'   : ['OpenCDMi', 'WebKitBrowser'],
+    'title'             : 'OpenCDMi playback test',
+    'description'       : 'Start a playready video and validate if video plays',
+    'requiredPlugins'   : ['OpenCDMi', 'WebKitBrowser', 'Snapshot'],
     'port'              : undefined,
     'server'            : undefined,
     'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot

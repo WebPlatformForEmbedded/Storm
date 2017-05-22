@@ -19,10 +19,10 @@ module.exports = {
     'prevScreenshot'    : undefined,
     'steps'             : {
         'init0' : {
-            'description'   : 'check if wpe-test repository is present',
+            'description'   : 'check if wpe-test-metrological repository is present',
             'timeout'       : 5 * 60,
             'test'          : (resp) => {
-                if (fs.existsSync('./tests/resources/wpe-tests/')) {
+                if (fs.existsSync('./tests/resources/wpe-test-metrological/')) {
                     console.log('folder exists');
                     exec('git -C tests/resources/wpe-test-metrological/ pull', function (code, stdout, stderr) {
                         resp();
