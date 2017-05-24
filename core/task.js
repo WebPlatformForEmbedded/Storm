@@ -193,10 +193,9 @@ function checkRequiredPlugins() {
                 for (var j=0; j<task.requiredPlugins.length; j++) {
                     if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
                         NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
-                    }
-
-                    if (j === task.requiredPlugins.length-1)
+                    } else if (j === task.requiredPlugins.length-1) {
                         startTask();
+                    }
                 }
             } catch(e) {
                 process_end('Failed to retrieve plugins from Framework while checking requiredPlugins');
