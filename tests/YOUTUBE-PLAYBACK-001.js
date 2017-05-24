@@ -6,7 +6,7 @@
 module.exports = {
     'title'             : 'YouTube Playback test',
     'description'       : 'Start playback of a movie on YouTube and let it run for 12 hours',
-    'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],
+    'requiredPlugins'   : ['WebKitBrowser', 'Snapshot', 'YouTube'],
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
     'prevScreenshot'    : undefined,

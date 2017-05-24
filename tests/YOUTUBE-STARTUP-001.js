@@ -6,19 +6,8 @@
 module.exports = {
     'title'             : 'YouTube startup robustness test',
     'description'       : 'Starts and stops the YouTube plugin repeatedly and checks if everything is started correctly',
-    'requiredPlugins'   : ['WebKitBrowser'],
+    'requiredPlugins'   : ['WebKitBrowser', 'YouTube'],
     'steps'             : {
-        'init0'  : {
-            'description'   : 'Check if YouTube Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'YouTube',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support YouTube');
-            }
-        },
         'step1' : {
             'description'   : 'Stop WPEWebkit, Netflix & YouTube',
             'timeout'       : 180, //seconds

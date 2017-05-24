@@ -6,22 +6,11 @@
 module.exports = {
     'title'             : 'YouTube Random Key test',
     'description'       : 'Send random keys to youtube, only to navigate the the UI. No enter is send so the device will never start playback',
-    'requiredPlugins'   : ['WebKitBrowser'],
+    'requiredPlugins'   : ['WebKitBrowser', 'Snapshot', 'YouTube'],
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
     'prevScreenshot'    : undefined,
     'steps'         : {
-        'init0'  : {
-            'description'   : 'Check if YouTube Plugin is present',
-            'test'          : getPlugin,
-            'params'        : 'YouTube',
-            'validate'      : (resp) => {
-                if (resp.status !== 400)
-                    return true;
-
-                NotApplicable('Build does not support YouTube');
-            }
-        },
         'step1' : {
             'description'   : 'Stop WPEWebkit',
             'test'          : stopPlugin,

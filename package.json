@@ -15,6 +15,7 @@
     "moment": "^2.15.2",
     "peer-dial": "0.0.7",
     "readline-sync": "~1.2.x",
+    "node-resemble-js": "~0.2.x",
     "selenium-webdriver": "^2.53.3",
     "serialport": "^2.0.x",
     "shelljs": "~0.5.x",
