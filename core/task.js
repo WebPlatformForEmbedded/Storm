@@ -13,12 +13,7 @@ const moment = require('moment');
 const assert = require('assert');
 const readline = require('readline');
 
-var build = false;
-var install = false;
 var git = false;
-var doClean = false;
-var skipCopy = false;
-var reboot = false;
 var verbose = false;
 var taskId;
 
@@ -50,11 +45,7 @@ var helpmsg = 'WPETestFramework Task Runner - 2017 (c) Metrological\n';
 helpmsg += ' usage: node task.js (options)\n\n';
 helpmsg += ' options: \n';
 helpmsg += ' -h, --help             this help  message\n';
-helpmsg += ' -b                     build\n';
-helpmsg += ' -i                     install\n';
 helpmsg += ' -t <test>              execute test <test>\n';
-helpmsg += ' -c, --clean            make clean before building\n';
-helpmsg += ' -r                     reboot inbetween tests\n';
 helpmsg += ' -v                     enable verbose logging to console.log (only use when running directly)\n';
 helpmsg += ' --host                 set the IP of the host\n';
 helpmsg += ' --serverip             set the IP of the server\n';
@@ -66,19 +57,14 @@ helpmsg += "That said, if you know what you're doing, enjoy!\n";
 var argv = require('minimist')(process.argv.slice(2));
 log('task_init');
 
-if (argv.h !== undefined || argv.help !== undefined) { console.log(helpmsg); process.exit(); }
-if (argv.b !== undefined) build=true;
-if (argv.c !== undefined || argv.clean !== undefined) doClean=true;
-if (argv.i !== undefined) install=true;
-if (argv.g !== undefined) git=true;
-if (argv.r !== undefined) reboot=true;
+if (( argv.h !== undefined || argv.help !== undefined) || (argv.t === undefined)) { console.log(helpmsg); process.exit(); }
+
 if (argv.v !== undefined) verbose=true;
 if (argv.host !== undefined) host = argv.host;
 if (argv.server !== undefined) server = argv.server;
 if (argv.skipcopy !== undefined) skipCopy=true;
 
 var test = argv.t !== undefined ? argv.t : null;
-if ( build === false && install === false && argv.t === undefined ) { console.log(helpmsg); process.exit(); }
 
 const devices = require('./targets.js').devices;
 this.devicetype = devicetype = argv.devicetype;
@@ -110,26 +96,25 @@ if (devicetype === 'horizon') {
 }
 
 // global function to call when test is not applicable
-var testIsNA = false;
+var taskIsNA = false;
 global.NotApplicable = function (reason) {
-    testIsNA = true;
+    taskIsNA = true;
     log('task_notapplicable', reason, () => {
         process_end();
     });
 }
 
 try {
-    if (install === true){
-        task = require('../installers/' + devices[devicetype].installer);
-    } else if (test !== undefined){
-        task = require('../tests/' + test + '.js');
-    }
+    task = require('../tests/' + test + '.js');
 } catch (e) {
-    if (testIsNA !== true)
+    if (taskIsNA !== true) {
         log('task_error', '' + e, () => {
             process.exit(1);
         });
+    }
 }
+
+if (task === undefined || task.steps === undefined) { process_end(1); return; }
 
 /******************************************************************************/
 /*****************************       INIT        ******************************/
@@ -146,72 +131,59 @@ if (process.connected === true){
     process.on('message', (message) => {
 
         if (message.event === 'step_user_response'){
-            userResponse(message.msg);
+            //log('step_response', { 'step': curIdx, 'response' : response });
+            validateStep(message.step, message.response);
         }
 
     });
 }
 
-// lets keep builders/installers in the old format? for now...
-if (build === true || install === true){
-    task.run(() => {
-        log('task_completed');
-        process.exit();
-    }, devicetype, build === true ? doClean : skipCopy);
-} else {
-    if (task === undefined || task.steps === undefined) { process_end(1); return; }
-
-    if (task && task.extends !== undefined){
-        try {
-            var parentTest = require(`../tests/${task.extends}`);
-            var extendSteps = task.steps;
-            task.steps = parentTest.steps;
-            mergeObjects(task.steps, extendSteps);
-        } catch (e) {
-            log('task_error', 'Could not load task to extend, task file not found', () => {
-                process.exit(1);
-            });
-        }
+if (task && task.extends !== undefined){
+    try {
+        var parentTest = require(`../tests/${task.extends}`);
+        var extendSteps = task.steps;
+        task.steps = parentTest.steps;
+        mergeObjects(task.steps, extendSteps);
+    } catch (e) {
+        log('task_error', 'Could not load task to extend, task file not found', () => {
+            process.exit(1);
+        });
     }
-
-    if (testIsNA !== true)
-        checkRequiredPlugins();
 }
 
-
-function checkRequiredPlugins() {
-    if (task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
-        getPlugins(null, (response) => {
-            try {
-                var responseObj = JSON.parse(response.body);
-                var plugins = responseObj.plugins;
-                var enabledPlugins = [];
-                for (var i=0; i<plugins.length; i++) {
-                    enabledPlugins.push(plugins[i].callsign);
-                }
-
-                for (var j=0; j<task.requiredPlugins.length; j++) {
-                    if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
-                        NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
-                    } else if (j === task.requiredPlugins.length-1) {
-                        startTask();
-                    }
-                }
-            } catch(e) {
-                process_end('Failed to retrieve plugins from Framework while checking requiredPlugins');
+if (task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
+    getPlugins(null, (response) => {
+        try {
+            var responseObj = JSON.parse(response.body);
+            var plugins = responseObj.plugins;
+            var enabledPlugins = [];
+            for (var i=0; i<plugins.length; i++) {
+                enabledPlugins.push(plugins[i].callsign);
             }
-        });
-    } else {
-        startTask();
-    }
+
+            for (var j=0; j<task.requiredPlugins.length; j++) {
+                if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
+                    NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
+                } else if (j === task.requiredPlugins.length-1) {
+                    startTask();
+                }
+            }
+        } catch(e) {
+            process_end('Failed to retrieve plugins from Framework while checking requiredPlugins');
+        }
+    });
+} else {
+    startTask();
 }
 
 /******************************************************************************/
 /*****************************    TASK hander    ******************************/
 /******************************************************************************/
 
-
 function startTask() {
+    // make sure we dont start this if the task during load is NA'ed
+    if (taskIsNA === true) return;
+
     stepList = Object.keys(task.steps);
     maxSteps = stepList.length;
 
@@ -454,34 +426,12 @@ function askUser(stepIdx) {
 
         var Q = '\n\   Please provide (S)uccess, (F)ail or (C)ancel: ';
         rl.question(currentStep.user + Q, (response) => {
-            var res = 'FAIL';
+            var res = false;
             if (response === 'S')
-                res = 'SUCCESS';
+                res = true;
 
-            userResponse(res);
+            validateStep(curIdx, res);
             rl.close();
         });
-    }
-}
-
-/**
- * Process user response, even though this could ben entirely handled at the agent. We need to make sure we haven't timed out.
- * Hence keeping this loop in place.
- */
-function userResponse(response){
-    var result;
-
-    if (response === 'SUCCESS'){
-        result = true;
-    } else {
-        result = false;
-    }
-
-    log('step_result', { 'step' : curIdx, 'result' : result === true ? 'SUCCESS' : 'FAIL', 'msg' : response } );
-
-    if (result !== true) {
-        process_end();
-    } else {
-        lookForNextStep();
     }
 }
