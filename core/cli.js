@@ -18,10 +18,35 @@ const fs = require('fs');
 const deviceTargets = require('./targets.js').devices;
 const Device = require('./device.js');
 const config = require('./config.js');
+const EventEmitter = require('events');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: '#: '
+});
 
 /******************************************************************************/
 /*****************************    CLIENT DATA    ******************************/
 /******************************************************************************/
+
+var namespace = '#';
+var currentPrompt = '';
+var prevCommands = [];
+var prevIdx = 0;
+var whitespace = 10;
+var ctrlced = false;
+var showingTaskProgress = false;
+var showingTaskProgressPaused = false;
+var showprog = true;
+var promptTimer;
+var selectedAgentIdx, selectedDeviceIdx, selectedTaskIdx;
+var originalLogger = console.log;
+
+var reports = {};
+var tests = [];
+var dummy = false;
 
 var agents = [];
 var tasks = {};
@@ -106,10 +131,11 @@ class Agent {
 
     }
 
-    sendMessage(type, message) {
+    sendMessage(type, message, deviceId) {
         var msg = {
             'type'      : type,
             'body'      : message,
+            'deviceId'  : deviceId,
             'timestamp' : moment().toISOString()
         };
 
@@ -143,11 +169,11 @@ class Agent {
 
     parseDeviceInfo (deviceInfo){
         if (deviceInfo.SystemInfo !== undefined && deviceInfo.systeminfo === undefined) {
-            // stable Framework 
+            // stable Framework
             this.deviceToBeActivated.id = deviceInfo.SystemInfo.SerialNumber;
             this.deviceToBeActivated.fwVersion = deviceInfo.SystemInfo.Version;
         } else if (deviceInfo.SystemInfo === undefined && deviceInfo.systeminfo !== undefined) {
-            // master Framework 
+            // master Framework
             this.deviceToBeActivated.id = deviceInfo.systeminfo.serialnumber;
             this.deviceToBeActivated.fwVersion = deviceInfo.systeminfo.version;
         }
@@ -181,11 +207,18 @@ class Agent {
         console.log('starting task with: ' + newTask.task + ' for ' + _device.hostname);
         this.tasks[ taskId ] = newTask;
         this.sendMessage('new_task', newTask.getTaskDetails());
+
+        // task callbacks
+        newTask.on('message', (type, message, deviceId) => {
+            this.sendMessage(type, message, deviceId);
+        });
     }
 }
 
-class Task {
-    constructor(id, device, task, params) {
+class Task extends EventEmitter {
+    constructor(id, device, task, params)  {
+        super();
+
         // status
         this.INIT               = 0;
         this.STARTED            = 1;
@@ -228,6 +261,7 @@ class Task {
         this.repeatUntil        = undefined;
         this.repeatFromIdx      = undefined;
         this.description        = undefined;
+
     }
 
     getResultString() {
@@ -271,8 +305,12 @@ class Task {
         return re;
     }
 
+    sendMessage(type, message) {
+        this.emit('message', type, message, this.deviceId);
+    }
+
     updateStatus(event, m, timestamp) {
-        //console.log(m);
+        // console.log(m);
         // parse duration
         if (this.timeStarted !== undefined) {
             var diff = moment(timestamp).diff(moment(this.timeStarted), 'minutes');
@@ -385,6 +423,11 @@ class Task {
                 this.stepLog[ this.stepLog.length-1 ].result = m.msg.result || '';
                 this.currentResult = m.msg.result || '';
                 break;
+
+            case 'step_user_input':
+                showUserInputMenu(this.id, this.task, this.currentStep);
+                break;
+
         }
     }
 }
@@ -606,10 +649,6 @@ class Report {
 
 }
 
-var reports = {};
-
-var tests = [];
-var dummy = false;
 function readTests() {
     tests = [];
     cd('./tests/');
@@ -642,18 +681,8 @@ function processTaskForReport( device, task, result, resultString, duration ){
 /*****************************      MENUS        ******************************/
 /******************************************************************************/
 
-var namespace = '#';
-var currentPrompt = '';
-var prevCommands = [];
-var prevIdx = 0;
-var whitespace = 10;
-var ctrlced = false;
-var showingTaskProgress = false;
-var showprog = true;
-var selectedAgentIdx, selectedDeviceIdx, selectedTaskIdx;
-
 function clear() {
-    process.stdout.write('\x1Bc');
+    process.stdout.write('\u001B[2J\u001B[0;0f');
     console.log('Metrological Test Suite - command line interface - 2017 (c) Metrological \n');
 }
 
@@ -702,13 +731,6 @@ function menu() {
         }
     }
 }
-
-function programLoop() {
-    if (showingTaskProgress === false)
-        process.stdout.write(`\r ${namespace}:  ${currentPrompt}`);
-}
-
-setInterval(programLoop, 100);
 
 function menu_agents() {
     console.log(`Connected agents: ${agents.length} \n`);
@@ -888,7 +910,9 @@ function showTaskProgressById(id) {
             return;
         }
 
-        clear();
+        if (showingTaskProgressPaused === true)
+            return;
+
         var displayedStepLog = [];
         var result = currentTask.getResultString();
         var tS = parseInt(currentTask.stepCount);
@@ -907,6 +931,7 @@ function showTaskProgressById(id) {
                 progressBar += '-';
         }
 
+        clear();
         console.log(`Task: ${task} ${deviceType}@${deviceHost}         Result: ${result}`);
         console.log(`Duration: ${currentTask.durationString}`);
         console.log('');
@@ -933,19 +958,98 @@ function showTaskProgressById(id) {
 
         if (currentTask.status === currentTask.COMPLETED) {
             showingTaskProgress=false;
+            updateNamespace();
             if (currentTask.result === currentTask.FAILED || currentTask.status === currentTask.TIMEDOUT) {
                 console.log(`\nFailed with message: ${currentTask.resultMessage}`);
             } else {
                 console.log('\nTask completed!');
             }
         } else {
-            console.log('\nPress Q to close menu');
+            console.log('\nPress enter to close menu');
         }
     }
 
     showingTaskProgress = true;
     renderTaskProgress();
-    taskProgressInterval = setInterval(renderTaskProgress, 1000);
+    rl.setPrompt('');
+    taskProgressInterval = setInterval(renderTaskProgress, 500);
+}
+
+function showUserInputMenu(id, testname, stepIdx) {
+    var currentAgent = agents[selectedAgentIdx];
+    var currentTask = currentAgent.tasks[ id ];
+
+    var test = require('../tests/' + testname + '.js');
+
+    var stepList = Object.keys(test.steps);
+    var stepObj = stepList[ stepIdx ];
+    var currentStep = test.steps[ stepObj ];
+
+    var currentDevice = currentAgent.activeDevices[ currentTask.deviceId ];
+    var deviceType = currentDevice.type;
+    var deviceHost = currentDevice.hostname;
+    var task = currentTask.task;
+
+    showingTaskProgressPaused = true;
+
+    setTimeout(renderUserInput, 10000);
+
+    function renderUserInput() {
+        var displayedStepLog = [];
+        var result = currentTask.getResultString();
+        var tS = parseInt(currentTask.stepCount);
+        var cS = parseInt(currentTask.currentStep);
+
+        var progressBar = '';
+        var progressPerct = Math.round( (cS/tS) * 100 );
+        var progressBarPerct = Math.round( (cS/tS) * 50 ); //since we only have 50 chars
+        //[>-------------------------------------------------]
+        for (var i=0; i<50; i++) {
+            if (i < progressBarPerct)
+                progressBar += '#';
+            else if (i === progressBarPerct)
+                progressBar += '>';
+            else
+                progressBar += '-';
+        }
+        clear();
+        console.log(`Task: ${currentTask.task} ${deviceType}@${deviceHost}         Result: ${result}`);
+        console.log(`Duration: ${currentTask.durationString}`);
+        console.log('');
+        console.log(`Progress ${cS}/${tS} [${progressBar}] ${progressPerct}%`);
+        console.log('');
+
+        console.log('Manual input from the user is requested by the test.');
+        console.log(`This dialog will timeout in ${currentStep.timeout !== undefined ? currentStep.timeout : 300} seconds`);
+        console.log('');
+
+        var Q = '\n\   Step result: (S)uccess or (F)ail: ';
+        rl.question(currentStep.user + Q, (response) => {
+            var result = response.toLowerCase() === 's' ? 'SUCCESS' : 'FAILED';
+
+            if (result === 'FAILED') {
+                console.log('Step failed.');
+                rl.question('Please provide failure reason: ', (response) => {
+                    currentTask.sendMessage('step_user_response', {
+                        step    : stepIdx,
+                        result  : result,
+                        response: response
+                    });
+
+                    rl.setPrompt('');
+                    showingTaskProgressPaused = false;
+                });
+            } else {
+                currentTask.sendMessage('step_user_response', {
+                    step    : stepIdx,
+                    result  : result
+                });
+
+                rl.setPrompt('');
+                showingTaskProgressPaused = false;
+            }
+        });
+    }
 }
 
 //// REPORTS & TESTS \\\\
@@ -986,16 +1090,18 @@ function showReport(idx) {
 
 function updateNamespace() {
     if (selectedAgentIdx !== undefined && selectedDeviceIdx === undefined) {
-        namespace = `[agent${selectedAgentIdx}] #`;
+        namespace = `[agent${selectedAgentIdx}] #: `;
     } else if (selectedAgentIdx !== undefined && selectedDeviceIdx !== undefined) {
-        namespace = `[agent/${selectedAgentIdx}/dev/${selectedDeviceIdx}] #`;
+        namespace = `[agent/${selectedAgentIdx}/dev/${selectedDeviceIdx}] #: `;
     } else {
-        namespace = '#';
+        namespace = '#: ';
     }
+
+    rl.setPrompt(namespace);
 }
 
 function parseCommand(command) {
-    process.stdout.write(`\r ${namespace}:  ${currentPrompt} \n`);
+    //process.stdout.write(`\r ${namespace}:  ${currentPrompt} \n`);
 
     var commandList = command.split(' ');
     var curAgent = agents[selectedAgentIdx];
@@ -1256,59 +1362,43 @@ function parseCommand(command) {
 
 // ******************** KEYS **************************** //
 
-const readline = require('readline');
-
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.setRawMode = true;
-process.stdin.setEncoding( 'utf8' );
-process.stdin.resume();
-process.stdin.on('keypress', (chunk, key) => {
-    //console.log(chunk);
-    //console.log(key);
-
-    // CTRL +C
-    if (key && key.ctrl && key.name == 'c' && ctrlced === false) {
+rl.on('SIGINT', () => {
+    if (ctrlced === false) {
         console.log('\n^C (press Ctrl+C again to exit)');
-        currentPrompt='';
-        ctrlced=true;
-    } else if (key && key.name != 'c' && ctrlced === true){
-        ctrlced=false;
-    } else if (key && key.ctrl && key.name == 'c' && ctrlced === true) {
+        ctrlced = true;
+    } else {
+        rl.close();
         console.log('');
         process.exit();
     }
-
-    // Progress menu handling
-    if (showingTaskProgress === true && key && key.name === 'q') {
-        showingTaskProgress = false;
-        return;
-    } else if (showingTaskProgress === true) {
-        return;
-    }
-
-    // Command line
-    if (key && key.name === 'return' && currentPrompt.length > 0 && currentPrompt !== ' ') {
-        // parse here
-        parseCommand(currentPrompt);
-        prevCommands.unshift(currentPrompt);
-        currentPrompt = '';
-    } else if (key && key.name === 'up' && prevCommands.length > 0){
-        if (prevIdx >= prevCommands.length) return;
-
-        currentPrompt = prevCommands[ prevIdx ];
-        prevIdx++;
-    } else if (key && key.name === 'down' && prevCommands.length > 0){
-        if (prevIdx === 0) return;
-
-        currentPrompt = prevCommands[ prevIdx ];
-        prevIdx--;
-    } else if (key && key.name === 'backspace') {
-        currentPrompt = currentPrompt.substring(0, currentPrompt.length-1);
-    } else if (chunk !== undefined){
-        currentPrompt += chunk;
-    }
 });
+
+rl.prompt();
+
+rl.on('line', (line) => {
+    ctrlced = false;
+
+    if (showingTaskProgress === true) {
+        showingTaskProgress = false;
+        updateNamespace();
+        rl.prompt();
+        return;
+    }
+
+    parseCommand(line);
+    prevCommands.unshift(line);
+});
+
+function showPrompt() {
+    rl.prompt(true);
+    promptTimer = undefined;
+}
+
+console.log = function () {
+    originalLogger.apply(this, arguments);
+    if (promptTimer === undefined)
+        promptTimer = setTimeout(showPrompt.bind(this), 10);
+}
 
 /******************************************************************************/
 /*****************************      SERVER       ******************************/

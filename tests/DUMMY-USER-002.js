@@ -8,7 +8,7 @@ module.exports = {
     'description'   : 'Testing user input',
     'extends'       : 'DUMMY-SIMPLE-001',
     'steps'         : {
-        'dummystep1' : {
+        'dummystep5' : {
             'description'   : 'User input step',
             'timeout'       : 360, //seconds
             'user'          : 'Please make test succeed or fail.',

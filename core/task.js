@@ -129,10 +129,9 @@ var processEndRequested = false;
 // Parent process messages
 if (process.connected === true){
     process.on('message', (message) => {
-
-        if (message.event === 'step_user_response'){
-            //log('step_response', { 'step': curIdx, 'response' : response });
-            validateStep(message.step, message.response);
+        if (message.type === 'step_user_response'){
+            var body = message.body;
+            userResponse(body.step, body.result, body.response);
         }
 
     });
@@ -408,7 +407,7 @@ function askUser(stepIdx) {
     // init
     curIdx = stepIdx;
     var currentStep = task.steps[ stepList[ curIdx ] ];
-    log('step_start', { 'step': curIdx });
+    log('step_start', { 'step': curIdx, 'description': currentStep.description });
     log('step_user_input', { 'step' : curIdx });
 
     // set timeout
@@ -433,5 +432,14 @@ function askUser(stepIdx) {
             validateStep(curIdx, res);
             rl.close();
         });
+    }
+}
+
+function userResponse(step, result, messageFromUser){
+    log('step_result', { 'step' : step, 'result' : result, 'msg' : messageFromUser } );
+    if (result !== 'SUCCESS') {
+        process_end(messageFromUser);
+    } else {
+        lookForNextStep();
     }
 }

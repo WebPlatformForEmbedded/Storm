@@ -62,11 +62,14 @@ function Agent(userId, config) {
     }
 
     socket.on('message', (message) => {
+        //console.log(message);
+
         if (message.type === undefined)
             return;
 
         var type = message.type;
         var body = message.body;
+        var deviceId = message.deviceId;
 
         if (type === 'whoareyou')
             sendMessage('whoami', userId);
@@ -130,8 +133,8 @@ function Agent(userId, config) {
             sendMessage('device_deleted', body);
         }
 
-        if (type === 'message' && activeDevices[ body.id ].currentTask !== undefined){
-            activeDevices[ body.id ].currentTask.send(body.message);
+        if (type === 'step_user_response' && activeDevices[ deviceId ].currentTask !== undefined){
+            activeDevices[ deviceId ].currentTask.send(message);
         }
 
         if (type === 'deviceInfo')
