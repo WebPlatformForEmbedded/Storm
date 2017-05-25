@@ -407,8 +407,17 @@ function askUser(stepIdx) {
     // init
     curIdx = stepIdx;
     var currentStep = task.steps[ stepList[ curIdx ] ];
-    log('step_start', { 'step': curIdx, 'description': currentStep.description });
-    log('step_user_input', { 'step' : curIdx });
+
+    log('step_start', {
+        'step'          : curIdx,
+        'description'   : currentStep.description
+    });
+
+    log('step_user_input', {
+        'step' : curIdx,
+        'user'          : currentStep.user,
+        'timeout'       : currentStep.timeout
+    });
 
     // set timeout
     var _tm = currentStep.timeout !== undefined ? currentStep.timeout * 1000 : DEFAULT_TIMEOUT;

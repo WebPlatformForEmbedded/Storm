@@ -337,6 +337,11 @@ class Task extends EventEmitter {
                 this.status = this.STARTED;
                 this.result = this.INPROGRESS;
                 this.timeStarted = timestamp;
+                // autoshow progress
+                if (showprog === true) {
+                    setTimeout(getActiveTasks, 100);
+                    setTimeout(showLatestTask, 500);
+                }
                 break;
 
             case 'task_completed':
@@ -358,6 +363,16 @@ class Task extends EventEmitter {
                 this.status = this.COMPLETED;
                 this.result = this.TIMEDOUT;
                 if (m.msg !== undefined) this.resultMessage = m.msg;
+
+                // task has been completed while the user input box was active, cancel it
+                if (showingTaskProgressPaused === true) {
+                    rl.write('\n');
+                    rl.write('\n');
+                    rl.setPrompt('');
+                    rl.prompt();
+                    showingTaskProgressPaused = false
+                }
+
                 break;
 
             case 'task_error':
@@ -425,7 +440,7 @@ class Task extends EventEmitter {
                 break;
 
             case 'step_user_input':
-                showUserInputMenu(this.id, this.task, this.currentStep);
+                showUserInputMenu(this.id, this.task, this.currentStep, m.msg);
                 break;
 
         }
@@ -975,15 +990,10 @@ function showTaskProgressById(id) {
     taskProgressInterval = setInterval(renderTaskProgress, 500);
 }
 
-function showUserInputMenu(id, testname, stepIdx) {
+
+function showUserInputMenu(id, testname, stepIdx, event) {
     var currentAgent = agents[selectedAgentIdx];
     var currentTask = currentAgent.tasks[ id ];
-
-    var test = require('../tests/' + testname + '.js');
-
-    var stepList = Object.keys(test.steps);
-    var stepObj = stepList[ stepIdx ];
-    var currentStep = test.steps[ stepObj ];
 
     var currentDevice = currentAgent.activeDevices[ currentTask.deviceId ];
     var deviceType = currentDevice.type;
@@ -992,7 +1002,7 @@ function showUserInputMenu(id, testname, stepIdx) {
 
     showingTaskProgressPaused = true;
 
-    setTimeout(renderUserInput, 10000);
+    setTimeout(renderUserInput, 1000);
 
     function renderUserInput() {
         var displayedStepLog = [];
@@ -1020,11 +1030,14 @@ function showUserInputMenu(id, testname, stepIdx) {
         console.log('');
 
         console.log('Manual input from the user is requested by the test.');
-        console.log(`This dialog will timeout in ${currentStep.timeout !== undefined ? currentStep.timeout : 300} seconds`);
+        console.log(`This dialog will timeout in ${event.timeout !== undefined ? event.timeout : 300} seconds`);
         console.log('');
 
         var Q = '\n\   Step result: (S)uccess or (F)ail: ';
-        rl.question(currentStep.user + Q, (response) => {
+        rl.question(event.user + Q, (response) => {
+            if (showingTaskProgressPaused === false)
+                return;
+
             var result = response.toLowerCase() === 's' ? 'SUCCESS' : 'FAILED';
 
             if (result === 'FAILED') {
@@ -1299,12 +1312,6 @@ function parseCommand(command) {
 
             // execute task!
             curAgent.run(selectedDeviceIdx, task, params);
-
-            // autoshow progress
-            if (showprog === true) {
-                setTimeout(getActiveTasks, 11000);
-                setTimeout(showLatestTask, 12000);
-            }
             break;
 
         case 'show':

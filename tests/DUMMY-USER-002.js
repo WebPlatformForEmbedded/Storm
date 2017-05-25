@@ -6,7 +6,7 @@
 module.exports = {
     'title'         : 'Dummy Test',
     'description'   : 'Testing user input',
-    'extends'       : 'DUMMY-SIMPLE-001',
+    'extends'       : 'DUMMY-SIMPLE-001.js',
     'steps'         : {
         'dummystep5' : {
             'description'   : 'User input step',
