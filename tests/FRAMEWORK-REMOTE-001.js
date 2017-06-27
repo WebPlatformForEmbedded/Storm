@@ -211,7 +211,7 @@ module.exports = {
 
                 var currentJSKey = keyMapArray[task.keyindex];
                 var hexKey = keyMap[ currentJSKey ];
-                setTimeout(key, 250, hexKey, (resp) => { setTimeout(cb, 2000, task.expectedKeys) });
+                setTimeout(key, 250, hexKey, (resp) => { setTimeout(cb, 2000) });
 
                 //console.log(currentJSKey);
                 //console.log(hexKey);

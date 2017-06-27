@@ -56,7 +56,7 @@ module.exports = {
             'params'        : enter,
             'validate'      : httpResponseSimple
         },
-        'step9' : {
+        'step8' : {
             'sleep'         : 60,
             'description'   : 'Check if screen still updates',
             'test'          : screenshot,
@@ -92,9 +92,9 @@ module.exports = {
                 }
             }
         },
-        'step10' : {
+        'step9' : {
             'description'   : 'Repeat for 12 hours',
-            'goto'          : 'step9',
+            'goto'          : 'step8',
             'repeatTime'    : 12 * 60,
         }
     }

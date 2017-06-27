@@ -6,7 +6,7 @@
 module.exports = {
     'title'             : 'YouTube Playback test',
     'description'       : 'Start playback of an 8 hour movie on YouTube and let it run',
-    'requiredPlugins'   : ['WebKitBrowser'],
+    'requiredPlugins'   : ['Snapshot', 'WebKitBrowser'],
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
     'prevScreenshot'    : undefined,
@@ -24,12 +24,12 @@ module.exports = {
             'test'          : getUrl,
             'assert'        : 'https://www.youtube.com/tv#/watch/video/control?v=RDfjXj5EGqI'
         },
-        'step10' : {
+        'step9' : {
             'description'   : 'Repeat for 8 hours',
-            'goto'          : 'step9',
+            'goto'          : 'step8',
             'repeatTime'    : 8 * 60,
         },
-        'step11' : {
+        'step10' : {
             'description'   : 'Cleanup the test',
             'test'          : setUrl,
             'params'        : 'about:blank'

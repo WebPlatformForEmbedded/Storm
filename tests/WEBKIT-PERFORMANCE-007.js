@@ -5,17 +5,17 @@
 
 module.exports = {
     'title'             : 'WPEWebkit performance anisotropic',
-    'description'       : 'Loads the Anisotropic WebGL animation and measures its performance',
+    'description'       : 'Loads the Particles webGL animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],
     'samples'           : [],
     'minFPS'            : 50, // minimum FPS or this test will fail
     'extends'           : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
     'steps'             : {
         'step5' : {
-            'description'   : 'Load http://whiteflashwhitehit.com/content/2011/02/anisotropic_webgl.html',
+            'description'   : 'http://oos.moxiecode.com/js_webgl/particles_morph/',
             'timeout'       : 180, //seconds
             'test'          : setUrl,
-            'params'        : 'http://whiteflashwhitehit.com/content/2011/02/anisotropic_webgl.html',
+            'params'        : 'http://oos.moxiecode.com/js_webgl/particles_morph/',
             'validate'      : httpResponseSimple
         },
         'step6' : {
@@ -23,7 +23,7 @@ module.exports = {
             'description'   : 'Check if URL is loaded',
             'timeout'       : 180, //seconds
             'test'          : getUrl,
-            'assert'        : 'http://whiteflashwhitehit.com/content/2011/02/anisotropic_webgl.html'
+            'assert'        : 'http://oos.moxiecode.com/js_webgl/particles_morph/'
         }
     }
 };
