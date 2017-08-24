@@ -8,7 +8,7 @@ module.exports = {
     'description'       : 'Loads the Particles webGL animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],
     'samples'           : [],
-    'minFPS'            : 50, // minimum FPS or this test will fail
+    'minFPS'            : 20, // minimum FPS or this test will fail
     'extends'           : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
     'steps'             : {
         'step5' : {

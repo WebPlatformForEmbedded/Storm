@@ -29,8 +29,8 @@ module.exports = {
                     });
                 }
                 else {
-                    //console.log('Cloning wpe-tests into resources folder....');
-                    exec('git clone git@github.com:Metrological/wpe-test-metrological.git ./tests/resources/wpe-test-metrological/', function (code, stdout, stderr) {
+                    console.log('Cloning wpe-tests into resources folder....');
+                    exec('git clone git@github.com:WebPlatformForEmbedded/wpe-test-metrological.git ./tests/resources/wpe-test-metrological/', function (code, stdout, stderr) {
                         resp();
                     });
                 }
