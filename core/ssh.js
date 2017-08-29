@@ -10,7 +10,7 @@ class AttachToLogs {
 
     constructor(cb) {
         this.cb     = cb;
-        this.re     = /(\bwebbridge\b)/;
+        this.re     = /(\bWPEFramework\b)/;
         this.conn   = undefined;
     }
 

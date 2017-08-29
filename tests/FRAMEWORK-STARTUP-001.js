@@ -34,10 +34,10 @@ module.exports = {
             'assert'        : false
         },
         'step3' : {
-            'description'   : 'Check if rpcprocess is stopped correctly',
+            'description'   : 'Check if WPEProcess is stopped correctly',
             'timeout'       : 180,
             'test'          : checkIfProcessIsRunning,
-            'params'        : 'rpcprocess',
+            'params'        : 'WPEProcess',
             'assert'        : false
         },
         'step4' : {

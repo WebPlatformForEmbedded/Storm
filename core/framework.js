@@ -245,7 +245,7 @@ module.exports = {
     },
     // start Framework in background mode
     startFramework(cb) {
-        exec({ cmd : 'nohup webbridge -b &', cbWhenStarted : true }, (err) => {
+        exec({ cmd : 'nohup WPEFramework -b &', cbWhenStarted : true }, (err) => {
             if (err)
                 throw new Error(err);
             else
@@ -254,17 +254,17 @@ module.exports = {
     },
     // stop Framework
     stopFramework(x, cb) {
-        stopProcess('webbridge', cb);
+        stopProcess('WPEFramework', cb);
     },
     // kill (SIGTERM) Framework
     killFramework(x, cb) {
-        killProcess('webbridge', cb);
+        killProcess('WPEFramework', cb);
     },
-    // kill Framework and its rpcprocess subprocesses
+    // kill Framework and its WPEProcess subprocesses
     killallFramework(x, cb) {
-        killProcess('webbridge', (resp) => {
+        killProcess('WPEFramework', (resp) => {
             if (resp === true)
-                killProcess('rpcprocess', cb);
+                killProcess('WPEProcess', cb);
             else
                 cb(false);
         });
