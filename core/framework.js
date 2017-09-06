@@ -14,7 +14,7 @@ module.exports = {
     // send key to Framework
     key(key, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/RemoteControl/Code/${key}`,
+            url     : `http://${host}:80/Service/RemoteControl/keymap/Code/${key}`,
             method  : 'PUT'
         };
         http(opts, cb);
