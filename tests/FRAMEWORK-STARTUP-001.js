@@ -30,7 +30,7 @@ module.exports = {
             'description'   : 'Check if Framework is stopped correctly',
             'timeout'       : 180, //seconds
             'test'          : checkIfProcessIsRunning,
-            'params'        : 'Framework',
+            'params'        : 'WPEFramework',
             'assert'        : false
         },
         'step3' : {
