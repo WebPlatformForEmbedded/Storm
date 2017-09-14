@@ -7,6 +7,7 @@ module.exports = {
     'title'         : 'YouTube Media Source conformance test',
     'description'   : 'Loads the YouTube MSE 2016 conformance test and captures the output',
     'testCount'     : 57,
+    'url'           : 'http://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2016.html?enablewebm=off&command=run',
     'steps'         : {
        'step1' : {
             'description'   : 'Stop WPEWebkit',
@@ -35,15 +36,11 @@ module.exports = {
             'validate'      : checkResumedOrActivated,
         },
         'step5' : {
-            'description'   : 'Set the MSE 2016 URL',
-            'test'          : setUrl,
-            'params'        : 'http://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2016.html?enablewebm=off',
-            'validate'      : httpResponseSimple
-        },
-        'step6' : {
-            'description'   : 'Attach to the logs to capture the log output',
+            'description'   : 'Attach to the logs to capture the log output and start the test',
             'timeout'       : 10 * 60, // 10 minutes
             'test'          : function(cb) {
+
+                var ready = false;
 
                 var testOK = 0;
                 var testsRun = 0;
@@ -56,8 +53,13 @@ module.exports = {
                 var currentTestNr;
                 var currentTest;
 
+                function readyToParse() {
+                    ready = true;
+                }
+
                 function parseGoogleLogs(error, log){
                     //console.log(log);
+                    if (!ready) return;
 
                     const testStarted = /STARTED/g;
                     const testSucceeded = /PASSED./g;
@@ -70,26 +72,26 @@ module.exports = {
                         var test = log.split('TestExecutor:  Test ')[1];
                         currentTest = test.split(' STARTED with timeout')[0];
                         testsRun++;
-                        //console.log('Test ' + currentTest + ' started');
+                        console.log('Test ' + currentTest + ' started');
                     }
 
                     if (testSucceeded.test(log)){
                         testOK++;
-                        //console.log('Test ' + currentTest + ' succeeded');
+                        console.log('Test ' + currentTest + ' succeeded');
                     }
 
                     if (testTimedout.test(log)){
                         timedoutTests.push(currentTest);
                         testsTimedout++;
 
-                        //console.log('Test ' + currentTest + ' timedout');
+                        console.log('Test ' + currentTest + ' timedout');
                     }
 
                     if (testFailed.test(log)){
                         failedTests.push(currentTest);
                         testsFailed++;
 
-                        //console.log('Test ' + currentTest + ' failed');
+                        console.log('Test ' + currentTest + ' failed');
                     }
 
                     if (testsDone.test(log)){
@@ -117,7 +119,11 @@ module.exports = {
 
                 var logger = new AttachToLogs(parseGoogleLogs);
                 logger.connect(function(){
-                    setTimeout(key, 10000, enter, () => {});
+                    // Easy there cowboy, the console log returns the history of X amount of messages.
+                    // In case where we are running subsequent MSE/EME tests this may mess up the parsing.
+                    // only start parsins when the url is set through the ready boolean
+                    setTimeout(readyToParse, 1000);
+                    setTimeout(setUrl, 1000, task.url);
                 });
             },
             'validate'      : (results) => {
@@ -131,7 +137,7 @@ module.exports = {
                 throw new Error(error);
             }
         },
-        'step7' : {
+        'step6' : {
             'description'       : 'Cleanup the test',
             'test'              : setUrl,
             'params'            : 'about:blank'

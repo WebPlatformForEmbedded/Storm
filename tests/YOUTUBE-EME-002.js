@@ -8,6 +8,7 @@ module.exports = {
     'description'       : 'Loads the YouTube EME 2017 conformance test and captures the output',
     'requiredPlugins'   : ['WebKitBrowser'],
     'testCount'         : 9,
+    'url'               : 'https://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2017.html?test_type=encryptedmedia-test&command=run',
     'steps'         : {
        'step1' : {
             'description'   : 'Stop WPEWebkit',
@@ -36,15 +37,11 @@ module.exports = {
             'validate'      : checkResumedOrActivated,
         },
         'step5' : {
-            'description'   : 'Set the EME 2017 URL',
-            'test'          : setUrl,
-            'params'        : 'https://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2017.html?test_type=encryptedmedia-test',
-            'validate'      : httpResponseSimple
-        },
-        'step6' : {
-            'description'   : 'Attach to the logs to capture the log output',
+            'description'   : 'Attach to the logs to capture the log output and run the test',
             'timeout'       : 10 * 60, // 10 minutes
             'test'          : function(cb) {
+
+                var ready = false;
 
                 var testOK = 0;
                 var testsRun = 0;
@@ -57,8 +54,13 @@ module.exports = {
                 var currentTestNr;
                 var currentTest;
 
+                function readyToParse() {
+                    ready = true;
+                }
+
                 function parseGoogleLogs(error, log){
                     //console.log(log);
+                    if (!ready) return;
 
                     const testStarted = /STARTED/g;
                     const testSucceeded = /PASSED./g;
@@ -71,26 +73,26 @@ module.exports = {
                         var test = log.split('TestExecutor:  Test ')[1];
                         currentTest = test.split(' STARTED with timeout')[0];
                         testsRun++;
-                        //console.log('Test ' + currentTest + ' started');
+                        console.log('Test ' + currentTest + ' started');
                     }
 
                     if (testSucceeded.test(log)){
                         testOK++;
-                        //console.log('Test ' + currentTest + ' succeeded');
+                        console.log('Test ' + currentTest + ' succeeded');
                     }
 
                     if (testTimedout.test(log)){
                         timedoutTests.push(currentTest);
                         testsTimedout++;
 
-                        //console.log('Test ' + currentTest + ' timedout');
+                        console.log('Test ' + currentTest + ' timedout');
                     }
 
                     if (testFailed.test(log)){
                         failedTests.push(currentTest);
                         testsFailed++;
 
-                        //console.log('Test ' + currentTest + ' failed');
+                        console.log('Test ' + currentTest + ' failed');
                     }
 
                     if (testsDone.test(log)){
@@ -118,7 +120,8 @@ module.exports = {
 
                 var logger = new AttachToLogs(parseGoogleLogs);
                 logger.connect(function(){
-                    setTimeout(key, 10000, enter, () => {});
+                    setTimeout(readyToParse, 1000);
+                    setTimeout(setUrl, 1000, task.url);
                 });
             },
             'validate'      : (results) => {
