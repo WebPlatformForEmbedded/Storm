@@ -13,9 +13,10 @@
     "http-server": "~0.9.x",
     "minimist": "~1.2.x",
     "moment": "^2.15.2",
-    "peer-dial": "0.0.7",
-    "readline-sync": "~1.2.x",
     "node-resemble-js": "~0.2.x",
+    "peer-dial": "0.0.7",
+    "pngjs": "3.0.0",
+    "readline-sync": "~1.2.x",
     "selenium-webdriver": "^2.53.3",
     "serialport": "^2.0.x",
     "shelljs": "~0.5.x",
@@ -24,9 +25,8 @@
     "ssh2": "~0.4.x",
     "sudo": "~1.0.3",
     "telnet-client": "~0.9.x",
-    "xml2js": "^0.4.17",
-    "snyk": "^1.19.1",
-    "pngjs": "3.0.0"
+    "ws" : "^3.1.x",
+    "xml2js": "^0.4.17"
   },
   "repository": {
     "type": "git",

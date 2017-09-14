@@ -2,10 +2,13 @@
  * WPETestFramework test ssh class
  */
 /*jslint esnext: true*/
+/*jslint node: true */
 'use strict';
 const Client    = require('ssh2').Client;
 
-// only works if there is a /var/log/messages present. Hopefully we can improve this with a Framework servce in the future
+
+/*
+ WL: Disabling this AttachToLogs in favor to the webinspector websocket variant
 class AttachToLogs {
 
     constructor(cb) {
@@ -22,11 +25,11 @@ class AttachToLogs {
                 if (err)
                     this.cb(err);
 
-                //console.log('Attached to logs');
+                console.log('Attached to logs');
                 stream.on('close', function(code, signal) {
                     console.warn('detached from logs');
                 }).on('data', function(data) {
-                    //console.log('' + data);
+                    console.log('' + data);
 
                     var dataStr = data.toString();
                     var splittedData = dataStr.split('\n');
@@ -61,13 +64,14 @@ class AttachToLogs {
         conn.on('end', function(){
             console.log('Connection ended');
         });
-    };
+    }
 
     disconnect() {
         console.log('Closing attachToLogs ssh connection');
         if (this.conn) this.conn.end();
-    };
+    }
 }
+*/
 
 module.exports = {
     // Generic ssh execute function, used mostly internally
@@ -161,5 +165,5 @@ module.exports = {
             cb(true);
         });
     },
-    'AttachToLogs' : AttachToLogs
+    //'AttachToLogs' : AttachToLogs
 };

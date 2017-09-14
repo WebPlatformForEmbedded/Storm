@@ -83,9 +83,10 @@ function globalize(file){
 }
 
 globalize('./base.js');
-globalize('./framework.js');
-globalize('./ssh.js');
 globalize('./dial.js');
+globalize('./framework.js');
+globalize('./remoteinspector.js');
+globalize('./ssh.js');
 globalize('./webdriver.js');
 this.task = task = undefined;
 
