@@ -26,6 +26,7 @@ function Agent(userId, config) {
     var taskQueue = [];
     var discoveredDevices = [];
     var dialClient;
+    var verbose = false;
 
     /******************************************************************************/
     /*****************************      SOCKET       ******************************/
@@ -142,6 +143,9 @@ function Agent(userId, config) {
 
         if (type === 'discover')
             doDiscover();
+
+        if (type === 'verbose')
+            verbose = true;
     });
 
 
@@ -212,7 +216,7 @@ function Agent(userId, config) {
     // autodetect ip
     var detectedIp;
     require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-      detectedIp = add;
+        detectedIp = add;
     });
 
     /******************************************************************************/
@@ -223,30 +227,46 @@ function Agent(userId, config) {
      * queueLoop monitors a per device queue and if there is no active task it will spawn a new task per device
      */
     function queueLoop(){
-        //if (sessionId === undefined) return; //if there is no session, we can't do anything
-
         var activeDevicesArray = Object.keys(activeDevices);
-        if (activeDevicesArray.length === 0) return; //if there are no active devices, we dont have anything to do anyway
+        var activeTasks = 0;
+        var totalQueue = 0;
+
+        if (activeDevicesArray.length === 0)
+            return; //if there are no active devices, we dont have anything to do anyway
 
         // check we if need to spawn tasks
         for (var i=0; i<activeDevicesArray.length; i++){
             var selectedDevice = activeDevices[ activeDevicesArray[i] ];
 
-            if (selectedDevice.queue.length === 0) continue; //nothing to do
-            if (selectedDevice.currentTask === undefined){
-                var toScheduleTask = selectedDevice.queue.shift();
-                // create task
-                var newTask = new Task(toScheduleTask.id, toScheduleTask.task, selectedDevice.type, selectedDevice.hostname);
+            totalQueue += selectedDevice.queue.length;
+            if (selectedDevice.currentTask !== undefined)
+                activeTasks++;
 
-                // save task
-                selectedDevice.currentTask = newTask;
+            if (selectedDevice.queue.length === 0)
+                continue; //nothing to do
 
-                // start task
-                newTask.start(toScheduleTask.params, () => {
-                    selectedDevice.currentTask = undefined;
-                });
-            }
+            if (selectedDevice.currentTask === undefined)
+                startTask(activeDevicesArray[i]);
         }
+
+        if (verbose)
+            console.log(`Devices: ${activeDevicesArray.length} - Tasks: ${activeTasks} - Queue: ${totalQueue}`);
+    }
+
+    function startTask(deviceId) {
+        var selectedDevice = activeDevices[ deviceId ];
+        var toScheduleTask = selectedDevice.queue.shift();
+
+        // create task
+        var newTask = new Task(toScheduleTask.id, toScheduleTask.task, selectedDevice.type, selectedDevice.hostname);
+
+        // save task
+        selectedDevice.currentTask = newTask;
+
+        // start task
+        newTask.start(toScheduleTask.params, () => {
+            selectedDevice.currentTask = undefined;
+        });
     }
 
     setInterval(queueLoop, 10 * 1000);
@@ -282,13 +302,16 @@ function Agent(userId, config) {
         }
 
         stop(force){
-            if (this.childProcess) this.childProcess.kill();
+            if (this.childProcess)
+                this.childProcess.kill();
+
             if (force === true)
                 this.log('task_forced_stop');
             else
                 this.log('task_stopped');
 
-            if (this.callback) this.callback();
+            if (this.callback)
+                this.callback();
         }
 
         send(message){
@@ -296,25 +319,11 @@ function Agent(userId, config) {
         }
 
         start(params, callback){
-            var self = this;
             this.callback = callback;
+
             var args = [];
-            params = params ? params : [];
-
-            switch (this.task){
-                case 'build':
-                    args.push('-b');
-                    break;
-
-                case 'install':
-                    args.push('-i');
-                    break;
-
-                default:
-                    args.push('-t');
-                    args.push(this.task);
-            }
-
+            args.push('-t');
+            args.push(this.task);
             args.push('--taskId');
             args.push(this.id);
             args.push('--devicetype');
