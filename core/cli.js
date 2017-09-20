@@ -1168,14 +1168,21 @@ function parseCommand(command) {
             showprog=false;
             // fall through
         case 'dummy':
-            newDummyDevice = new Device('0', '0', 'localhost:81', 'rpi2', { modelName : 'dummy', manufacturer : 'metrological' });
+            var dummyIdx = (commandList[1] !== undefined) ? dummyIdx = commandList[1] : '0';
+
+            newDummyDevice = new Device(dummyIdx, dummyIdx, 'localhost:100' + dummyIdx, 'rpi2', { modelName : 'dummy', manufacturer : 'metrological' });
             curAgent.activateDevice(newDummyDevice, 'rpi2');
 
             // enable dummy mode
             dummy=true;
             readTests();
 
-            setTimeout(parseCommand, 300, 'dev 0'); // auto select it
+            setTimeout(parseCommand, 300, `dev ${dummyIdx}`); // auto select it
+            break;
+
+        case 'readtests':
+            console.log('Reloading tests...');
+            readTests();
             break;
 
         case 'tasks':
