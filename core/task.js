@@ -50,7 +50,6 @@ helpmsg += ' -v                     enable verbose logging to console.log (only 
 helpmsg += ' --host                 set the IP of the host\n';
 helpmsg += ' --serverip             set the IP of the server\n';
 helpmsg += ' --devicetype           set the type of device (must match targets.js)\n';
-helpmsg += ' --skipcopy             skip copy of zImage/rootfs to nfs/tftp directories for installer\n';
 helpmsg += '\n NOTE: This task runner is not meant to be run standalone and should be executed as a child process from WPETestFramework core\n';
 helpmsg += "That said, if you know what you're doing, enjoy!\n";
 
@@ -62,7 +61,6 @@ if (( argv.h !== undefined || argv.help !== undefined) || (argv.t === undefined)
 if (argv.v !== undefined) verbose=true;
 if (argv.host !== undefined) host = argv.host;
 if (argv.server !== undefined) server = argv.server;
-if (argv.skipcopy !== undefined) skipCopy=true;
 
 var test = argv.t !== undefined ? argv.t : null;
 
