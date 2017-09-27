@@ -8,7 +8,7 @@ module.exports = {
     'description'       : 'Loads the YouTube EME 2016 conformance test and captures the output',
     'requiredPlugins'   : ['WebKitBrowser'],
     'testCount'         : 18,
-    'url'               : 'http://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2016.html?test_type=encryptedmedia-test&enablewebm=off&command=run',
+    'url'               : 'http://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2016.html?test_type=encryptedmedia-test&enablewebm=off&command=run&tests=1,6,17,18',
     'steps'             : {
        'step1' : {
             'description'   : 'Stop WPEWebkit',
