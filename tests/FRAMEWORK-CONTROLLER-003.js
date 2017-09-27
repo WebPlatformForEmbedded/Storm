@@ -102,7 +102,7 @@ module.exports = {
                         method  : task.urls[idx].method
                     };
 
-                    console.log('Calling Framework with opts: ', opts);
+                    //console.log('Calling Framework with opts: ', opts);
 
                     http(opts, (resp) => {
                         if (resp.error !== undefined)
