@@ -685,11 +685,12 @@ readTests();
 function processTaskForReport( device, task, result, resultString, duration ){
     // find firmware in reports, if not create it
     var fwVersion = device.fwVersion !== undefined ? device.fwVersion : 'unknown';
+    var deviceTypeAndFwVersion = device.type + '-' + fwVersion
 
-    if (reports[ fwVersion ] === undefined)
-        reports[ fwVersion ] = new Report( fwVersion, device.type );
+    if (reports[ deviceTypeAndFwVersion ] === undefined)
+        reports[ deviceTypeAndFwVersion ] = new Report( fwVersion, device.type );
 
-    reports[ fwVersion ].setTestResult( task, result, resultString, duration );
+    reports[ deviceTypeAndFwVersion ].setTestResult( task, result, resultString, duration );
 }
 
 /******************************************************************************/
@@ -1168,10 +1169,11 @@ function parseCommand(command) {
             showprog=false;
             // fall through
         case 'dummy':
-            var dummyIdx = (commandList[1] !== undefined) ? dummyIdx = commandList[1] : '0';
+            var dummyIdx = (commandList[1] !== undefined) ? commandList[1] : '0';
+            var deviceType = (commandList[2] !== undefined) ? commandList[2] : 'rpi2';
 
-            newDummyDevice = new Device(dummyIdx, dummyIdx, 'localhost:100' + dummyIdx, 'rpi2', { modelName : 'dummy', manufacturer : 'metrological' });
-            curAgent.activateDevice(newDummyDevice, 'rpi2');
+            newDummyDevice = new Device(dummyIdx, dummyIdx, 'localhost:100' + dummyIdx, deviceType, { modelName : 'dummy', manufacturer : 'metrological' });
+            curAgent.activateDevice(newDummyDevice, deviceType);
 
             // enable dummy mode
             dummy=true;
