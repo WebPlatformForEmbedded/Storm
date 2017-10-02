@@ -46,6 +46,7 @@ var originalLogger = console.log;
 
 var reports = {};
 var tests = [];
+var manifests = [];
 var dummy = false;
 
 var agents = [];
@@ -681,6 +682,16 @@ function readTests() {
 }
 readTests();
 
+function readManifests() {
+    cd('./manifests');
+    ls('*.json').forEach(function(file) {
+        manifests.push(file);
+        console.log(manifests);
+    });
+    cd('../');
+}
+readManifests();
+
 // get called when the task process is destructed
 function processTaskForReport( device, task, result, resultString, duration ){
     // find firmware in reports, if not create it
@@ -1074,6 +1085,12 @@ function show_all_tests(){
     }
 }
 
+function show_all_manifests(){
+    for (var i=0; i<manifests.length; i++){
+        console.log(`   ${i}. ${manifests[i]}`);
+    }
+}
+
 function showAllReports() {
     var reportList = Object.keys(reports);
 
@@ -1152,6 +1169,10 @@ function parseCommand(command) {
 
         case 'tests':
             show_all_tests();
+            break;
+
+        case 'manifests':
+            show_all_manifests();
             break;
 
         case 'noprog':
@@ -1294,6 +1315,28 @@ function parseCommand(command) {
 
                 addTest();
                 return;
+            }
+
+            if (manifests.includes(task)) {
+
+                console.log(manifests);
+                console.log(`Running all tests in the ${task} manifest`);
+                tests = require('../manifests/' + task);
+                var totalTests = tests.length;
+                var testIdx = 0;
+
+                function addTest() {
+                    if (testIdx<totalTests) {
+                        task = tests[testIdx];
+                        curAgent.run(selectedDeviceIdx, task, params);
+                        testIdx++;
+                        setTimeout(addTest, 100);
+                    }
+                }
+
+                addTest();
+                return;
+
             }
 
             var taskRange = task.split('-');
