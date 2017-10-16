@@ -1319,7 +1319,6 @@ function parseCommand(command) {
 
             if (manifests.includes(task)) {
 
-                console.log(manifests);
                 console.log(`Running all tests in the ${task} manifest`);
                 tests = require('../manifests/' + task);
                 var totalTests = tests.length;
