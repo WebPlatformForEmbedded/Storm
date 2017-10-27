@@ -36,7 +36,7 @@ module.exports = {
                 response += chunk;
             });
             res.on('end', function() {
-                if (cb) cb({ 'headers' : res.headers, 'body' : response, 'status' : res.statusCode });
+                if (cb) cb({ 'headers' : res.headers, 'body' : response, 'status' : res.statusCode, 'statusMessage' : res.statusMessage });
             });
         }).on('error', function(err) {
             if (cb) cb({ 'error' : err });

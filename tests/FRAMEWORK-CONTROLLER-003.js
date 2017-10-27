@@ -109,7 +109,7 @@ module.exports = {
                             throw new Error(`Error making request ${task.urls[idx].method} ${task.urls[idx].path}: ${resp.error}`);
 
                         if (resp.status !== task.urls[idx].res)
-                            throw new Error(`Framework did not respond with expected status code on request ${task.urls[idx].method} ${task.urls[idx].path}, expected: ${task.urls[idx].res} got: ${resp.status}`);
+                            throw new Error(`Framework did not respond with expected status code on request ${task.urls[idx].method} ${task.urls[idx].path}, expected: ${task.urls[idx].res} got: ${resp.status} ${resp.statusMessage}`);
 
                         if (idx === task.urls.length-1){
                             cb(); // we're done.
