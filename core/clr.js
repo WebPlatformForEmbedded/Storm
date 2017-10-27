@@ -71,7 +71,7 @@ function runTest(test, callback) {
 			steps = e.msg;
 
 		if (e.event === 'step_start' && e.msg !== undefined) {
-			curStep = e.msg.step;
+			curStep = e.msg.step + 1;
 			description = e.msg.description.slice(0, 50);
 		}
 
@@ -80,11 +80,11 @@ function runTest(test, callback) {
 
 			// count based repeat
 			if (m.repeatTotal !== undefined && m.repeatTotal === m.repeatCount)
-				console.log(`   Repeating step ${e.msg.toIdx} to ${e.msg.fromIdx} for ${e.msg.repeatTotal !== undefined ? e.msg.repeatTotal : e.msg.repeatUntil} times`);
+				console.log(`   Repeating step ${e.msg.toIdx + 1} to ${e.msg.fromIdx} for ${e.msg.repeatTotal !== undefined ? e.msg.repeatTotal : e.msg.repeatUntil} times`);
 
 			// time based repeat
 			if (m.repeatTimes !== undefined && m.repeatTimes === 1)
-				console.log(`   Repeating step ${e.msg.toIdx} to ${e.msg.fromIdx} until ${e.msg.repeatUntil !== undefined ? m.repeatUntil : ''}`);
+				console.log(`   Repeating step ${e.msg.toIdx + 1} to ${e.msg.fromIdx} until ${e.msg.repeatUntil !== undefined ? m.repeatUntil : ''}`);
 		}
 
 		if (e.event === 'step_result') {
