@@ -38,6 +38,7 @@ function runTest(test, callback) {
 		description = '';
 
 	var args = [];
+
 	args.push('-t');
 	args.push(test);
 	args.push('--deviceType');
@@ -74,8 +75,17 @@ function runTest(test, callback) {
 			description = e.msg.description.slice(0, 50);
 		}
 
-		if (e.event === 'step_repeat')
-			console.log(`   Repeating step ${e.msg.toIdx} to ${e.msg.fromIdx} for ${e.msg.repeatTotal !== undefined ? e.msg.repeatTotal : e.msg.repeatUntil} times`);
+		if (e.event === 'step_repeat') {
+			var m = e.msg;
+
+			// count based repeat
+			if (m.repeatTotal !== undefined && m.repeatTotal === m.repeatCount)
+				console.log(`   Repeating step ${e.msg.toIdx} to ${e.msg.fromIdx} for ${e.msg.repeatTotal !== undefined ? e.msg.repeatTotal : e.msg.repeatUntil} times`);
+
+			// time based repeat
+			if (m.repeatTimes !== undefined && m.repeatTimes === 1)
+				console.log(`   Repeating step ${e.msg.toIdx} to ${e.msg.fromIdx} until ${e.msg.repeatUntil !== undefined ? m.repeatUntil : ''}`);
+		}
 
 		if (e.event === 'step_result') {
             var requiredPadding = 50 - description.length;
