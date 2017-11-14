@@ -1317,7 +1317,7 @@ function parseCommand(command) {
                 return;
             }
 
-            if (manifests.includes(task)) {
+            if (manifests.indexOf(task) !== -1) {
 
                 console.log(`Running all tests in the ${task} manifest`);
                 tests = require('../manifests/' + task);
