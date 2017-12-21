@@ -131,7 +131,7 @@ function getFirmwareVersion(callback){
         try {
             deviceInfo = JSON.parse(resp.body);
         } catch (e) {
-            callback(e);
+            callback(null);
             return;
         }
 
