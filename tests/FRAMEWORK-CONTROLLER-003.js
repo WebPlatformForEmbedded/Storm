@@ -42,7 +42,9 @@ module.exports = {
                         task.urls.push( { method: 'PUT', path: '/Service/Controller/Deactivate/' + module, res: 200 } );
                         task.urls.push( { method: 'PUT', path: '/Service/Controller/Activate/' + module, res: 200 } );
 
-                        if (module === 'DIALServer')
+                        if (module === 'Commander')
+                            task.urls.push( { method: 'GET', path: '/Service/' + module, res: 400 } );
+                        else if (module === 'DIALServer')
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 501 } );
                         else if (module === 'WebProxy')
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
@@ -53,7 +55,9 @@ module.exports = {
                     } else {
                         task.urls.push( { method: 'PUT', path: '/Service/Controller/Activate/' + module, res: 200 } );
 
-                        if (module === 'DIALServer')
+                        if (module === 'Commander')
+                            task.urls.push( { method: 'GET', path: '/Service/' + module, res: 400 } );
+                        else if (module === 'DIALServer')
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 501 } );
                         else if (module === 'WebProxy')
                             task.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
@@ -102,7 +106,7 @@ module.exports = {
                         method  : task.urls[idx].method
                     };
 
-                    //console.log('Calling Framework with opts: ', opts);
+                    console.log('Calling Framework with opts: ', opts);
 
                     http(opts, (resp) => {
                         if (resp.error !== undefined)

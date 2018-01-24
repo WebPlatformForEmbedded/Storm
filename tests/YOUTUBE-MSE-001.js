@@ -5,9 +5,9 @@
 
 module.exports = {
     'title'         : 'YouTube Media Source conformance test',
-    'description'   : 'Loads the YouTube MSE 2016 conformance test and captures the output',
-    'testCount'     : 57,
-    'url'           : 'http://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2016.html?enablewebm=off&command=run',
+    'description'   : 'Loads the YouTube MSE 2018 conformance test and captures the output',
+    'testCount'     : 105,
+    'url'           : 'https://yt-dash-mse-test.commondatastorage.googleapis.com/unit-tests/2018.html?command=run',
     'steps'         : {
        'step1' : {
             'description'   : 'Stop WPEWebkit',
@@ -37,7 +37,7 @@ module.exports = {
         },
         'step5' : {
             'description'   : 'Attach to the logs to capture the log output and start the test',
-            'timeout'       : 10 * 60, // 10 minutes
+            'timeout'       : 25 * 60, // 25 minutes
             'test'          : function(cb) {
 
                 var ready = false;
