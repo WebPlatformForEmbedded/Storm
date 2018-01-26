@@ -11,11 +11,31 @@ const _http     = require('http');
 module.exports = {
     // key definitions
     up : '0x0001', down : '0x0002', right : '0x0004', left : '0x0003', enter : '0x002B', esc : '0x0009',
-    // send key to Framework
+    // send key (press + release) to Framework
     key(key, cb) {
+        keyPress(key, () => {
+            keyRelease(key, cb);
+        });
+    },
+    // send key press
+    keyPress(key, cb) {
+        var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${host}:80/Service/RemoteControl/keymap/Code/${key}`,
-            method  : 'PUT'
+            url     : `http://${host}:80/Service/RemoteControl/keymap/Press`,
+            body    : data,
+            method  : 'PUT',
+            headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
+        };
+        http(opts, cb);
+    },
+    // send key release
+    keyRelease(key, cb) {
+        var data = JSON.stringify({ 'code' : key });
+        var opts = {
+            url     : `http://${host}:80/Service/RemoteControl/keymap/Release`,
+            body    : data,
+            method  : 'PUT',
+            headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
         };
         http(opts, cb);
     },
