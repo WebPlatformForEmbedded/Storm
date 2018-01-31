@@ -9,9 +9,9 @@ const querystring = require('querystring');
 require('shelljs/global');
 
 module.exports = {
-    'title'             : 'OpenCDMi playback test',
-    'description'       : 'Start a playready video while OpenCDMi plugin is disabled',
-    'requiredPlugins'   : ['OpenCDMi', 'WebKitBrowser', 'Snapshot'],
+    'title'             : 'OCDM playback test',
+    'description'       : 'Start a playready video while OCDM plugin is disabled',
+    'requiredPlugins'   : ['OCDM', 'WebKitBrowser', 'Snapshot'],
     'port'              : undefined,
     'server'            : undefined,
     'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
@@ -98,17 +98,17 @@ module.exports = {
             'assert'        : 'deactivated'
         },
         'step3' : {
-            'description'   : 'stop OpenCDMi plugin',
+            'description'   : 'stop OCDM plugin',
             'timeout'       : 180, //seconds
             'test'          : stopPlugin,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'validate'      : httpResponseSimple,
         },
         'step4' : {
             'sleep'         : 5,
-            'description'   : 'Check if OpenCDMi is stopped succesfully',
+            'description'   : 'Check if OCDM is stopped succesfully',
             'test'          : getPluginState,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'assert'        : 'deactivated',
         },
         'step5' : {

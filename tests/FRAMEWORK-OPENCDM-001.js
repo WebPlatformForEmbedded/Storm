@@ -4,40 +4,40 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'         : 'OpenCDMi startup robustness test',
-    'description'   : 'Starts and stops the OpenCDMi plugin repeatedly and checks if everything is started correctly',
-    'requiredPlugins': ['OpenCDMi'],
+    'title'         : 'OCDM startup robustness test',
+    'description'   : 'Starts and stops the OCDM plugin repeatedly and checks if everything is started correctly',
+    'requiredPlugins': ['OCDM'],
     'steps'         : {
         'step1' : {
-            'description'   : 'Stop OpenCDMi',
+            'description'   : 'Stop OCDM',
             'test'          : stopPlugin,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'validate'      : httpResponseSimple,
         },
         'step2' : {
             'sleep'         : 10,
-            'description'   : 'Check if OpenCDMi is stopped correctly',
+            'description'   : 'Check if OCDM is stopped correctly',
             'test'          : getPluginState,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'assert'        : 'deactivated'
         },
         'step3' : {
-            'description'   : 'Check if OpenCDMiImplementation rpcprocess is gone',
+            'description'   : 'Check if OCDMImplementation rpcprocess is gone',
             'test'          : checkIfProcessIsRunning,
-            'params'        : 'OpenCDMiImplementation',
+            'params'        : 'OCDMImplementation',
             'assert'        : false
         },
         'step4' : {
-            'description'   : 'Start OpenCDMi',
+            'description'   : 'Start OCDM',
             'test'          : startAndResumePlugin,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'validate'      : httpResponseSimple,
         },
         'step5' : {
             'sleep'         : 10,
-            'description'   : 'Check if OpenCDMi is started correctly',
+            'description'   : 'Check if OCDM is started correctly',
             'test'          : getPluginState,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'validate'      : checkResumedOrActivated,
         },
         'step6' : {

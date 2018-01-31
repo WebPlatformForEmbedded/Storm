@@ -4,23 +4,23 @@
 /*jslint esnext: true*/
 
 module.exports = {
-    'title'             : 'OpenCDMi shutdown of Framework robustness test',
-    'description'       : 'Starts OpenCDMi and stops Framework. Checks if everything is shutdown correctly',
-    'requiredPlugins'   : ['OpenCDMi'],
+    'title'             : 'OCDM shutdown of Framework robustness test',
+    'description'       : 'Starts OCDM and stops Framework. Checks if everything is shutdown correctly',
+    'requiredPlugins'   : ['OCDM'],
     'steps'             : {
         'step1' : {
-            'description'   : 'Start OpenCDMi',
+            'description'   : 'Start OCDM',
             'timeout'       : 180,
             'test'          : startAndResumePlugin,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'validate'      : httpResponseSimple
         },
         'step2' : {
             'sleep'         : 10,
-            'description'   : 'Check if OpenCDMi is started correctly',
+            'description'   : 'Check if OCDM is started correctly',
             'timeout'       : 180, //seconds
             'test'          : getPluginState,
-            'params'        : 'OpenCDMi',
+            'params'        : 'OCDM',
             'validate'      : checkResumedOrActivated
         },
         'step3' : {
@@ -30,9 +30,9 @@ module.exports = {
         },
         'step4' : {
             'sleep'         : 5,
-            'description'   : 'Check if OpenCDMiImplementation rpcprocess is gone',
+            'description'   : 'Check if OCDMImplementation rpcprocess is gone',
             'test'          : checkIfProcessIsRunning,
-            'params'        : 'OpenCDMiImplementation',
+            'params'        : 'OCDMImplementation',
             'assert'        : false
         },
         'step5' : {
