@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>Image test runner</title>
+</head>
+<body>
+    <p>This is the image stress test</p>
+    <div id="container"></div>
+    <script>
+        
+    var wait = 5; // wait for 3 sec by default
+    var run = -1; // run for infinity by default
+    var amount = 20; // amount of images to render
+
+    var querystring = window.location.search;
+    if (querystring){
+        var search = querystring.split('?')[1];
+        
+        if (search) {
+            var params = search.split('&');
+
+            for (var i=0; i<params.length; i++){
+                var param = params[i].split('=');
+
+                if (param[0] === 'wait') wait = param[1];
+                if (param[0] === 'run') run = param[1];
+                if (param[0] === 'amount') amount = param[1];
+            }
+        }
+    }
+
+    console.log('Running test with wait:' + wait + ' run: ' + run + ' amount:' + amount);
+
+    function createAndAppendDiv(parent, top , left){
+        var y = 720 * Math.random();
+        var x = 1280 * Math.random();
+
+        if (parent){
+            var newDiv = document.createElement('img');
+            newDiv.src = "images.png?timestamp=" + Date.now();
+            newDiv.style.left = "0px"; 
+            newDiv.style.top = "0px";
+            newDiv.style.transform = "translate3d("+x+"px ,"+y+"px,100px)";            
+            newDiv.style.position = "fixed";
+            parent.appendChild(newDiv);
+
+            //animate
+            setTimeout(animateChild, (wait/4)*1000, newDiv, 1280 * Math.random(), 720 * Math.random() );
+            //remove
+            setTimeout(emptyChild, (wait*0.8)*1000, parent, newDiv);
+        }
+    }
+
+    function animateChild(child, x, y){
+        child.style.transition = "all 500ms ease-in-out";
+        child.style.transform = "translate3d("+x+"px ,"+y+"px,100px)";
+    }
+
+    function emptyChild(parent, child){
+        parent.removeChild(child);
+    }    
+
+    function render(amount) {
+        var parent = document.getElementById('container');
+
+        for (var i=0; i<amount; i++){
+            createAndAppendDiv(parent);
+        }
+    }
+
+    function emptyParent(parent){
+        if (parent.childNodes){
+            for (var i=0; i<parent.childNodes.length; i++){
+                parent.removeChild(parent.childNodes[i]);
+            }
+        }        
+    }
+
+    var executedRuns = 0;
+    function gameloop(){
+        if (executedRuns <= run || run == -1){
+            console.log('Image test - running ' + executedRuns + ' of ' + run);
+            render(amount);
+            if (run !== -1) executedRuns++;
+        }
+    }
+
+    render(amount);
+    var loop = setInterval(gameloop, wait*1000);
+    </script>
+</body>
+</html>

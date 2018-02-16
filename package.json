@@ -1,6 +1,6 @@
 {
   "name": "WPETestFramework",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Metrological automated build and test runner",
   "main": "WPETestFramework.js",
   "scripts": {
@@ -26,7 +26,14 @@
     "sudo": "~1.0.3",
     "telnet-client": "~0.9.x",
     "ws" : "^3.1.x",
-    "xml2js": "^0.4.17"
+    "xml2js": "^0.4.17",
+    "grunt": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-copy": "*"    
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,51 @@
+<html><head><title>Hello! This is a stress test</title></head>
+<body><p style="position: absolute; left: 150px; top: 150px">Stess tester - xmlhttprequests</p>
+<script>
+    doReq = function(method, url, body, cB) {
+        if (cB !== undefined && (typeof body === 'function') ){
+            cB = body;
+            body = undefined;
+        } 
+
+        var xhttp = new XMLHttpRequest();
+        var aSync = true;
+
+        xhttp.open(method, url, aSync);
+
+        console.log('Sending request: ' + method + ' ' + url);
+
+        xhttp.onreadystatechange = function() {
+ 
+            //console.log('xhttp STATE CHANGE: ' + xhttp.readyState + ' status:' + xhttp.status);
+
+            if (xhttp.readyState === 4) {
+                //console.log('response: ' + xhttp.status);
+                if (xhttp.status !== 0) cB(xhttp.status, undefined);
+            }
+        };
+
+        xhttp.onerror = function(e) {
+            console.log('onerror');
+            cB(undefined, true);
+        };
+
+        xhttp.send(body);
+    };
+
+    var url = 'http://cdn.metrological.com/speedtest/10k.eot';
+    var done = 'http://{{server}}:{{port}}/keepalive';
+    var amount = 10;
+
+    function testLoop(){
+        for (var i=0; i<amount; i++){
+            doReq('GET', url, undefined, function(resp, err){
+                doReq('GET', done, undefined, function(resp, err){
+                    console.log('sent done');
+                });
+            });   
+        }
+    }
+
+    var interval = setInterval(testLoop, 3 * 1000);
+
+</script></body></html>

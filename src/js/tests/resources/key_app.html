@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Image test runner</title>
+</head>
+<body>
+    <p>This is the key stress test</p>
+    <div id="container"></div>
+    <script>
+
+    doReq = function(method, url, body, cB) {
+        if (cB !== undefined && (typeof body === 'function') ){
+            cB = body;
+            body = undefined;
+        }
+
+        var xhttp = new XMLHttpRequest();
+        var aSync = true;
+
+        xhttp.open(method, url, aSync);
+        console.log('Sending request: ' + method + ' ' + url);
+        xhttp.onreadystatechange = function() {
+
+            //console.log('xhttp STATE CHANGE: ' + xhttp.readyState + ' status:' + xhttp.status);
+
+            if (xhttp.readyState === 4) {
+                //console.log('response: ' + xhttp.status);
+                if (xhttp.status !== 0) cB(xhttp.status, undefined);
+            }
+        };
+
+        xhttp.onerror = function(e) {
+            console.log('onerror');
+            cB(undefined, true);
+        };
+
+        xhttp.send(body);
+    };
+
+    var url = 'http://{{server}}:{{port}}/key';
+    var parent = document.getElementById('container');
+
+    function render(key) {
+        parent.innerHTML = key;
+    }
+
+    window.onkeydown = function(e) {
+        render(e.which);
+        doReq('GET', url + '?key=' + e.which, undefined, function(resp, err){
+        });
+    }
+
+    </script>
+</body>
+</html>
