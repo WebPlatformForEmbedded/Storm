@@ -1,16 +1,13 @@
-/** The base plugin class applies for all plugins. Each plugin must match the name as it is returned from the WPE Framework
- * The supports object toggles what the plugin supports for the main ui
+/** The base plugin class applies for all plugins each plugin will be globally loaded as part of the task job
+ * objects within these plugins (outside constructor) will be accessible for all tests that are executed in the task runner
  */
 
 class BasePlugin {
 
     /** Constructor
-     * @{param} Name of the plugin for display on the UI
-     * @{param} Support object to indicate plugin capabilities for the UI. Such as suspend/resume, toggle visibility and whether or not the plugin renders
+     * @{param} Priority sets the loading priority to resolve dependencies inter-plugins, make sure if you are dependent on plugins that the current plugin has a higher priority
      */
     constructor(pluginData) {
         this.priority = 5; // 1 = high, 10 = low priority
-        this.depends = [];
-        this.name = 'BasePlugin';
     }
 }

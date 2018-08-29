@@ -1,7 +1,6 @@
 /**
  * WPETestFramework remote webinspector class
  */
-'use strict';
 
 /**
  * Attaches to the remote WebInspector to retrieve the console logs
@@ -57,5 +56,5 @@ class AttachToLogs {
 
 }
 
-window.coreClasses = window.coreClasses || {};
-window.coreClasses.Framework = Framework;
+window.plugins = window.plugins || {};
+window.plugins.Framework = Framework;

@@ -4,19 +4,38 @@
 
 /** Device info plugin provides device specific information, such as cpu usage and serial numbers */
 class Base extends BasePlugin {
-
     constructor() {
-        this.priority = 1;
+        super();
+    
+        this.dummy = this.dummy.bind(this);
+        this.sleep = this.sleep.bind(this);
+        this.get = this.get.bind(this);
+        this.http = this.http.bind(this);
+        this.httpResponseSimple = this.httpResponseSimple.bind(this);
+        this.httpResponseBody = this.httpResponseBody.bind(this);
+        this.jsonParse = this.jsonParse.bind(this);
+        this.checkIfObject = this.checkIfObject.bind(this);
+        this.startHttpServer = this.startHttpServer.bind(this);
+        this.startFileServer = this.startFileServer.bind(this);
+        this.matchIpRange = this.matchIpRange.bind(this);
     }
 
     dummy(x, cb) {
-        cb(x);
-    },
+        this.cb(x);
+    }
 
     sleep(x, cb) {
-        setTimeout(cb, x * 1000);
-    },
+        this.setTimeout(cb, x * 1000);
+    }
 
+
+    get(url, cb) {
+        this.http({
+            'url' : url,
+            'method' : 'GET',
+            'body' : null
+        }, cb);
+    }
 
     http(options, cb) {
         var url = options.url;
@@ -34,7 +53,7 @@ class Base extends BasePlugin {
             }
         }
 
-        xmlHttp.open(method, URL, true);
+        xmlHttp.open(method, url, true);
         if (cb) {
             xmlHttp.onreadystatechange = function () {
                 if (xmlHttp.readyState == 4) {
@@ -52,7 +71,7 @@ class Base extends BasePlugin {
             };
 
             xmlHttp.ontimeout = function () {
-                callback({ 'error' : 'Connection timed out'});
+                cb({ 'error' : 'Connection timed out'});
             };
         }
         if (body !== null)
@@ -60,7 +79,7 @@ class Base extends BasePlugin {
         else
             xmlHttp.send();
 
-    },
+    }
 
     httpResponseSimple(x) {
         if (x.error) throw new Error(x.error);
@@ -68,7 +87,7 @@ class Base extends BasePlugin {
             return true;
         else
             throw new Error('Framework returned with a HTTP code > 400');
-    },
+    }
 
     httpResponseBody(x) {
         if (x.error) throw new Error(x.error);
@@ -76,7 +95,7 @@ class Base extends BasePlugin {
             return true;
         else
             throw new Error('Framework returned with a HTTP code > 400 or no body (yet expected)');
-    },
+    }
 
     jsonParse(x, cb) {
         try {
@@ -85,28 +104,27 @@ class Base extends BasePlugin {
         } catch (e) {
             throw new Error('Error parsing json at jsonParse step');
         }
-    },
+    }
 
     checkIfObject(x) {
         if (typeof x === 'object')
             return true;
         else
             throw new Error(`${x} is not an Object`);
-    },
+    }
 
     startHttpServer(requestFunction, cb) {
         throw Error('This is no logner supported in the web version, please point your test to the webserver instead');
-    },
+    }
 
     startFileServer(cb) {
         throw Error('This is no longer supported in the web version, please point your test to the webserver instead');
-    },
+    }
 
     matchIpRange(ip, cb) {
         throw Error('This is no longer supported in the web version, local server support is disabled. Please update your test');
     }
-
 }
 
-window.coreClasses = window.coreClasses || {};
-window.coreClasses.Base = Base;
+window.plugins = window.plugins || {};
+window.plugins.Base = Base;

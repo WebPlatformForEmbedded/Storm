@@ -24,6 +24,15 @@ module.exports = function(grunt) {
                 dest: 'build/js/main.js'
             }
         },
+        connect: {
+            server: {
+                options: {
+                    port: 1234,
+                    base: 'src',
+                    keepalive: true
+                }
+            }
+        },
         copy: {
             images: {
                 expand: true,
@@ -42,7 +51,7 @@ module.exports = function(grunt) {
                 dest: 'build/index.html'
             },
             tests: {
-                src : 'src/js/tests',
+                src : '<%= testScripts =>',
                 dest : 'build/js/tests/'
             },
             lib : {
@@ -50,18 +59,25 @@ module.exports = function(grunt) {
                 dest : 'build/js/lib'
             }
         },
+        // removed 'src/js/tests/*.js' for the time being, until we converted that into a web useable format
         jshint: {
-            files: ['Gruntfile.js', 'src/js/*.js', 'src/js/core/*.js', 'src/js/tests/*.js'],
+            files: ['Gruntfile.js', 'src/js/*.js', 'src/js/core/*.js', 'src/js/views/*.js', 'src/js/plugins/*.js'],
             options: {
                 'esversion': 6
             }
-        },
+        },   
         uglify: {
-            scripts: {
+            main: {
                 files: {
-                    'build/js/main.js': ['<%= concat.build.dest %>']
+                    'build/js/main.js': ['<%= concat.build.dest %>'],
+                }
+            },
+            task: {
+                files: {
+                    'build/js/task/task.js': 'src/js/task/task.js'
                 }
             }
+
         },
         watch: {
             base : {
@@ -71,17 +87,23 @@ module.exports = function(grunt) {
             plugins : {
                 files: ['src/js/plugins/*.js'],
                 tasks: ['compile']
+            },
+            layouts : {
+                files: ['src/js/layout/*.js'],
+                tasks: ['compile']
             }
         }
     });
 
-    //custom task to load the NUKE files from config_NUKE.js
+    //custom task to load the core files
     grunt.task.registerTask('loadScripts', 'Loads the required files for all plugins', function() {
 
         //reset our globals
         var cwd = process.cwd();
         var jsDir = path.join( cwd, 'src', 'js');
         var coreDir = path.join(jsDir, 'core');
+        var pluginDir = path.join( jsDir, 'plugins');
+        var layoutDir = path.join( jsDir, 'layout');
         var scripts = [];
 
         // add conf
@@ -92,10 +114,15 @@ module.exports = function(grunt) {
             scripts.push('js/core/' + p);
         });
 
+        shell.cd(pluginDir);
+        shell.ls('*.js').forEach( function(p) {
+            scripts.push('js/plugins/' + p);
+        });
+
         shell.cd(layoutDir);
         shell.ls('*.js').forEach( function(p) {
             scripts.push('js/layout/' + p);
-        });
+        });        
 
         shell.cd(cwd);
 
@@ -115,13 +142,47 @@ module.exports = function(grunt) {
         grunt.config.set('scripts', gruntScripts);
     });
 
+    //custom task to load the tests
+    grunt.task.registerTask('loadTests', 'Loads the tests that can be run', function() {
+
+        //reset our globals
+        var cwd = process.cwd();
+        var jsDir = path.join( cwd, 'src', 'js');
+        var testsDir = path.join(jsDir, 'tests');
+        var tests = [];
+
+
+        shell.cd(testsDir);
+        shell.ls('*.js').forEach( function(p) {
+            tests.push( JSON.stringify({ 'name' : p, 'file' : 'js/tests/' + p }, null, 4) );
+        }); 
+
+        shell.cd(cwd);
+
+        console.log(`Found ${tests.length} tests: \n `);
+
+        // write debug tests.json
+        var testsJson = path.join(jsDir, 'tests.json');
+        console.log('Writing to tests json: ', testsJson);
+        grunt.file.write( testsJson, JSON.stringify(tests, null, 4) );
+
+        //set the files we just read
+        var testScripts = [];
+        for (var i=0; i<tests.length; i++) {
+            testScripts.push('src/' + tests[i]);
+        }
+
+        grunt.config.set('tests', testScripts);
+    });    
+
     //grunt contrib packages
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('help', function() {
         console.log('Please provide the tast to run to the grunt');
@@ -132,9 +193,8 @@ module.exports = function(grunt) {
 
     //add the tasks
     grunt.registerTask('test', ['jshint']); //just runs jshint to validate all the javascript
-    grunt.registerTask('compile', ['loadScripts', 'test']);
-    // FIXME: uglify has been turned off because it doesnt support ES6
-    grunt.registerTask('release', ['loadScripts', 'test', 'compile', 'clean', 'copy', 'concat']); //generates the build
+    grunt.registerTask('compile', ['loadTests', 'loadScripts', 'test']);
+    grunt.registerTask('release', ['compile', 'clean', 'copy', 'concat', 'uglify']); //generates the build
 
     grunt.registerTask('default', ['compile']);
 };

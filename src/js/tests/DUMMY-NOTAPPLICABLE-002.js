@@ -1,7 +1,6 @@
 /** 
  * WPETestFramework dummy test task
  */
-/*jslint esnext: true*/
 
 NotApplicable('This test is not applicable');
 

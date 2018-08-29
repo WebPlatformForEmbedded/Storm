@@ -10,17 +10,15 @@
     * Create the initial structure & globals
     */
 
-    // public
-    plugins             = {};           // plugins
+    // main API
+    var wtf             = {};
+    var tests;
 
     // private
-    var bootStep        = 1;
-    var fetchedPlugins  = [];
-    var mainDiv         = document.getElementById('main');
-    var activeView      = undefined;
-
-    // TODO add a router, like minirouter
-
+    let bootStep        = 1;
+    let hostname;
+    let port;
+    let views           = {};
 
     /**
     * Main initialization function
@@ -32,10 +30,10 @@
     function init(){
         if (bootStep === 1){
             /*
-             * BOOT Step 1 - Init the WPE API
+             * BOOT Step 1 - Get current hostname / port
              */
-            console.debug('Initializing WPE API');
-            var hostname = document.getElementById("hostname") && document.getElementById("hostname").value;
+            console.debug('Get current hostname + port');
+            hostname = document.getElementById("hostname") && document.getElementById("hostname").value;
             if ((hostname === null) || (hostname === ""))
                 hostname = window.location.hostname;
 
@@ -50,17 +48,105 @@
             if ((port !== "") && (port !== 80))
                 hostname += ":" + port;
 
-            // check if wpe.js is already loaded, if not wait
-            if (window.WpeApi === undefined) {
-                console.debug('WPE API is not ready yet, retrying...');
+
+            initNext();
+        }
+
+        if (bootStep === 2) {
+            /*
+             * Init the core
+             */
+            console.debug('Loading WTF core');
+
+            // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
+            if (window.classes == undefined || window.classes.Core === undefined) {
                 setTimeout(init, 1000);
                 return;
             }
 
-            // initialize the WPE Framework API
-            api = new window.WpeApi(hostname);
+            core = new window.classes.Core();
+            mergeObjects(wtf, core);
+
             initNext();
         }
+
+
+        if (bootStep === 3){
+            /*
+             * Load base & framework plugin for basic communication with WPE Framework
+             */
+            console.debug('Load base & framework plugin');
+
+            // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
+            if (window.plugins == undefined || window.plugins.Base === undefined || window.plugins.Framework === undefined) {
+                setTimeout(init, 1000);
+                return;
+            }
+
+            var base = new window.plugins.Base();
+            mergeObjects(wtf, base);
+            var framework = new window.plugins.Framework();
+            mergeObjects(wtf, framework);
+
+            initNext();
+        }
+
+        if (bootStep === 4) {
+            /*
+             * Load the tests
+             */
+
+            console.debug('Loading tests manifest');
+
+            wtf.get('js/tests.json', (resp) => {
+                if (resp.error !== undefined)
+                    console.error('Error loading tests.json from server, no tests are available');
+
+                if (resp.status === 200 && resp.body !== undefined) {
+                    tests = JSON.parse(resp.body);
+                    console.log(`Loaded ${tests.length} tests`);
+                }
+            });
+
+            initNext();
+        }        
+
+        if (bootStep === 5){
+            /*
+             * Load views
+             */
+
+            console.log('Loading views');
+
+            if (window.views === undefined || window.views.Menu === undefined || window.views.Landing === undefined) {
+                setTimeout(init, 1000);
+                return;
+            }
+
+            views.menu = new window.views.Menu();
+            views.landing = new window.views.Landing(tests);
+            initNext();
+
+        }
+
+        if (bootStep === 6){
+            /*
+             * Init routing and load view
+             */
+
+            // Source, see https://github.com/flatiron/director
+            var routes = {
+                '/home' : views.landing.render
+            };
+
+            var router = Router(routes);
+            router.init();
+            router.setRoute('/home');
+
+            // set router at menu so menu can use it
+            views.menu.router = router;
+        }
+
     }
 
     /** Find the next bootstep and go run that */
@@ -89,6 +175,13 @@
         document.getElementById('main').innerHTML = '';
         plugins[ activePlugin ].render();
     };
+
+    function mergeObjects(a, b){
+        for (var attrname in b) {
+            console.log('Merging: ' + attrname);
+            a[attrname] = b[attrname];
+        }
+    }
 
     init();
 

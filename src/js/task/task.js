@@ -17,6 +17,31 @@ var git = false;
 var verbose = false;
 var taskId;
 
+/*
+
+            // sort by priority, make sure we load the lower priorities first
+            pluginList.sort(function(a, b) {
+                return parseFloat(a.priority) - parseFloat(b.priority);
+            });
+
+            for (let i=0; i<pluginList.length; i++) {
+                var pluginName = fetchedPlugins[i].callsign;
+                var pluginClass = fetchedPlugins[i].classname;
+
+                // try to init the plugin
+                if (pluginClasses[ pluginClass ] !== undefined) {
+                    console.debug('Initializing plugin ' + pluginName);
+                    plugins[ pluginName ] = new pluginClasses[ pluginClass ](fetchedPlugins[i]);
+                } else {
+                    console.debug('Unsupported plugin: ' + pluginName);
+                }
+
+                if (i===fetchedPlugins.length-1)
+                    initNext();
+            }      
+
+*/
+
 if (!process.connected)
     console.warn('Warning! You are running the task runner directly without the WPETestFramework agent, this is experimental and mileage may vary.');
 
