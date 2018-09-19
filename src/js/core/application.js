@@ -11,14 +11,17 @@
     */
 
     // main API
-    var wtf             = {};
-    var tests;
+    wtf = {};
+
+    // Routes
+    var routes = {};
 
     // private
-    let bootStep        = 1;
+    let bootStep        = 0;
     let hostname;
     let port;
     let views           = {};
+    let options         = {};
 
     /**
     * Main initialization function
@@ -27,8 +30,10 @@
     * Within the init a loadingPage is rendered to show progress of the boot
     * @memberof application
     */
-    function init(){
-        if (bootStep === 1){
+
+    var bootSequence = {
+
+        'gethostport' : function(cb) {
             /*
              * BOOT Step 1 - Get current hostname / port
              */
@@ -49,49 +54,43 @@
                 hostname += ":" + port;
 
 
-            initNext();
-        }
+            cb(500);
+        },
 
-        if (bootStep === 2) {
+        getoptionsfromurl : function(cb) {
             /*
-             * Init the core
+             * Get options from url string to be used in the app
              */
-            console.debug('Loading WTF core');
+            if (window.location.search.split('?').length > 1) {
+                let searchOptions = window.location.search.split('?')[1].split('&');
 
-            // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
-            if (window.classes == undefined || window.classes.Core === undefined) {
-                setTimeout(init, 1000);
-                return;
+                for ( var i=0; i<searchOptions.length; i++ ) {
+                    let split = searchOptions[i].split('=');
+                    options[ split[0] ] = split[1];
+                }
             }
 
-            core = new window.classes.Core();
-            mergeObjects(wtf, core);
+            cb();
+        },
 
-            initNext();
-        }
-
-
-        if (bootStep === 3){
+        'loadcore' : function(cb) {
             /*
              * Load base & framework plugin for basic communication with WPE Framework
              */
-            console.debug('Load base & framework plugin');
+            console.debug('Load core, base & framework plugin');
 
             // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
-            if (window.plugins == undefined || window.plugins.Base === undefined || window.plugins.Framework === undefined) {
-                setTimeout(init, 1000);
+            if (window.plugins == undefined || window.plugins.Framework === undefined) {
+                cb(null, 2000);
                 return;
             }
 
-            var base = new window.plugins.Base();
-            mergeObjects(wtf, base);
-            var framework = new window.plugins.Framework();
-            mergeObjects(wtf, framework);
+            wtf = new window.plugins.Framework();
 
-            initNext();
-        }
+            cb();
+        },
 
-        if (bootStep === 4) {
+        'loadtests' : function(cb) {
             /*
              * Load the tests
              */
@@ -103,85 +102,140 @@
                     console.error('Error loading tests.json from server, no tests are available');
 
                 if (resp.status === 200 && resp.body !== undefined) {
-                    tests = JSON.parse(resp.body);
-                    console.log(`Loaded ${tests.length} tests`);
+                    wtf.tests = JSON.parse(resp.body);
+                    console.log(`Loaded ${Object.keys(wtf.tests).length} tests`);
                 }
+
+                cb();
             });
+        },
 
-            initNext();
-        }        
-
-        if (bootStep === 5){
+        'loadviews' : function(cb) {
             /*
              * Load views
              */
 
             console.log('Loading views');
 
-            if (window.views === undefined || window.views.Menu === undefined || window.views.Landing === undefined) {
-                setTimeout(init, 1000);
+            if (window.views === undefined || window.views.Menu === undefined || window.views.Device === undefined) {
+                cb(null, 1000);
                 return;
             }
 
-            views.menu = new window.views.Menu();
-            views.landing = new window.views.Landing(tests);
-            initNext();
+            // load views dynamically
+            let viewClasses = Object.keys(window.views);
 
-        }
+            for (var i=0; i<viewClasses.length; i++) {
+                let _viewName = viewClasses[i];
+                let _view = window.views[  _viewName ];
 
-        if (bootStep === 6){
+                views[ _viewName ] = new _view();
+            }
+
+            cb();
+        },
+
+        'loadrouter' : function(cb) {
             /*
              * Init routing and load view
              */
 
-            // Source, see https://github.com/flatiron/director
-            var routes = {
-                '/home' : views.landing.render
+            routes = {
+                'device'           : views.Device,
+                'tests'            : views.Tests,
+                'test'             : views.Test,
             };
 
-            var router = Router(routes);
-            router.init();
-            router.setRoute('/home');
+            // check if we're running in dummy more, this enable dummy tests that are used to verify the wpetest framework
+            if (options.dummy !== undefined) {
+                console.debug('Test mode enabled.');
+                wtf.dummyMode = true;
+            }
 
-            // set router at menu so menu can use it
-            views.menu.router = router;
+            // auto onboard if host is provided in the url and nothing is activated already
+            if (options.host !== undefined && options.host !== '' && wtf.getHost() === null) {
+                wtf.activateDevice(options.host, () => {
+                    cb(null, 100);
+                });
+
+                // make sure we only render the view once the device is onboarded, bail out here
+                return;
+            }
+
+            // check if our route resolves else load landing
+            let hash = window.location.hash.replace('#', '');
+            if (hash !== undefined && routes[ hash ] !== undefined) {
+                routes[ hash ].render();
+            } else {
+                views.landing.render();
+            }
+
+            cb();
         }
+    };
 
-    }
+    function init(){
+        var initFunctionList = Object.keys(bootSequence);
 
-    /** Find the next bootstep and go run that */
-    function initNext() {
-        console.debug('Bootstep ' + bootStep + ' completed');
-
-        bootStep++;
-        init();
-    }
-
-    /** (global) renders a plugin in the main div */
-    showPlugin = function(callsign) {
-        if (plugins[ callsign ] === undefined)
+        // check if we are done
+        if (bootStep > initFunctionList.length-1)
             return;
 
-        if (activePlugin !== undefined && plugins[ activePlugin ] !== undefined)
-            plugins[ activePlugin ].close();
 
-        document.getElementById('main').innerHTML = '';
-        plugins[ callsign ].render();
-        activePlugin = callsign;
-    };
+        // else start the boot function
+        bootSequence[ initFunctionList[ bootStep ] ]( (delayInMs, retryInMs) => {
 
-    /** (global) refresh current active plugin */
-    renderCurrentPlugin = function() {
-        document.getElementById('main').innerHTML = '';
-        plugins[ activePlugin ].render();
-    };
+            if (delayInMs === null && retryInMs !== undefined) {
+                console.debug(`Retrying bootstep ${bootStep} in ${delayInMs} ms`);
+                setTimeout(init, retryInMs);
+            }
 
-    function mergeObjects(a, b){
-        for (var attrname in b) {
-            console.log('Merging: ' + attrname);
-            a[attrname] = b[attrname];
-        }
+            else if (delayInMs !== undefined) {
+                console.debug(`Bootstep ${bootStep} completed, starting next in ${delayInMs} ms`);
+                bootStep++;
+                setTimeout(init, delayInMs);
+            }
+
+            else {
+                console.debug(`Bootstep ${bootStep} completed, starting next`);
+                bootStep++;
+                init();
+            }
+
+        });
     }
+
+    /** (global) navigate to other screen */
+    navigate = function(name, options) {
+        routes[ name ].render(options)
+        window.location.hash = name;
+    };
+
+    setOption = function(newOption) {
+        // add new option
+        let newOptionKey = Object.keys(newOption);
+        options[ newOptionKey ] = newOption[ newOptionKey ];
+
+
+        // construct string and append to the current window location
+        let searchStr = '';
+        let optionList = Object.keys(options);
+
+        if (optionList.length > 0)
+            searchStr += '?';
+
+        for (var i=0; i<optionList.length; i++) {
+            if (options[ optionList[i] ] === undefined)
+                continue;
+
+            if (searchStr !== '?')
+                searchStr += '&';
+
+            searchStr += `${optionList[i]}=${options[ optionList[i] ]}`;
+        }
+
+        window.location.search = searchStr;
+    };
 
     init();
 

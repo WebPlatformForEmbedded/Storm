@@ -2,19 +2,16 @@
  * WPETestFramework WPEFramework functionality
  */
 
-class Framework extends BasePlugin {
+class Framework extends Base {
     constructor() {
         super();
-        this.priority = 2;
-        this.depends = ['base'];
 
-        // lets make key definitions global
-        window.up       = '0x0001'; 
-        window.down     = '0x0002'; 
-        window.right    = '0x0004'; 
-        window.left     = '0x0003'; 
-        window.enter    = '0x002B';
-        window.esc      = '0x0009';
+        this.up       = '0x0001';
+        this.down     = '0x0002';
+        this.right    = '0x0004';
+        this.left     = '0x0003';
+        this.enter    = '0x002B';
+        this.esc      = '0x0009';
 
         // expose functions
         this.key                    = this.key.bind(this);
@@ -62,7 +59,7 @@ class Framework extends BasePlugin {
     keyPress(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${host}:80/Service/RemoteControl/keymap/Press`,
+            url     : `http://${this.host}:80/Service/RemoteControl/keymap/Press`,
             body    : data,
             method  : 'PUT',
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -74,7 +71,7 @@ class Framework extends BasePlugin {
     keyRelease(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${host}:80/Service/RemoteControl/keymap/Release`,
+            url     : `http://${this.host}:80/Service/RemoteControl/keymap/Release`,
             body    : data,
             method  : 'PUT',
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -86,7 +83,7 @@ class Framework extends BasePlugin {
     setUrl(url, cb) {
         var data = JSON.stringify({ 'url' : url });
         var opts = {
-            url     : `http://${host}:80/Service/WebKitBrowser/URL`,
+            url     : `http://${this.host}:80/Service/WebKitBrowser/URL`,
             method  : 'POST',
             body    : data,
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -97,7 +94,7 @@ class Framework extends BasePlugin {
     setYouTubeUrl(url, cb) {
         var data = JSON.stringify({ 'url' : url });
         var opts = {
-            url     : `http://${host}:80/Service/YouTube/URL`,
+            url     : `http://${this.host}:80/Service/YouTube/URL`,
             method  : 'POST',
             body    : data,
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -116,7 +113,7 @@ class Framework extends BasePlugin {
     // activate/deactivate a plugin using the action call
     controllerActionCall(options, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/Controller/${options.action}/${options.plugin}`,
+            url     : `http://${this.host}:80/Service/Controller/${options.action}/${options.plugin}`,
             method  : 'PUT',
         };
         this.http(opts, cb);
@@ -179,7 +176,7 @@ class Framework extends BasePlugin {
     // get the plugin data
     getPlugin(plugin, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/${plugin}`,
+            url     : `http://${this.host}:80/Service/${plugin}`,
             method  : 'GET',
         };
         this.http(opts, cb);
@@ -188,7 +185,7 @@ class Framework extends BasePlugin {
     // get list of plugins
     getPlugins(x, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/Controller/Plugins`,
+            url     : `http://${this.host}:80/Service/Controller/Plugins`,
             method  : 'GET',
         };
         this.http(opts, cb);
@@ -215,7 +212,7 @@ class Framework extends BasePlugin {
     // suspend a plugin, note: only works on select plugins (e.g. browser and netflix)
     suspendPlugin(plugin, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/${plugin}/Suspend`,
+            url     : `http://${this.host}:80/Service/${plugin}/Suspend`,
             method  : 'POST'
         };
         this.http(opts, cb);
@@ -224,7 +221,7 @@ class Framework extends BasePlugin {
     // resume a plugin, note: only works on select plugins (e.g. browser and netflix)
     resumePlugin(plugin, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/${plugin}/Resume`,
+            url     : `http://${this.host}:80/Service/${plugin}/Resume`,
             method  : 'POST'
         };
         this.http(opts, cb);
@@ -233,14 +230,14 @@ class Framework extends BasePlugin {
     // reboot using Frameworks reboot API
     reboot(x, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/Controller/Harakiri`,
+            url     : `http://${this.host}:80/Service/Controller/Harakiri`,
             method  : 'PUT'
         };
         this.http(opts, cb);
     }
 
     screenshot(x, cb) {
-        var url = `http://${host}:80/Service/Snapshot/Capture?` + moment().valueOf();
+        var url = `http://${this.host}:80/Service/Snapshot/Capture?` + moment().valueOf();
         var a = new Image();
         a.src = url;
 
@@ -354,7 +351,7 @@ class Framework extends BasePlugin {
 
     requestProvisioning(x, cb) {
         var opts = {
-            url     : `http://${host}:80/Service/Provisioning`,
+            url     : `http://${this.host}:80/Service/Provisioning`,
             method  : 'PUT'
         };
         this.http(opts, cb);

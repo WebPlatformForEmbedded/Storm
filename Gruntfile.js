@@ -4,6 +4,9 @@
  */
 
 var scripts = [],
+    tests = {},
+    testScripts = [],
+    readline = require('readline'),
     fs = require('fs'),
     path = require('path'),
     shell = require('shelljs');
@@ -65,7 +68,7 @@ module.exports = function(grunt) {
             options: {
                 'esversion': 6
             }
-        },   
+        },
         uglify: {
             main: {
                 files: {
@@ -122,7 +125,7 @@ module.exports = function(grunt) {
         shell.cd(layoutDir);
         shell.ls('*.js').forEach( function(p) {
             scripts.push('js/layout/' + p);
-        });        
+        });
 
         shell.cd(cwd);
 
@@ -144,36 +147,104 @@ module.exports = function(grunt) {
 
     //custom task to load the tests
     grunt.task.registerTask('loadTests', 'Loads the tests that can be run', function() {
-
         //reset our globals
-        var cwd = process.cwd();
-        var jsDir = path.join( cwd, 'src', 'js');
-        var testsDir = path.join(jsDir, 'tests');
-        var tests = [];
-
+        let cwd = process.cwd();
+        let jsDir = path.join( cwd, 'src', 'js');
+        let testsDir = path.join(jsDir, 'tests');
 
         shell.cd(testsDir);
         shell.ls('*.js').forEach( function(p) {
-            tests.push( JSON.stringify({ 'name' : p, 'file' : 'js/tests/' + p }, null, 4) );
-        }); 
+            tests[ p ] = { 'name' : p, 'file' : 'js/tests/' + p };
+        });
 
         shell.cd(cwd);
 
-        console.log(`Found ${tests.length} tests: \n `);
+        console.log(`Found ${Object.keys(tests).length} tests \n `);
 
-        // write debug tests.json
-        var testsJson = path.join(jsDir, 'tests.json');
-        console.log('Writing to tests json: ', testsJson);
-        grunt.file.write( testsJson, JSON.stringify(tests, null, 4) );
+        grunt.config.set('tests', tests);
+    });
 
-        //set the files we just read
-        var testScripts = [];
-        for (var i=0; i<tests.length; i++) {
-            testScripts.push('src/' + tests[i]);
+    grunt.task.registerTask('parseTests', 'Parse the contents of the tests that can be run', function() {
+        let cwd = process.cwd();
+        let srcDir = path.join( cwd, 'src');
+        let testList = Object.keys(tests);
+        let done = this.async();
+        let testIdx = 0;
+
+        // this is a line by line text parsing function
+        // since we cannot import the test natively, that would trip unresolved function errors and
+        // force us to load the entire framework just for creating a manifest
+        // so its rudimentary, but hopefully effective.
+        function readTest(pathToTest, cb) {
+            let _t = tests[ testList[ testIdx ] ];
+            let filePath = path.join(srcDir, _t.file);
+
+            const rl = readline.createInterface({
+                input: fs.createReadStream( filePath ),
+                crlfDelay: Infinity
+            });
+
+            rl.on('line', (line) => {
+                //console.log('reading :: ' + line);
+
+                // title and description is already filled in, ignore
+                // added this because the description is used in the individual steps as well
+                if (_t.title !== undefined && _t.description !== undefined)
+                    return;
+
+                // see if it has a seperator
+                let splittedLine = line.split(':');
+
+                // it has a key / value
+                if (splittedLine.length > 0) {
+                    // search for our words test or description
+                    let key = splittedLine[0];
+                    let value = splittedLine[1];
+
+                    if ( key.search(/"title"/i) !== -1 || key.search(/'title'/i) !== -1)  {
+                        _t.title = findTextString(value);
+                    }
+
+                    if ( key.search(/"description"/i) !== -1 || key.search(/'description'/i) !== -1)  {
+                        _t.description = findTextString(value);
+                    }
+                }
+            });
+
+            rl.on('close', () => {
+                console.log('Succesfully parsed: ' + _t.name);
+
+                testIdx++;
+
+                if (testIdx >= testList.length-1)
+                    done();
+                else
+                    readTest();
+            });
+
         }
 
-        grunt.config.set('tests', testScripts);
-    });    
+        // small test parser, finds the starting " or ' and returns the text inbetween the ending " or '
+        function findTextString(text) {
+            let startIdx = text.search("'") || text.search('"');
+            let curStr = text.substr(startIdx +1, text.length);
+            let endIdx = curStr.search("'") || curStr.search('"');
+            return curStr.substr(0, endIdx);
+        }
+
+        readTest();
+    });
+
+    grunt.task.registerTask('writeTestManifest', 'Write the tests.json manifest file', function() {
+        var cwd = process.cwd();
+        var jsDir = path.join( cwd, 'src', 'js');
+        var testsDir = path.join(jsDir, 'tests');
+
+        // write debug tests.json
+        let testsJson = path.join(jsDir, 'tests.json');
+        console.log('Writing to tests json: ', testsJson);
+        grunt.file.write( testsJson, JSON.stringify(tests, null, 4) );
+    });
 
     //grunt contrib packages
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -193,7 +264,7 @@ module.exports = function(grunt) {
 
     //add the tasks
     grunt.registerTask('test', ['jshint']); //just runs jshint to validate all the javascript
-    grunt.registerTask('compile', ['loadTests', 'loadScripts', 'test']);
+    grunt.registerTask('compile', ['loadScripts', 'loadTests', 'parseTests', 'writeTestManifest', 'test']);
     grunt.registerTask('release', ['compile', 'clean', 'copy', 'concat', 'uglify']); //generates the build
 
     grunt.registerTask('default', ['compile']);

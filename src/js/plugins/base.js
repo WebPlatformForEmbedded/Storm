@@ -3,10 +3,10 @@
  */
 
 /** Device info plugin provides device specific information, such as cpu usage and serial numbers */
-class Base extends BasePlugin {
+class Base extends Core {
     constructor() {
         super();
-    
+
         this.dummy = this.dummy.bind(this);
         this.sleep = this.sleep.bind(this);
         this.get = this.get.bind(this);
@@ -42,7 +42,7 @@ class Base extends BasePlugin {
         var method = options.method;
         var body = options.body;
 
-        var xmlHttp = new XMLHttpRequest();      
+        var xmlHttp = new XMLHttpRequest();
         //console.log(method + ' ' + URL + (body!==null ? '\n' + body : ''));
 
         // iterate over the headers provided and set them individually. Unfortunately node accepted an object, xmlhttp request individual sets

@@ -766,3 +766,12 @@ input[type=checkbox] {
     -moz-transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out;
     -webkit-transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
+
+.messagebox {
+    margin: 20px;
+    background-color: #222222;
+}
+
+.hidden {
+    display: none;
+}

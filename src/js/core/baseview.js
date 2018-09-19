@@ -3,7 +3,7 @@
 
 class BaseView {
     constructor() {
-
+    	this.mainDiv = document.getElementById('main');
     }
 
     render() {

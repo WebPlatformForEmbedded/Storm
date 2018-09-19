@@ -57,4 +57,4 @@ class AttachToLogs {
 }
 
 window.plugins = window.plugins || {};
-window.plugins.Framework = Framework;
+window.plugins.AttachToLogs = AttachToLogs;

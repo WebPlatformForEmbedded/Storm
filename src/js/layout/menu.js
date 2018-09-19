@@ -3,10 +3,9 @@
 class Menu extends BaseView {
     constructor() {
     	super()
-    	self = this;
-    	self.top            = document.getElementById('top');
-        self.mainDiv 		= document.getElementById('main');
-        self.router 		= undefined;
+    	this.top            = document.getElementById('top');
+        this.mainDiv 		= document.getElementById('main');
+        this.menuItems = ['Device', 'Tests', 'Results'];
 
         var bodyEl = document.getElementsByTagName('body')[0];
 
@@ -50,13 +49,11 @@ class Menu extends BaseView {
             }
         };
 
-
-        var menuItems = ['Device', 'Test', 'Results'];
         var activeMenuItem = undefined;
         var ul = document.createElement('ul');
 
-        for (var i = 0; i<menuItems.length; i++) {
-            var menu = menuItems[i];
+        for (var i = 0; i<this.menuItems.length; i++) {
+            var menu = this.menuItems[i];
 
             var li = document.createElement('li');
             li.id = "item_" + menu;
@@ -85,8 +82,8 @@ class Menu extends BaseView {
             }
         }
 
-        this.router.setRoute('/' + menuItem);
-    }    
+        navigate(menuItem.toLowerCase());
+    }
 
     showMenu() {
         var menu = document.getElementById('menu');
@@ -96,7 +93,7 @@ class Menu extends BaseView {
         } else {
             menu.style.left = '0px';
         }
-    }    
+    }
 }
 
 window.views = window.views || {};

@@ -1,12 +1,13 @@
 [
     "js/conf.js",
     "js/core/application.js",
-    "js/core/baseplugin.js",
     "js/core/baseview.js",
     "js/core/core.js",
     "js/plugins/base.js",
     "js/plugins/framework.js",
     "js/plugins/remoteinspector.js",
-    "js/layout/landing.js",
-    "js/layout/menu.js"
+    "js/layout/device.js",
+    "js/layout/menu.js",
+    "js/layout/test.js",
+    "js/layout/tests.js"
 ]
