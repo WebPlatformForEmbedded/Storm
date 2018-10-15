@@ -113,6 +113,25 @@ class Base extends Core {
             throw new Error(`${x} is not an Object`);
     }
 
+    loadTest(url, cb) {
+        get(url, (resp) => {
+            if (resp.error) {
+                cb(resp);
+                return;
+            }
+
+            var test;
+            try {
+                test = eval(resp.body);
+            } catch(e) {
+                cb({ 'error' : e.message });
+                return;
+            }
+
+            cb({ 'test' :  test });
+        });
+    }
+
     startHttpServer(requestFunction, cb) {
         throw Error('This is no logner supported in the web version, please point your test to the webserver instead');
     }

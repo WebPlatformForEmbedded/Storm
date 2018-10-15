@@ -87,6 +87,9 @@
 
             wtf = new window.plugins.Framework();
 
+            // this is required because non of the functions in the tests are pre-fixed, so all has to be global
+            mergeObjects(window, wtf);
+
             cb();
         },
 
@@ -167,7 +170,8 @@
             if (hash !== undefined && routes[ hash ] !== undefined) {
                 routes[ hash ].render();
             } else {
-                views.landing.render();
+                // no route found, go to device onboarding page.
+                views.Device.render();
             }
 
             cb();
@@ -205,9 +209,16 @@
         });
     }
 
+    function mergeObjects(a, b){
+        for (var attrname in b) {
+            //console.log('Merging: ' + attrname);
+            a[attrname] = b[attrname];
+        }
+    }
+
     /** (global) navigate to other screen */
     navigate = function(name, options) {
-        routes[ name ].render(options)
+        routes[ name ].render(options);
         window.location.hash = name;
     };
 

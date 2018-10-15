@@ -16,18 +16,63 @@ class Test extends BaseView {
 		let _t = wtf.tests[ _testName ];
 
 		if (_t === undefined) {
-			this.mainDiv.innerHTML = '<div class="title grid__col grid__col--8-of-8">Test not found. Game over, insert coin to continue.</div>';
+			navigate('tests');
 			return;
 		}
 
-		var jsElm = document.createElement('script');
-		jsElm.type = 'application/javascript';
-		jsElm.src = _t.file;
-		document.body.appendChild(jsElm);
+		wtf.loadTest(_t.file, (resp) => {
+			if (resp.error) {
+				this.mainDiv.innerHTML = 'Error loading test';
+				return;
+			}
 
-		console.log(test);
+			if (resp.test) {
 
-		// render title / description
+				var test = resp.test;
+
+				// render title / description
+				this.mainDiv.innerHTML = `
+					<div class="title grid__col grid__col--4-of-8">Test name</div>
+					<div class="text grid__col grid__col--4-of-8">${test.title}</div>
+
+					<div class="title grid__col grid__col--4-of-8">Description</div>
+					<div class="text grid__col grid__col--4-of-8">${test.description}</div>
+
+					<div class="grid__col grid__col--7-of-8">
+						<div class="table">
+							<div class="row header">
+								<div class="cell">
+									Step
+								</div>
+								<div class="cell">
+									Result
+								</div>
+							</div>`;
+
+				var _steps = Object.keys(test.steps);
+
+
+				for (var i=0; i<_steps.length; i++) {
+					var _step = test.steps[ _steps[ i ] ];
+
+					this.mainDiv.innerHTML += `
+						<div id="" class="row">
+							<div class="cell">
+								${_step.description}
+							</div>
+							<div class="cell">
+								Not Started
+							</div>
+						</div>`;
+				}
+
+				this.mainDiv.innerHTML += '</div></div>'
+
+				console.log(resp.test)
+			}
+		});
+
+
 
 		// render table with steps and unfilled results
 
