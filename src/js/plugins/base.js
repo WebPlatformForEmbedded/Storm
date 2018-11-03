@@ -3,9 +3,9 @@
  */
 
 /** Device info plugin provides device specific information, such as cpu usage and serial numbers */
-class Base extends Core {
+class Base {
     constructor() {
-        super();
+        this.host = null;
 
         this.dummy = this.dummy.bind(this);
         this.sleep = this.sleep.bind(this);

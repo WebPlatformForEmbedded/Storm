@@ -12,9 +12,9 @@ class Core {
 		this.version = null;
 		this.deviceid = null;
 		this.devicename = null;
-		this.host = null;
 		this.dummyMode = false;
 		this.tests = [];
+		this.worker = null;
 
 		// public
 		this.activateDevice = this.activateDevice.bind(this);
@@ -83,8 +83,12 @@ class Core {
 	/**
 	 * Run spawns a webworker task.js which will execute the task selected
 	 */
-	run(test, params) {
 
+	run(test, updateProgressCb) {
+		this.worker = new Worker('js/task/task.js');
+        this.worker.onmessage = (message) => {
+            console.log('Worker got message: ' + message);
+        };
 	}
 
 	// Getters

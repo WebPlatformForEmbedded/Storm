@@ -73,11 +73,26 @@
             cb();
         },
 
-        'loadcore' : function(cb) {
+        'loadcore' : function() {
+            /*
+             * Load core plugin for main framework execution
+             */
+
+             if (window.classes == undefined || window.classes.Core === undefined) {
+                cb(null, 2000);
+                return;
+            }
+
+            wtf = new window.Classes.Core();
+            mergeObjects(window, wtf);
+
+        },
+
+        'loadplugins' : function(cb) {
             /*
              * Load base & framework plugin for basic communication with WPE Framework
              */
-            console.debug('Load core, base & framework plugin');
+            console.debug('Load base & framework plugin');
 
             // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
             if (window.plugins == undefined || window.plugins.Framework === undefined) {
@@ -85,10 +100,10 @@
                 return;
             }
 
-            wtf = new window.plugins.Framework();
+            let plugins = new window.plugins.Framework();
 
             // this is required because non of the functions in the tests are pre-fixed, so all has to be global
-            mergeObjects(window, wtf);
+            mergeObjects(window.wtf, plugins);
 
             cb();
         },

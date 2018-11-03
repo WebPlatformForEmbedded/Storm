@@ -5,93 +5,36 @@
  *
  */
 /*jslint esnext: true*/
-/*jslint node: true*/
+
+     /*
+        Task.js stages
+         - init load Framework and once ready send initComplete message
+         - Send test name, reports on test progress and result
+     */
 
 const DEFAULT_TIMEOUT = 5 * 60 * 1000;
 
 const moment = require('moment');
-const assert = require('assert');
-const readline = require('readline');
+//const assert = require('assert');
 
-var git = false;
 var verbose = false;
 var taskId;
 
-/*
-
-            // sort by priority, make sure we load the lower priorities first
-            pluginList.sort(function(a, b) {
-                return parseFloat(a.priority) - parseFloat(b.priority);
-            });
-
-            for (let i=0; i<pluginList.length; i++) {
-                var pluginName = fetchedPlugins[i].callsign;
-                var pluginClass = fetchedPlugins[i].classname;
-
-                // try to init the plugin
-                if (pluginClasses[ pluginClass ] !== undefined) {
-                    console.debug('Initializing plugin ' + pluginName);
-                    plugins[ pluginName ] = new pluginClasses[ pluginClass ](fetchedPlugins[i]);
-                } else {
-                    console.debug('Unsupported plugin: ' + pluginName);
-                }
-
-                if (i===fetchedPlugins.length-1)
-                    initNext();
-            }      
-
-*/
-
-if (!process.connected)
-    console.warn('Warning! You are running the task runner directly without the WPETestFramework agent, this is experimental and mileage may vary.');
-
-// make sure we stop the task if the agent stops/dies
-process.on('disconnect', function() {
-  process.exit();
-});
-
 function log(event, message, cb){
-    if (cb === undefined && typeof message === 'function') { cb = message; message = undefined; }
+    if (cb === undefined && typeof message === 'function') { cb = message; message = undefined; }    
     var msg = message !== undefined ? message : '';
 
     if (msg instanceof Object) msg = JSON.stringify(msg);
-    if (verbose === true && !process.connected) console.log(`${event} \t ${JSON.stringify(msg)}`);
+    if (verbose === true) console.log(`${event} \t ${JSON.stringify(msg)}`);
 
     // bubble up message to parent process
-    if (process.connected === true) {
-        process.send({ 'event' : event,  'msg' : message }, cb);
-    } else {
-        if(typeof cb === 'function') cb();
-    }
+    postMessage({ 'event' : event,  'msg' : message });
+
+    if (cb !== undefined)
+        cb();
 }
 
-// process arguments
-var helpmsg = 'WPETestFramework Task Runner - 2017 (c) Metrological\n';
-helpmsg += ' usage: node task.js (options)\n\n';
-helpmsg += ' options: \n';
-helpmsg += ' -h, --help             this help  message\n';
-helpmsg += ' -t <test>              execute test <test>\n';
-helpmsg += ' -v                     enable verbose logging to console.log (only use when running directly)\n';
-helpmsg += ' --host                 set the IP of the host\n';
-helpmsg += ' --serverip             set the IP of the server\n';
-helpmsg += ' --devicetype           set the type of device (must match targets.js)\n';
-helpmsg += '\n NOTE: This task runner is not meant to be run standalone and should be executed as a child process from WPETestFramework core\n';
-helpmsg += "That said, if you know what you're doing, enjoy!\n";
-
-var argv = require('minimist')(process.argv.slice(2));
-log('task_init');
-
-if (( argv.h !== undefined || argv.help !== undefined) || (argv.t === undefined)) { console.log(helpmsg); process.exit(); }
-
-if (argv.v !== undefined) verbose=true;
-if (argv.host !== undefined) host = argv.host;
-if (argv.server !== undefined) server = argv.server;
-
-var test = argv.t !== undefined ? argv.t : null;
-
-const devices = require('./targets.js').devices;
-this.devicetype = devicetype = argv.devicetype;
-
+// load framework
 function mergeObjects(a, b){
     for (var attrname in b) {
         //console.log('Merging: ' + attrname);
@@ -105,40 +48,18 @@ function globalize(file){
     mergeObjects(global, o);
 }
 
+//importScripts('js/core/core.js');
+
+
+/*
 globalize('./base.js');
 globalize('./dial.js');
 globalize('./framework.js');
 globalize('./remoteinspector.js');
 globalize('./ssh.js');
 globalize('./webdriver.js');
+*/
 this.task = task = undefined;
-
-// machine specific
-if (devicetype === 'horizon') {
-    globalize('./horizon.js');
-    globalize('./telnet.js');
-}
-
-// global function to call when test is not applicable
-var taskIsNA = false;
-global.NotApplicable = function (reason) {
-    taskIsNA = true;
-    log('task_notapplicable', reason, () => {
-        process_end();
-    });
-}
-
-try {
-    task = require('../tests/' + test + '.js');
-} catch (e) {
-    if (taskIsNA !== true) {
-        log('task_error', '' + e, () => {
-            process.exit(1);
-        });
-    }
-}
-
-if (task === undefined || task.steps === undefined) { process_end(1); return; }
 
 /******************************************************************************/
 /*****************************       INIT        ******************************/
@@ -151,52 +72,72 @@ var timedOut = false;
 var processEndRequested = false;
 
 // Parent process messages
-if (process.connected === true){
-    process.on('message', (message) => {
-        if (message.type === 'step_user_response'){
-            var body = message.body;
-            userResponse(body.step, body.result, body.response);
-        }
-
-    });
-}
-
-if (task && task.extends !== undefined){
-    try {
-        var parentTest = require(`../tests/${task.extends}`);
-        var extendSteps = task.steps;
-        task.steps = parentTest.steps;
-        mergeObjects(task.steps, extendSteps);
-    } catch (e) {
-        log('task_error', 'Could not load task to extend, task file not found', () => {
-            process.exit(1);
-        });
+onmessage = (message) => {
+    if (message.type === 'step_user_response'){
+        var body = message.body;
+        userResponse(body.step, body.result, body.response);
     }
+
+    if (message.type === 'load_test') {
+        initTest(message.body);
+    }
+};
+
+// global function to call when test is not applicable
+var taskIsNA = false;
+global.NotApplicable = function (reason) {
+    taskIsNA = true;
+    log('task_notapplicable', reason, () => {
+        close();
+    });
 }
 
-if (task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
-    getPlugins(null, (response) => {
-        try {
-            var responseObj = JSON.parse(response.body);
-            var plugins = responseObj.plugins;
-            var enabledPlugins = [];
-            for (var i=0; i<plugins.length; i++) {
-                enabledPlugins.push(plugins[i].callsign);
-            }
+function initTest(testName) {
 
-            for (var j=0; j<task.requiredPlugins.length; j++) {
-                if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
-                    NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
-                } else if (j === task.requiredPlugins.length-1) {
-                    startTask();
-                }
-            }
-        } catch(e) {
-            process_end('Failed to retrieve plugins from Framework while checking requiredPlugins');
+    // Load test
+    try {
+        task = importScripts('js/tests/' + testName)
+    } catch (e) {
+        if (taskIsNA !== true) {
+            process_end('Error, could not load test ' + e);
         }
-    });
-} else {
-    startTask();
+    }
+
+    if (task && task.extends !== undefined){
+        try {
+            var parentTest = importScripts('js/tests/' + testName);
+            var extendSteps = task.steps;
+            task.steps = parentTest.steps;
+            mergeObjects(task.steps, extendSteps);
+        } catch (e) {
+            process_end('Could not load test to extend, task file not found');
+        }
+    }
+
+    if (task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
+        getPlugins(null, (response) => {
+            try {
+                var responseObj = JSON.parse(response.body);
+                var plugins = responseObj.plugins;
+                var enabledPlugins = [];
+                for (var i=0; i<plugins.length; i++) {
+                    enabledPlugins.push(plugins[i].callsign);
+                }
+
+                for (var j=0; j<task.requiredPlugins.length; j++) {
+                    if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
+                        NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
+                    } else if (j === task.requiredPlugins.length-1) {
+                        startTask();
+                    }
+                }
+            } catch(e) {
+                process_end('Failed to retrieve plugins from Framework while checking requiredPlugins');
+            }
+        });
+    } else {
+        startTask();
+    }
 }
 
 /******************************************************************************/
@@ -225,7 +166,7 @@ function timedout(step) {
 function process_end(error) {
     // fail safe
     if (processEndRequested === true)
-        process.exit(1);
+        close(1);
     processEndRequested = true;
 
     // clear the timeout, since we are exiting
@@ -242,26 +183,15 @@ function process_end(error) {
                 log('task_cleanup_result', result);
 
             log('task_completed', () => {
-                process.exit(1);
+                close(1);
             });
         });
     } else {
         log('task_completed', () => {
-            process.exit(error !== undefined ? 1 : 0);
+            close(error !== undefined ? 1 : 0);
         });
     }
 }
-
-/*
- * Because we can't catch all errors catch the uncaught and still try to do the cleanup from here. I know, dirty.
- */
-process.on('uncaughtException', (e) => {
-    var err = e.toString() + ' \n';
-    err += e.stack;
-
-    process_end('uncaughtException: ' + err);
-});
-
 
 function lookForNextStep() {
     clearTimeout(timer);
@@ -447,25 +377,6 @@ function askUser(stepIdx) {
     var _tm = currentStep.timeout !== undefined ? currentStep.timeout * 1000 : DEFAULT_TIMEOUT;
     timer = setTimeout(timedout, _tm, curIdx);
 
-    // fake it if we are not connected
-    if (!process.connected){
-        //setTimeout(userResponse, 2 * 1000, 'FAIL');
-
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-
-        var Q = '\n\   Please provide (S)uccess, (F)ail or (C)ancel: ';
-        rl.question(currentStep.user + Q, (response) => {
-            var res = false;
-            if (response === 'S')
-                res = true;
-
-            validateStep(curIdx, res);
-            rl.close();
-        });
-    }
 }
 
 function userResponse(step, result, messageFromUser){
