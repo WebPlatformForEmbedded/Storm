@@ -73,7 +73,7 @@
             cb();
         },
 
-        'loadcore' : function() {
+        'loadcore' : function(cb) {
             /*
              * Load core plugin for main framework execution
              */
@@ -83,8 +83,9 @@
                 return;
             }
 
-            wtf = new window.Classes.Core();
+            wtf = new window.classes.Core();
             mergeObjects(window, wtf);
+            cb();
 
         },
 
@@ -95,7 +96,7 @@
             console.debug('Load base & framework plugin');
 
             // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
-            if (window.plugins == undefined || window.plugins.Framework === undefined) {
+            if (window.plugins == undefined || window.plugins.Framework === undefined || window.plugins.Base === undefined) {
                 cb(null, 2000);
                 return;
             }
@@ -103,7 +104,7 @@
             let plugins = new window.plugins.Framework();
 
             // this is required because non of the functions in the tests are pre-fixed, so all has to be global
-            mergeObjects(window.wtf, plugins);
+            mergeObjects(window, plugins);
 
             cb();
         },
@@ -115,7 +116,7 @@
 
             console.debug('Loading tests manifest');
 
-            wtf.get('js/tests.json', (resp) => {
+            get('js/tests.json', (resp) => {
                 if (resp.error !== undefined)
                     console.error('Error loading tests.json from server, no tests are available');
 

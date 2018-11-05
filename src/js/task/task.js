@@ -6,33 +6,10 @@
  */
 /*jslint esnext: true*/
 
-     /*
-        Task.js stages
-         - init load Framework and once ready send initComplete message
-         - Send test name, reports on test progress and result
-     */
-
 const DEFAULT_TIMEOUT = 5 * 60 * 1000;
-
-const moment = require('moment');
-//const assert = require('assert');
 
 var verbose = false;
 var taskId;
-
-function log(event, message, cb){
-    if (cb === undefined && typeof message === 'function') { cb = message; message = undefined; }    
-    var msg = message !== undefined ? message : '';
-
-    if (msg instanceof Object) msg = JSON.stringify(msg);
-    if (verbose === true) console.log(`${event} \t ${JSON.stringify(msg)}`);
-
-    // bubble up message to parent process
-    postMessage({ 'event' : event,  'msg' : message });
-
-    if (cb !== undefined)
-        cb();
-}
 
 // load framework
 function mergeObjects(a, b){
@@ -48,8 +25,15 @@ function globalize(file){
     mergeObjects(global, o);
 }
 
-//importScripts('js/core/core.js');
+// dependencies
+importScripts('../lib/moment.min.js');
 
+// load message bus
+importScripts('../core/messages.js');
+
+// setup our base messages
+var _initReady = new InitReady();
+var taskMessage = new TaskMessage();
 
 /*
 globalize('./base.js');
@@ -70,30 +54,29 @@ var maxSteps, steps;
 var timer;
 var timedOut = false;
 var processEndRequested = false;
+var stepMessage;
+var stepList;
+var repeatMessage;
 
 // Parent process messages
 onmessage = (message) => {
-    if (message.type === 'step_user_response'){
-        var body = message.body;
-        userResponse(body.step, body.result, body.response);
+    if (message.type() === 'stepMessage' && message.state() === 'response'){
+        userResponse(message);
     }
 
-    if (message.type === 'load_test') {
-        initTest(message.body);
+    if (message.type() === 'loadTest') {
+        initTest(message.testName());
     }
 };
 
 // global function to call when test is not applicable
 var taskIsNA = false;
-global.NotApplicable = function (reason) {
+var NotApplicable = function (reason) {
     taskIsNA = true;
-    log('task_notapplicable', reason, () => {
-        close();
-    });
+    taskMessage.notApplicable(reason);
 }
 
 function initTest(testName) {
-
     // Load test
     try {
         task = importScripts('js/tests/' + testName)
@@ -151,16 +134,31 @@ function startTask() {
     stepList = Object.keys(task.steps);
     maxSteps = stepList.length;
 
-    log('step_count', maxSteps-1);
-    log('task_start');
+    taskMessage.stepCount(maxSteps-1);
+    taskMessage.start();
 
     lookForNextStep();
 }
 
 function timedout(step) {
-    log('task_timedout', { 'step' : step } ,  () => {
-        process_end('Task timed out');
+    taskMessage.timedout();
+    checkAndCleanup( () => {
+        taskMessage.completed();
+        setTimeout(close, 1000);
     });
+}
+
+function checkAndCleanup(cb) {
+    if (task.cleanup !== undefined) {
+        task.cleanup( (result) => {
+            taskMessage.cleanup(result);
+            taskMessage.completed();
+
+            setTimeout(cb, 1000);
+        });
+    } else {
+        cb();
+    }
 }
 
 function process_end(error) {
@@ -173,23 +171,17 @@ function process_end(error) {
     clearTimeout(timer);
 
     if (error !== undefined)
-        log('task_error', '' + error);
+        taskMessage.error(error);
 
     // check if task has a cleanup function defined, run it if we encountered an error
-    if (error !== undefined && task && task.cleanup !== undefined) {
-        log('task_cleanup');
-        task.cleanup( (result) => {
-            if (result !== undefined)
-                log('task_cleanup_result', result);
-
-            log('task_completed', () => {
-                close(1);
-            });
-        });
+    if (error !== undefined) {
+        checkAndCleanup( () => {
+            taskMessage.completed();
+            setTimeout(close, 1000);
+        });        
     } else {
-        log('task_completed', () => {
-            close(error !== undefined ? 1 : 0);
-        });
+        taskMessage.completed();
+        setTimeout(close, 1000);
     }
 }
 
@@ -199,9 +191,8 @@ function lookForNextStep() {
     var nextIdx = curIdx+1;
     if (nextIdx >= maxSteps) {
         // we've made it!
-        log('task_success', () => {
-            process_end();
-        });
+        taskMessage.success();
+        process_end();
         return;
     }
 
@@ -209,30 +200,26 @@ function lookForNextStep() {
 
     // GOTO Repeat handling
     if (nextStep.goto !== undefined){
+
+        repeatMessage = new RepeatMessage(nextIdx, nextIdx, gotoStep);
+
         // look up goto step in the list
         var gotoStep = stepList.indexOf(nextStep.goto);
-
-        var repeatObj = {
-            'step'      : nextIdx,
-            'fromIdx'   : nextIdx,
-            'toIdx'     : gotoStep
-        };
 
         // count based repeat
         if (nextStep.repeat){
             if (nextStep.repeatTotal === undefined)
                 nextStep.repeatTotal = nextStep.repeat;
 
-            repeatObj.repeatCount = nextStep.repeat;
-            repeatObj.repeatTotal = nextStep.repeatTotal;
+            repeatMessage.repeatCount(nextStep.repeat, nextStep.repeatTotal);
             nextStep.repeat -= 1;
 
+            // were done
             if (nextStep.repeat <= 0) {
-                log('step_repeat_done');
+                repeatMessage.done();
                 curIdx+=1;
                 lookForNextStep();
             } else {
-                log('step_repeat', repeatObj);
                 startStep(gotoStep);
             }
         // time based repeat
@@ -246,13 +233,11 @@ function lookForNextStep() {
             nextStep.repeatTimes++;
 
             if (moment().isAfter(nextStep.repeatTimeStamp)){
-                log('step_repeat_done');
+                repeatMessage.done();
                 curIdx+=1;
                 lookForNextStep();
             } else {
-                repeatObj.repeatUntil = nextStep.repeatTimeStamp;
-                repeatObj.repeatTimes = nextStep.repeatTimes;
-                log('step_repeat', repeatObj);
+                repeatMessage.timedRepeat(nextStep.repeatTimeStamp, nextStep.repeatTimes);
                 startStep(gotoStep);
             }
         }
@@ -275,7 +260,12 @@ function startStep(stepIdx) {
     this.previousStep = undefined;
     if (curIdx > 0) this.previousStep = task.steps[ stepList[ curIdx-1 ] ];
 
-    log('step_start', { 'step': curIdx, 'description': this.currentStep.description });
+    if (stepMessage !== undefined)
+        delete stepMessage;
+
+    stepMessage = new StepMessage(curIdx);
+    stepMessage.start();
+
     timedOut = false;
 
     // set timeout
@@ -297,10 +287,10 @@ function startStep(stepIdx) {
     }
 
     function handleResponse (response) {
-    //execFn(currentStep.params, (response) => {
         // results
         task.steps[ stepList [ curIdx ] ].response = response;
-        log('step_response', { 'step': curIdx, 'response' : response });
+
+        stepMessage.response(response);
         validateStep(curIdx, response);
     }
 
@@ -313,14 +303,14 @@ function startStep(stepIdx) {
  * Validate the results of the executed test function
  */
 function validateStep(stepIdx, response) {
-    var result, msg;
+    var isSuccess = false, msg;
     var currentStep = task.steps[ stepList[ stepIdx ] ];
     var expect = currentStep.expect;
 
     // asssert
     if (currentStep.assert !== undefined){
         if (currentStep.assert == response) {
-            result=true;
+            isSuccess = true;
         } else {
             msg = `Step ${stepIdx}: expected ${currentStep.assert} while result was ${response}`;
         }
@@ -328,29 +318,30 @@ function validateStep(stepIdx, response) {
     } else if (currentStep.validate !== undefined && !currentStep.validate instanceof Function){
         // its not a function, we should use assert but what the hell
         if (currentStep.validate == response) {
-            result=true;
+            isSuccess = true;
         } else {
             msg = `Step ${stepIdx}: expected ${currentStep.assert} while result was ${response}`;
         }
     } else if (currentStep.validate !== undefined && currentStep.validate instanceof Function){
         var validateFn = currentStep.validate;
         try {
-            result = validateFn(response);
+            isSuccess = validateFn(response);
         } catch (e) {
             msg = `Error executing validate on step ${stepIdx}: ${e}`;
         }
     // OK if none of the above
     } else {
         // auto approve step, nothing to validate
-        result = true;
+        isSuccess = true;
     }
 
-    log('step_result', { 'step' : stepIdx, 'result' : result === true ? 'SUCCESS' : 'FAIL', 'msg' : msg } );
 
-    if (result !== true) {
-        process_end(msg);
-    } else {
+    if (isSuccess === true) {
+        stepMessage.success(msg);
         lookForNextStep();
+    } else {
+        stepMessage.fail(msg);
+        process_end(msg);
     }
 }
 
@@ -362,16 +353,10 @@ function askUser(stepIdx) {
     curIdx = stepIdx;
     var currentStep = task.steps[ stepList[ curIdx ] ];
 
-    log('step_start', {
-        'step'          : curIdx,
-        'description'   : currentStep.description
-    });
+    stepMessage = new StepMessage(curIdx);
+    stepMessage.start();
 
-    log('step_user_input', {
-        'step' : curIdx,
-        'user'          : currentStep.user,
-        'timeout'       : currentStep.timeout
-    });
+    stepMessage.needUser();
 
     // set timeout
     var _tm = currentStep.timeout !== undefined ? currentStep.timeout * 1000 : DEFAULT_TIMEOUT;
@@ -379,11 +364,13 @@ function askUser(stepIdx) {
 
 }
 
-function userResponse(step, result, messageFromUser){
-    log('step_result', { 'step' : step, 'result' : result, 'msg' : messageFromUser } );
-    if (result !== 'SUCCESS') {
-        process_end(messageFromUser);
+function userResponse(message){
+    if (message.state() !== message.states.success) {
+        process_end(message.response());
     } else {
         lookForNextStep();
     }
 }
+
+// tell parent process we're ready to roll
+_initReady.send();

@@ -43,8 +43,8 @@ class Core {
 
 
 		// normal handling
-		this.host = host;
-		this.getPlugin('DeviceInfo', (resp) => {
+		window.host = host;
+		getPlugin('DeviceInfo', (resp) => {
 			if (resp.error !== undefined) {
 				cb({ 'error': 'Error activating device, could not load DeviceInfo' });
 				return;
@@ -87,7 +87,7 @@ class Core {
 	run(test, updateProgressCb) {
 		this.worker = new Worker('js/task/task.js');
         this.worker.onmessage = (message) => {
-            console.log('Worker got message: ' + message);
+            console.log('Worker got message: ', message.data);
         };
 	}
 

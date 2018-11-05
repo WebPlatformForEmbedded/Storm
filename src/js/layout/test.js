@@ -26,7 +26,7 @@ class Test extends BaseView {
 			return;
 		}
 
-		wtf.loadTest(_t.file, (resp) => {
+		loadTest(_t.file, (resp) => {
 			if (resp.error) {
 				this.mainDiv.innerHTML = 'Error loading test';
 				return;
@@ -86,7 +86,7 @@ class Test extends BaseView {
 				let start_button 		= document.getElementById('start_button');
 				start_button.onclick 	= this.startTest.bind(this);
 
-				console.log(test);
+				console.log(this.test);
 			}
 		});
 

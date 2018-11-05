@@ -59,7 +59,7 @@ class Framework extends Base {
     keyPress(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${this.host}:80/Service/RemoteControl/keymap/Press`,
+            url     : `http://${host}:80/Service/RemoteControl/keymap/Press`,
             body    : data,
             method  : 'PUT',
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -71,7 +71,7 @@ class Framework extends Base {
     keyRelease(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${this.host}:80/Service/RemoteControl/keymap/Release`,
+            url     : `http://${host}:80/Service/RemoteControl/keymap/Release`,
             body    : data,
             method  : 'PUT',
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -83,7 +83,7 @@ class Framework extends Base {
     setUrl(url, cb) {
         var data = JSON.stringify({ 'url' : url });
         var opts = {
-            url     : `http://${this.host}:80/Service/WebKitBrowser/URL`,
+            url     : `http://${host}:80/Service/WebKitBrowser/URL`,
             method  : 'POST',
             body    : data,
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -94,7 +94,7 @@ class Framework extends Base {
     setYouTubeUrl(url, cb) {
         var data = JSON.stringify({ 'url' : url });
         var opts = {
-            url     : `http://${this.host}:80/Service/YouTube/URL`,
+            url     : `http://${host}:80/Service/YouTube/URL`,
             method  : 'POST',
             body    : data,
             headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
@@ -113,7 +113,7 @@ class Framework extends Base {
     // activate/deactivate a plugin using the action call
     controllerActionCall(options, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/Controller/${options.action}/${options.plugin}`,
+            url     : `http://${host}:80/Service/Controller/${options.action}/${options.plugin}`,
             method  : 'PUT',
         };
         this.http(opts, cb);
@@ -176,7 +176,7 @@ class Framework extends Base {
     // get the plugin data
     getPlugin(plugin, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/${plugin}`,
+            url     : `http://${host}:80/Service/${plugin}`,
             method  : 'GET',
         };
         this.http(opts, cb);
@@ -185,7 +185,7 @@ class Framework extends Base {
     // get list of plugins
     getPlugins(x, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/Controller/Plugins`,
+            url     : `http://${host}:80/Service/Controller/Plugins`,
             method  : 'GET',
         };
         this.http(opts, cb);
@@ -212,7 +212,7 @@ class Framework extends Base {
     // suspend a plugin, note: only works on select plugins (e.g. browser and netflix)
     suspendPlugin(plugin, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/${plugin}/Suspend`,
+            url     : `http://${host}:80/Service/${plugin}/Suspend`,
             method  : 'POST'
         };
         this.http(opts, cb);
@@ -221,7 +221,7 @@ class Framework extends Base {
     // resume a plugin, note: only works on select plugins (e.g. browser and netflix)
     resumePlugin(plugin, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/${plugin}/Resume`,
+            url     : `http://${host}:80/Service/${plugin}/Resume`,
             method  : 'POST'
         };
         this.http(opts, cb);
@@ -230,14 +230,14 @@ class Framework extends Base {
     // reboot using Frameworks reboot API
     reboot(x, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/Controller/Harakiri`,
+            url     : `http://${host}:80/Service/Controller/Harakiri`,
             method  : 'PUT'
         };
         this.http(opts, cb);
     }
 
     screenshot(x, cb) {
-        var url = `http://${this.host}:80/Service/Snapshot/Capture?` + moment().valueOf();
+        var url = `http://${host}:80/Service/Snapshot/Capture?` + moment().valueOf();
         var a = new Image();
         a.src = url;
 
@@ -351,7 +351,7 @@ class Framework extends Base {
 
     requestProvisioning(x, cb) {
         var opts = {
-            url     : `http://${this.host}:80/Service/Provisioning`,
+            url     : `http://${host}:80/Service/Provisioning`,
             method  : 'PUT'
         };
         this.http(opts, cb);

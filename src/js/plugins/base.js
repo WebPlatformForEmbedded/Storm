@@ -15,6 +15,7 @@ class Base {
         this.httpResponseBody = this.httpResponseBody.bind(this);
         this.jsonParse = this.jsonParse.bind(this);
         this.checkIfObject = this.checkIfObject.bind(this);
+        this.loadTest = this.loadTest.bind(this);
         this.startHttpServer = this.startHttpServer.bind(this);
         this.startFileServer = this.startFileServer.bind(this);
         this.matchIpRange = this.matchIpRange.bind(this);
@@ -114,7 +115,7 @@ class Base {
     }
 
     loadTest(url, cb) {
-        get(url, (resp) => {
+        this.get(url, (resp) => {
             if (resp.error) {
                 cb(resp);
                 return;
