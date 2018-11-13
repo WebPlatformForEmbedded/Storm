@@ -7,7 +7,7 @@ class Tests extends BaseView {
 
 	render() {
 		// todo, no device onboarded, let user know
-		if (wtf.host === undefined) {
+		if (host === undefined) {
 			this.mainDiv.innerHTML = '<div class="title grid__col grid__col--8-of-8">No device onboarded, please go to devices and select a device</div>';
 			return;
 		}

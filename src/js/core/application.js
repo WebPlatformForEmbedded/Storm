@@ -204,7 +204,6 @@
 
         // else start the boot function
         bootSequence[ initFunctionList[ bootStep ] ]( (delayInMs, retryInMs) => {
-
             if (delayInMs === null && retryInMs !== undefined) {
                 console.debug(`Retrying bootstep ${bootStep} in ${delayInMs} ms`);
                 setTimeout(init, retryInMs);

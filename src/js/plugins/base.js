@@ -15,7 +15,6 @@ class Base {
         this.httpResponseBody = this.httpResponseBody.bind(this);
         this.jsonParse = this.jsonParse.bind(this);
         this.checkIfObject = this.checkIfObject.bind(this);
-        this.loadTest = this.loadTest.bind(this);
         this.startHttpServer = this.startHttpServer.bind(this);
         this.startFileServer = this.startFileServer.bind(this);
         this.matchIpRange = this.matchIpRange.bind(this);
@@ -112,25 +111,6 @@ class Base {
             return true;
         else
             throw new Error(`${x} is not an Object`);
-    }
-
-    loadTest(url, cb) {
-        this.get(url, (resp) => {
-            if (resp.error) {
-                cb(resp);
-                return;
-            }
-
-            var test;
-            try {
-                test = eval(resp.body);
-            } catch(e) {
-                cb({ 'error' : e.message });
-                return;
-            }
-
-            cb({ 'test' :  test });
-        });
     }
 
     startHttpServer(requestFunction, cb) {

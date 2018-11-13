@@ -3,6 +3,7 @@
     "js/core/application.js",
     "js/core/baseview.js",
     "js/core/core.js",
+    "js/core/messages.js",
     "js/plugins/base.js",
     "js/plugins/framework.js",
     "js/plugins/remoteinspector.js",

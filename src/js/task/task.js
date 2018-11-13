@@ -1,7 +1,7 @@
 /*
  * WPETestFramework task runner
  *
- * Copyright (c) 2017 Metrological.com
+ * Copyright (c) 2018 Metrological.com
  *
  */
 /*jslint esnext: true*/
@@ -9,7 +9,7 @@
 const DEFAULT_TIMEOUT = 5 * 60 * 1000;
 
 var verbose = false;
-var taskId;
+var window = this;
 
 // load framework
 function mergeObjects(a, b){
@@ -25,49 +25,99 @@ function globalize(file){
     mergeObjects(global, o);
 }
 
-// dependencies
-importScripts('../lib/moment.min.js');
-
-// load message bus
-importScripts('../core/messages.js');
-
-// setup our base messages
-var _initReady = new InitReady();
-var taskMessage = new TaskMessage();
-
-/*
-globalize('./base.js');
-globalize('./dial.js');
-globalize('./framework.js');
-globalize('./remoteinspector.js');
-globalize('./ssh.js');
-globalize('./webdriver.js');
-*/
-this.task = task = undefined;
-
 /******************************************************************************/
 /*****************************       INIT        ******************************/
 /******************************************************************************/
 
-var curIdx = -1;
+var curIdx              = -1;
 var maxSteps, steps;
 var timer;
-var timedOut = false;
+var timedOut            = false;
 var processEndRequested = false;
 var stepMessage;
 var stepList;
 var repeatMessage;
+let bootStep            = 0;
+var taskId;
+this.task = task = undefined;
+
+console.log('Beep boop, task.js loaded');
 
 // Parent process messages
-onmessage = (message) => {
-    if (message.type() === 'stepMessage' && message.state() === 'response'){
-        userResponse(message);
-    }
+addEventListener('message', function(message) {
+    if (message.data.name === undefined)
+        return;
 
-    if (message.type() === 'loadTest') {
-        initTest(message.testName());
+    if (message.data.name === 'InitReady' && message.data.test !== '') {
+        initTest(message.data.test);
     }
-};
+}, false);
+
+var bootSequence = {
+    'loadScript' : function(cb) {
+        // dependencies
+        importScripts('../lib/moment.min.js');
+        importScripts('../plugins/base.js');
+        importScripts('../plugins/framework.js');
+        importScripts('../core/messages.js');
+
+        // setup our base messages
+        this.taskMessage = new TaskMessage();
+        this._initReady = new InitReady();
+
+        cb();
+    },
+
+    'loadPlugins' : function(cb) {
+            console.debug('Load base & framework plugin');
+
+            // we're loading in debug, retry in a few ms it takes a bit to load the seperate plugins
+            if (window.plugins == undefined || window.plugins.Framework === undefined || window.plugins.Base === undefined) {
+                cb(null, 2000);
+                return;
+            }
+
+            let plugins = new window.plugins.Framework();
+
+            // this is required because non of the functions in the tests are pre-fixed, so all has to be global
+            mergeObjects(window, plugins);
+
+            cb();
+    },
+
+    'initReady' : function(cb) {
+        this._initReady.send();
+    }
+}
+
+function init() {
+    var initFunctionList = Object.keys(bootSequence);
+
+    // check if we are done
+    if (bootStep > initFunctionList.length-1)
+        return;
+
+    // else start the boot function
+    bootSequence[ initFunctionList[ bootStep ] ]( (delayInMs, retryInMs) => {
+        if (delayInMs === null && retryInMs !== undefined) {
+            console.debug(`Retrying bootstep ${bootStep} in ${delayInMs} ms`);
+            setTimeout(init, retryInMs);
+        }
+
+        else if (delayInMs !== undefined) {
+            console.debug(`Bootstep ${bootStep} completed, starting next in ${delayInMs} ms`);
+            bootStep++;
+            setTimeout(init, delayInMs);
+        }
+
+        else {
+            console.debug(`Bootstep ${bootStep} completed, starting next`);
+            bootStep++;
+            init();
+        }
+
+    });
+}
 
 // global function to call when test is not applicable
 var taskIsNA = false;
@@ -76,14 +126,17 @@ var NotApplicable = function (reason) {
     taskMessage.notApplicable(reason);
 }
 
+
 function initTest(testName) {
     // Load test
     try {
-        task = importScripts('js/tests/' + testName)
+        task = importScripts('../tests/' + testName)
     } catch (e) {
         if (taskIsNA !== true) {
             process_end('Error, could not load test ' + e);
         }
+
+        return;
     }
 
     if (task && task.extends !== undefined){
@@ -97,7 +150,7 @@ function initTest(testName) {
         }
     }
 
-    if (task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
+    if (task && task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
         getPlugins(null, (response) => {
             try {
                 var responseObj = JSON.parse(response.body);
@@ -178,7 +231,7 @@ function process_end(error) {
         checkAndCleanup( () => {
             taskMessage.completed();
             setTimeout(close, 1000);
-        });        
+        });
     } else {
         taskMessage.completed();
         setTimeout(close, 1000);
@@ -372,5 +425,7 @@ function userResponse(message){
     }
 }
 
-// tell parent process we're ready to roll
-_initReady.send();
+
+//start init
+init();
+

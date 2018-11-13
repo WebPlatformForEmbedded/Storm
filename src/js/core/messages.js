@@ -10,22 +10,37 @@ class Message {
         this.verbose = false;
     }
 
-    send(m) {
+    send(worker) {
         if (this.verbose === true) console.log(`${this.type()} \t ${JSON.stringify(this)}`);
 
-        // bubble up message to parent process
-        postMessage(m);
-    }
+        // bubble up object
+        if (worker !== undefined && worker.postMessage !== undefined)
+            worker.postMessage(this);
+        else
+            postMessage(this);
 
-    get type() { return this.name; }
+    }
 }
 
 /*
  * Individual messages and their properties
  */
 // Control messages used to control the init/start flow of the worker and main applications
-class InitReady extends Message {}
-class LoadTest { constructor(testName) { this.testName = testName; } get testName() { return this.testName; } }
+class InitReady extends Message {
+    constructor() {
+        super();
+
+        this.name = 'InitReady';
+        this.test = '';
+    }
+
+    ready() { this.send(); }
+    loadTest(test) { this.test = test; this.send(); }
+}
+/*
+class LoadTest extends Message {
+    get testName() { return this.testName; }
+}*/
 
 /*
  * This is the main task message object, it covers the entire task that needs to be executed (i.e. TEST that needs to be run) from start to finish
@@ -34,10 +49,12 @@ class TaskMessage extends Message {
     constructor() {
         super();
 
-        this._stepCount;
-        this._result;
+        this.name = 'TaskMessage';
+
+        this._stepCount = 0;
+        this._result = '';
         this._cleanup = false;
-        this._cleanupResult;
+        this._cleanupResult = '';
 
         this._completed = false;
 
@@ -49,7 +66,7 @@ class TaskMessage extends Message {
             'error'         : 2,
             'success'       : 3,
             'notapplicable' : 4,
-        }
+        };
 
         this._state = this.states.init;
     }
@@ -63,7 +80,7 @@ class TaskMessage extends Message {
     set state(s)        { this.state = s; }
     set result(r)       { this.result = r; }
 
-    stepCount(s)    {
+    set stepCount(s)    {
         this._stepCount = s;
         this.send();
     }
@@ -97,7 +114,7 @@ class TaskMessage extends Message {
         this.send();
     }
 
-    completed(e) {
+    set completed(e) {
         this._completed = true;
         this.send();
     }
@@ -118,6 +135,8 @@ class StepMessage extends Message {
     constructor(stepIdx) {
         super();
 
+        this.name = 'StepMessage';
+
         this._stepIdx   = stepIdx;
         this._response  = null;
         this._result    = null;
@@ -134,7 +153,7 @@ class StepMessage extends Message {
         this._state         = this.states.init;
     }
 
-    get stepIdx()       { return this._stepIdx }
+    get stepIdx()       { return this._stepIdx; }
     get state()         { return this._state; }
     get result()        { return this._result; }
     get response()      { return this._response; }
@@ -144,7 +163,7 @@ class StepMessage extends Message {
         this.send();
     }
 
-    response(resp)  {
+    set response(resp)  {
         this._state     = this.states.response;
         this._response  = resp;
         this.send();
@@ -175,6 +194,8 @@ class RepeatMessage extends Message {
     constructor(step, fromIdx, toIdx) {
         super();
 
+        this.name = 'RepeatMessage';
+
         this._repeat = {
             'step'   : step,
             'fromIdx': fromIdx,
@@ -185,7 +206,7 @@ class RepeatMessage extends Message {
             'init'      : -1,
             'repeating' : 0,
             'done'      : 1
-        }
+        };
 
         this._state = this.states.init;
 
@@ -207,17 +228,8 @@ class RepeatMessage extends Message {
     }
 
     get repeat()        { return this._repeat; }
-    get repeatCount()   { return this._repeatByCount; }
+    get getRepeatCount()   { return this._repeatByCount; }
     get repeatTime()    { return this._repeatByTime; }
-
-    timedRepeat(until, times) {
-        this._repeatType                    = this.repeatTypes.time;
-        this._state                         = this.states.repeating;
-
-        this._repeatByTime.until            = until;
-        this._repeatByTime.timesRepeated    = times;
-        this.send();
-    }
 
     repeatCount(remaining, total) {
         this._repeatType                    = this.repeatTypes.count;
@@ -225,6 +237,15 @@ class RepeatMessage extends Message {
 
         this._repeatByCount.remaining       = remaining;
         this._repeatByCount.total           = total;
+        this.send();
+    }
+
+    timedRepeat(until, times) {
+        this._repeatType                    = this.repeatTypes.time;
+        this._state                         = this.states.repeating;
+
+        this._repeatByTime.until            = until;
+        this._repeatByTime.timesRepeated    = times;
         this.send();
     }
 
