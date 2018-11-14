@@ -21,7 +21,7 @@ class Base {
     }
 
     dummy(x, cb) {
-        this.cb(x);
+        cb(x);
     }
 
     sleep(x, cb) {

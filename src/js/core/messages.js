@@ -45,18 +45,18 @@ class LoadTest extends Message {
 /*
  * This is the main task message object, it covers the entire task that needs to be executed (i.e. TEST that needs to be run) from start to finish
  */
-class TaskMessage extends Message {
+class TestMessage extends Message {
     constructor() {
         super();
 
-        this.name = 'TaskMessage';
+        this.name = 'TestMessage';
 
-        this._stepCount = 0;
-        this._result = '';
-        this._cleanup = false;
-        this._cleanupResult = '';
+        this.stepCount = 0;
+        this.result = '';
+        this.cleanup = false;
+        this.cleanupResult = '';
 
-        this._completed = false;
+        this.completed = false;
 
         // available states
         this.states = {
@@ -68,60 +68,50 @@ class TaskMessage extends Message {
             'notapplicable' : 4,
         };
 
-        this._state = this.states.init;
+        this.state = this.states.init;
     }
 
-    get cleanupResult() { return this.cleanupResult; }
-    get result()        { return this.result; }
-    get state()         { return this.state; }
-    get stepCount()     { return this._stepCount; }
-    get completed()     { return this.completed; }
-
-    set state(s)        { this.state = s; }
-    set result(r)       { this.result = r; }
-
-    set stepCount(s)    {
-        this._stepCount = s;
-        this.send();
+    setStepCount(s) {
+        this.stepCount = s;
     }
 
     start() {
-        this._state = this.states.start;
+        this.state = this.states.start;
         this.send();
     }
 
     error(e)    {
-        this._state = this.states.error;
-        this._result = e;
+        this.state = this.states.error;
+        this.result = e;
         this.send();
     }
 
     timedout(e) {
-        this._state = this.states.timedout;
-        this._result = e;
+        this.state = this.states.timedout;
+        this.result = e;
         this.send();
     }
 
     success(e) {
-        this._state = this.states.success;
-        this._result = e;
+        this.state = this.states.success;
+        this.result = e;
         this.send();
     }
 
     notApplicable(e) {
-        this._state = this.states.notapplicable;
-        this._result = e;
+        this.state = this.states.notapplicable;
+        this.result = e;
         this.send();
     }
 
-    set completed(e) {
-        this._completed = true;
+    complete(e) {
+        this.completed = true;
         this.send();
     }
 
     cleanup(e) {
-        this._cleanup = 'true';
-        this._cleanupResult = e;
+        this.cleanup = 'true';
+        this.cleanupResult = e;
         this.send();
     }
 
@@ -137,9 +127,9 @@ class StepMessage extends Message {
 
         this.name = 'StepMessage';
 
-        this._stepIdx   = stepIdx;
-        this._response  = null;
-        this._result    = null;
+        this.stepIdx   = stepIdx;
+        this.response  = null;
+        this.result    = null;
 
         this.states = {
             'init'      : -1,
@@ -150,34 +140,28 @@ class StepMessage extends Message {
             'needuser'  : 4
         };
 
-        this._state         = this.states.init;
+        this.state         = this.states.init;
     }
-
-    get stepIdx()       { return this._stepIdx; }
-    get state()         { return this._state; }
-    get result()        { return this._result; }
-    get response()      { return this._response; }
 
     start()         {
-        this._state     = this.states.start;
+        this.state     = this.states.start;
         this.send();
     }
 
-    set response(resp)  {
-        this._state     = this.states.response;
-        this._response  = resp;
-        this.send();
+    setResponse(resp)  {
+        this.state     = this.states.response;
+        this.response  = resp;
     }
 
     success(r) {
-        this._state     = this.states.success;
-        this._result    = r;
+        this.state     = this.states.success;
+        this.result    = r;
         this.send();
     }
 
     fail(f) {
-        this._state     = this.states.failed;
-        this._result    = f;
+        this.state     = this.states.failed;
+        this.result    = f;
         this.send();
     }
 

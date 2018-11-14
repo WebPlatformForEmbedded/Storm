@@ -2,7 +2,7 @@
  * WPETestFramework dummy test task
  */
 
-(function () { return {
+test = {
     'title'         : 'Dummy Test Error',
     'description'   : 'This tests throws an error in the test execution',
     'steps'         : {
@@ -21,5 +21,3 @@
         }
     }
 };
-
-})();

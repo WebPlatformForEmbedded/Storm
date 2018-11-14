@@ -38,8 +38,8 @@ var stepMessage;
 var stepList;
 var repeatMessage;
 let bootStep            = 0;
-var taskId;
-this.task = task = undefined;
+var testId;
+this.test = test = undefined;
 
 console.log('Beep boop, task.js loaded');
 
@@ -62,8 +62,8 @@ var bootSequence = {
         importScripts('../core/messages.js');
 
         // setup our base messages
-        this.taskMessage = new TaskMessage();
-        this._initReady = new InitReady();
+        testMessage = new TestMessage();
+        _initReady = new InitReady();
 
         cb();
     },
@@ -86,7 +86,7 @@ var bootSequence = {
     },
 
     'initReady' : function(cb) {
-        this._initReady.send();
+        _initReady.send();
     }
 }
 
@@ -120,37 +120,37 @@ function init() {
 }
 
 // global function to call when test is not applicable
-var taskIsNA = false;
+var testIsNA = false;
 var NotApplicable = function (reason) {
-    taskIsNA = true;
-    taskMessage.notApplicable(reason);
+    testIsNA = true;
+    testMessage.notApplicable(reason);
 }
 
 
 function initTest(testName) {
     // Load test
     try {
-        task = importScripts('../tests/' + testName)
+        importScripts('../tests/' + testName)
     } catch (e) {
-        if (taskIsNA !== true) {
+        if (testIsNA !== true) {
             process_end('Error, could not load test ' + e);
         }
 
         return;
     }
 
-    if (task && task.extends !== undefined){
+    if (test && test.extends !== undefined){
         try {
             var parentTest = importScripts('js/tests/' + testName);
-            var extendSteps = task.steps;
-            task.steps = parentTest.steps;
-            mergeObjects(task.steps, extendSteps);
+            var extendSteps = test.steps;
+            test.steps = parentTest.steps;
+            mergeObjects(test.steps, extendSteps);
         } catch (e) {
-            process_end('Could not load test to extend, task file not found');
+            process_end('Could not load test to extend, test file not found');
         }
     }
 
-    if (task && task.requiredPlugins !== undefined && task.requiredPlugins.length > 0) {
+    if (test && test.requiredPlugins !== undefined && test.requiredPlugins.length > 0) {
         getPlugins(null, (response) => {
             try {
                 var responseObj = JSON.parse(response.body);
@@ -160,11 +160,11 @@ function initTest(testName) {
                     enabledPlugins.push(plugins[i].callsign);
                 }
 
-                for (var j=0; j<task.requiredPlugins.length; j++) {
-                    if (enabledPlugins.indexOf(task.requiredPlugins[j]) === -1) {
-                        NotApplicable(`Build does not support ${task.requiredPlugins[j]}`);
-                    } else if (j === task.requiredPlugins.length-1) {
-                        startTask();
+                for (var j=0; j<test.requiredPlugins.length; j++) {
+                    if (enabledPlugins.indexOf(test.requiredPlugins[j]) === -1) {
+                        NotApplicable(`Build does not support ${test.requiredPlugins[j]}`);
+                    } else if (j === test.requiredPlugins.length-1) {
+                        startTest();
                     }
                 }
             } catch(e) {
@@ -172,40 +172,40 @@ function initTest(testName) {
             }
         });
     } else {
-        startTask();
+        startTest();
     }
 }
 
 /******************************************************************************/
-/*****************************    TASK hander    ******************************/
+/*****************************    test hander    ******************************/
 /******************************************************************************/
 
-function startTask() {
+function startTest() {
     // make sure we dont start this if the task during load is NA'ed
-    if (taskIsNA === true) return;
+    if (testIsNA === true) return;
 
-    stepList = Object.keys(task.steps);
+    stepList = Object.keys(test.steps);
     maxSteps = stepList.length;
 
-    taskMessage.stepCount(maxSteps-1);
-    taskMessage.start();
+    testMessage.setStepCount(maxSteps-1);
+    testMessage.start();
 
     lookForNextStep();
 }
 
 function timedout(step) {
-    taskMessage.timedout();
+    testMessage.timedout();
     checkAndCleanup( () => {
-        taskMessage.completed();
+        testMessage.complete();
         setTimeout(close, 1000);
     });
 }
 
 function checkAndCleanup(cb) {
-    if (task.cleanup !== undefined) {
-        task.cleanup( (result) => {
-            taskMessage.cleanup(result);
-            taskMessage.completed();
+    if (test.cleanup !== undefined) {
+        test.cleanup( (result) => {
+            testMessage.cleanup(result);
+            testMessage.complete();
 
             setTimeout(cb, 1000);
         });
@@ -224,16 +224,16 @@ function process_end(error) {
     clearTimeout(timer);
 
     if (error !== undefined)
-        taskMessage.error(error);
+        testMessage.error(error);
 
-    // check if task has a cleanup function defined, run it if we encountered an error
+    // check if test has a cleanup function defined, run it if we encountered an error
     if (error !== undefined) {
         checkAndCleanup( () => {
-            taskMessage.completed();
+            testMessage.complete();
             setTimeout(close, 1000);
         });
     } else {
-        taskMessage.completed();
+        testMessage.complete();
         setTimeout(close, 1000);
     }
 }
@@ -244,12 +244,12 @@ function lookForNextStep() {
     var nextIdx = curIdx+1;
     if (nextIdx >= maxSteps) {
         // we've made it!
-        taskMessage.success();
+        testMessage.success();
         process_end();
         return;
     }
 
-    var nextStep = task.steps[ stepList[ nextIdx ] ];
+    var nextStep = test.steps[ stepList[ nextIdx ] ];
 
     // GOTO Repeat handling
     if (nextStep.goto !== undefined){
@@ -309,9 +309,9 @@ function lookForNextStep() {
 function startStep(stepIdx) {
     // init
     curIdx = stepIdx;
-    this.currentStep = task.steps[ stepList[ curIdx ] ];
+    this.currentStep = test.steps[ stepList[ curIdx ] ];
     this.previousStep = undefined;
-    if (curIdx > 0) this.previousStep = task.steps[ stepList[ curIdx-1 ] ];
+    if (curIdx > 0) this.previousStep = test.steps[ stepList[ curIdx-1 ] ];
 
     if (stepMessage !== undefined)
         delete stepMessage;
@@ -341,9 +341,9 @@ function startStep(stepIdx) {
 
     function handleResponse (response) {
         // results
-        task.steps[ stepList [ curIdx ] ].response = response;
+        test.steps[ stepList [ curIdx ] ].response = response;
 
-        stepMessage.response(response);
+        stepMessage.setResponse(response);
         validateStep(curIdx, response);
     }
 
@@ -357,7 +357,7 @@ function startStep(stepIdx) {
  */
 function validateStep(stepIdx, response) {
     var isSuccess = false, msg;
-    var currentStep = task.steps[ stepList[ stepIdx ] ];
+    var currentStep = test.steps[ stepList[ stepIdx ] ];
     var expect = currentStep.expect;
 
     // asssert
@@ -404,7 +404,7 @@ function validateStep(stepIdx, response) {
 function askUser(stepIdx) {
     // init
     curIdx = stepIdx;
-    var currentStep = task.steps[ stepList[ curIdx ] ];
+    var currentStep = test.steps[ stepList[ curIdx ] ];
 
     stepMessage = new StepMessage(curIdx);
     stepMessage.start();
