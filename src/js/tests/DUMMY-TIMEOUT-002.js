@@ -1,9 +1,8 @@
 /** 
  * WPETestFramework dummy test task
  */
-/*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test timeout2',
     'description'   : 'This test times out at the task level',
     'steps'         : {

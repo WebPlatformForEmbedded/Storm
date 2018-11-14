@@ -2,7 +2,7 @@
  * WPETestFramework dummy test task
  */
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test Error2',
     'description'   : 'This tests throws an error in the validation execution',
     'steps'         : {

@@ -2,7 +2,7 @@
  * WPETestFramework dummy test task
  */
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test Repeat',
     'description'   : 'This is a dummy test that repeats a few steps',
     'steps'         : {

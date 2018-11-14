@@ -1,9 +1,8 @@
 /** 
  * WPETestFramework dummy test task
  */
-/*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test Repeat Time 5m',
     'description'   : 'This is a dummy test that repeats a few steps for 5 minutes',
     'steps'         : {

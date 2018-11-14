@@ -2,7 +2,7 @@
  * WPETestFramework dummy test task
  */
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test',
     'description'   : 'Testing inheritance, changing the first step',
     'extends'       : 'DUMMY-SIMPLE-001.js',

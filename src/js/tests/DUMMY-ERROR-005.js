@@ -2,7 +2,7 @@
  * WPETestFramework dummy test task
  */
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test Error',
     'description'   : 'This tests has an empty task object',
     'steps'         : {

@@ -4,7 +4,7 @@
 
 NotApplicable('This test is not applicable');
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test',
     'description'   : 'This is a simple dummy test',
     'steps'         : {

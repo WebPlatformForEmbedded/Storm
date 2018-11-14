@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test',
     'description'   : 'This is a dummy test',
     'steps'         : {

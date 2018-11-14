@@ -1,9 +1,8 @@
 /** 
  * WPETestFramework dummy test task
  */
-/*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test',
     'description'   : 'Testing user input',
     'extends'       : 'DUMMY-SIMPLE-001.js',

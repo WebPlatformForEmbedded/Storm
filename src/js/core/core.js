@@ -106,8 +106,11 @@ class Core {
                     break;
 
                 case 'TestMessage':
-                    if (data.completed === true)
+                    if (data.completed === true) {
                         console.log('APP: Test completed');
+                        console.log('Test result: ', data.result);
+                    } 
+
                     else if (data.state === this.testMessage.states.start)
                         console.log('APP: Test started');
                     else if (data.state === this.testMessage.states.error)

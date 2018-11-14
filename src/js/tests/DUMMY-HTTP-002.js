@@ -2,7 +2,7 @@
  * WPETestFramework dummy test task
  */
 
-module.exports = {
+test = {
     'title'         : 'Dummy Test',
     'description'   : 'This is a dummy HTTP server test',
     'port1'         : undefined,
