@@ -181,14 +181,7 @@
                 return;
             }
 
-            // check if our route resolves else load landing
-            let hash = window.location.hash.replace('#', '');
-            if (hash !== undefined && routes[ hash ] !== undefined) {
-                routes[ hash ].render();
-            } else {
-                // no route found, go to device onboarding page.
-                views.Device.render();
-            }
+            parseHash();
 
             cb();
         }
@@ -224,6 +217,17 @@
         });
     }
 
+    function parseHash() {
+        // check if our route resolves else load landing
+        let hash = window.location.hash.replace('#', '');
+        if (hash !== undefined && routes[ hash ] !== undefined) {
+            navigate(hash);
+        } else {
+            // no route found, go to device onboarding page.
+            navigate('device');
+        }
+    }
+
     function mergeObjects(a, b){
         for (var attrname in b) {
             //console.log('Merging: ' + attrname);
@@ -231,11 +235,24 @@
         }
     }
 
+    function attachHashChange() {
+        window.onhashchange = parseHash;
+    }
+
     /** (global) navigate to other screen */
     navigate = function(name, options) {
+        window.onhashchange = null;
+
         routes[ name ].render(options);
         window.location.hash = name;
+
+        // re-attached parseHash onhashchange
+        setTimeout(attachHashChange.bind(this), 200);
     };
+
+    // needed because some of the dummy tests have a high level not applicable to test the framework resilience.
+    // this allows the UI to read those tests and execute them
+    NotApplicable = function(m) {};
 
     setOption = function(newOption) {
         // add new option

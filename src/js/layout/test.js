@@ -28,7 +28,10 @@ class Test extends BaseView {
 
 		loadTest(_t.file, (resp) => {
 			if (resp.error) {
-				this.mainDiv.innerHTML = 'Error loading test';
+				this.mainDiv.innerHTML = `
+				<div class="text grid__col grid__col--8-of-8">Error loading test:</div>';
+				<div class="text grid__col grid__col--8-of-8">${resp.error}</div>'`;
+
 				return;
 			}
 
