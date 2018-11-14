@@ -154,7 +154,8 @@ module.exports = function(grunt) {
 
         shell.cd(testsDir);
         shell.ls('*.js').forEach( function(p) {
-            tests[ p ] = { 'name' : p, 'file' : 'js/tests/' + p };
+            let name = p.split('.')[0];
+            tests[ name ] = { 'name' : name, 'file' : 'js/tests/' + p };
         });
 
         shell.cd(cwd);

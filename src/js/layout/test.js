@@ -29,7 +29,7 @@ class Test extends BaseView {
 		loadTest(_t.file, (resp) => {
 			if (resp.error) {
 				this.mainDiv.innerHTML = `
-				<div class="text grid__col grid__col--8-of-8">Error loading test:</div>';
+				<div class="text grid__col grid__col--8-of-8">Error loading test:</div>'
 				<div class="text grid__col grid__col--8-of-8">${resp.error}</div>'`;
 
 				return;
@@ -39,25 +39,29 @@ class Test extends BaseView {
 				this.test = resp.test;
 
 				// render title / description
-				this.mainDiv.innerHTML = `
-					<div class="title grid__col grid__col--4-of-8">Test name</div>
-					<div class="text grid__col grid__col--4-of-8">${this.test.title}</div>
+				let html = `
+					<div class="title grid__col grid__col--2-of-8">Name</div>
+					<div class="text grid__col grid__col--6-of-8">${this.testName}</div>
 
-					<div class="title grid__col grid__col--4-of-8">Description</div>
-					<div class="text grid__col grid__col--4-of-8">${this.test.description}</div>
+					<div class="title grid__col grid__col--2-of-8">Title</div>
+					<div class="text grid__col grid__col--6-of-8">${this.test.title}</div>
 
-					<div class="title grid__col grid__col--4-of-8">Progress</div>
-					<div id="progress" class="text grid__col grid__col--4-of-8">0%</div>					
+					<div class="title grid__col grid__col--2-of-8">Description</div>
+					<div class="text grid__col grid__col--6-of-8">${this.test.description}</div>
+
+					<div class="title grid__col grid__col--2-of-8">Progress</div>
+					<div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
+
+					<div class="title grid__col grid__col--2-of-8"></div>
+					<div id="result" class="text grid__col grid__col--2-of-8">-</div>
+
+					<div class="text grid__col grid__col--8-of-8"> </div>
 
 					<div class="grid__col grid__col--7-of-8">
 						<div class="table">
 							<div class="row header">
-								<div class="cell">
-									Step
-								</div>
-								<div class="cell">
-									Result
-								</div>
+								<div class="cell">Step</div>
+								<div class="cell">Result</div>
 							</div>`;
 
 				var _steps = Object.keys(this.test.steps);
@@ -65,25 +69,23 @@ class Test extends BaseView {
 				for (var i=0; i<_steps.length; i++) {
 					var _step = this.test.steps[ _steps[ i ] ];
 
-					this.mainDiv.innerHTML += `
+					html += `
 						<div id="" class="row">
-							<div class="cell">
-								${_step.description}
-							</div>
-							<div class="cell">
-								Not Started
-							</div>
+							<div class="cell">${i+1}. ${_step.description}</div>
+							<div class="cell">Not Started</div>
 						</div>`;
 				}
 
-				this.mainDiv.innerHTML += `
-					</div></div>
 
+				html += `</div></div>
 
 					<div class="title grid__col grid__col--6-of-8"></div>
 					<div class="text grid__col grid__col--2-of-8">
 						<button id="start_button" type="button">Run</button>
 					</div>`;
+
+
+				this.mainDiv.innerHTML = html;
 
 				this.progressEl 		= document.getElementById('progress');
 				let start_button 		= document.getElementById('start_button');

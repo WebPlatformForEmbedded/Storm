@@ -1,726 +1,726 @@
 {
-    "DUMMY-ERROR-001.js": {
-        "name": "DUMMY-ERROR-001.js",
+    "DUMMY-ERROR-001": {
+        "name": "DUMMY-ERROR-001",
         "file": "js/tests/DUMMY-ERROR-001.js",
         "title": "Dummy Test Error",
         "description": "This tests throws an error in the test execution"
     },
-    "DUMMY-ERROR-002.js": {
-        "name": "DUMMY-ERROR-002.js",
+    "DUMMY-ERROR-002": {
+        "name": "DUMMY-ERROR-002",
         "file": "js/tests/DUMMY-ERROR-002.js",
         "title": "Dummy Test Error2",
         "description": "This tests throws an error in the validation execution"
     },
-    "DUMMY-ERROR-003.js": {
-        "name": "DUMMY-ERROR-003.js",
+    "DUMMY-ERROR-003": {
+        "name": "DUMMY-ERROR-003",
         "file": "js/tests/DUMMY-ERROR-003.js",
         "title": "Dummy Test Error2",
         "description": "This tests extends a test that does not exist"
     },
-    "DUMMY-ERROR-004.js": {
-        "name": "DUMMY-ERROR-004.js",
+    "DUMMY-ERROR-004": {
+        "name": "DUMMY-ERROR-004",
         "file": "js/tests/DUMMY-ERROR-004.js",
         "title": "Dummy Test Error",
         "description": "This tests throws an error in the test execution"
     },
-    "DUMMY-ERROR-005.js": {
-        "name": "DUMMY-ERROR-005.js",
+    "DUMMY-ERROR-005": {
+        "name": "DUMMY-ERROR-005",
         "file": "js/tests/DUMMY-ERROR-005.js",
         "title": "Dummy Test Error",
         "description": "This tests has an empty task object"
     },
-    "DUMMY-ERROR-006.js": {
-        "name": "DUMMY-ERROR-006.js",
+    "DUMMY-ERROR-006": {
+        "name": "DUMMY-ERROR-006",
         "file": "js/tests/DUMMY-ERROR-006.js",
         "title": "Dummy Test Error",
         "description": "This tests has no tasks"
     },
-    "DUMMY-EXTEND-001.js": {
-        "name": "DUMMY-EXTEND-001.js",
+    "DUMMY-EXTEND-001": {
+        "name": "DUMMY-EXTEND-001",
         "file": "js/tests/DUMMY-EXTEND-001.js",
         "title": "Dummy Test",
         "description": "Testing inheritance, changing the first step"
     },
-    "DUMMY-HTTP-001.js": {
-        "name": "DUMMY-HTTP-001.js",
+    "DUMMY-HTTP-001": {
+        "name": "DUMMY-HTTP-001",
         "file": "js/tests/DUMMY-HTTP-001.js",
         "title": "Dummy HTTP Test",
         "description": "This is a simple HTTP test"
     },
-    "DUMMY-HTTP-002.js": {
-        "name": "DUMMY-HTTP-002.js",
+    "DUMMY-HTTP-002": {
+        "name": "DUMMY-HTTP-002",
         "file": "js/tests/DUMMY-HTTP-002.js",
         "title": "Dummy Test",
         "description": "This is a dummy HTTP server test"
     },
-    "DUMMY-NOTAPPLICABLE-001.js": {
-        "name": "DUMMY-NOTAPPLICABLE-001.js",
+    "DUMMY-NOTAPPLICABLE-001": {
+        "name": "DUMMY-NOTAPPLICABLE-001",
         "file": "js/tests/DUMMY-NOTAPPLICABLE-001.js",
         "title": "Dummy Test",
         "description": "This is a simple dummy test"
     },
-    "DUMMY-NOTAPPLICABLE-002.js": {
-        "name": "DUMMY-NOTAPPLICABLE-002.js",
+    "DUMMY-NOTAPPLICABLE-002": {
+        "name": "DUMMY-NOTAPPLICABLE-002",
         "file": "js/tests/DUMMY-NOTAPPLICABLE-002.js",
         "title": "Dummy Test",
         "description": "This is a simple dummy test"
     },
-    "DUMMY-NOTAPPLICABLE-003.js": {
-        "name": "DUMMY-NOTAPPLICABLE-003.js",
+    "DUMMY-NOTAPPLICABLE-003": {
+        "name": "DUMMY-NOTAPPLICABLE-003",
         "file": "js/tests/DUMMY-NOTAPPLICABLE-003.js",
         "title": "Dummy Test",
         "description": "This is a simple dummy test"
     },
-    "DUMMY-REPEAT-001.js": {
-        "name": "DUMMY-REPEAT-001.js",
+    "DUMMY-REPEAT-001": {
+        "name": "DUMMY-REPEAT-001",
         "file": "js/tests/DUMMY-REPEAT-001.js",
         "title": "Dummy Test Repeat",
         "description": "This is a dummy test that repeats a few steps"
     },
-    "DUMMY-REPEAT-002.js": {
-        "name": "DUMMY-REPEAT-002.js",
+    "DUMMY-REPEAT-002": {
+        "name": "DUMMY-REPEAT-002",
         "file": "js/tests/DUMMY-REPEAT-002.js",
         "title": "Dummy Test Repeat 2",
         "description": "This is a dummy test that repeats a few steps"
     },
-    "DUMMY-REPEAT-003.js": {
-        "name": "DUMMY-REPEAT-003.js",
+    "DUMMY-REPEAT-003": {
+        "name": "DUMMY-REPEAT-003",
         "file": "js/tests/DUMMY-REPEAT-003.js",
         "title": "Dummy Test Repeat Timebased",
         "description": "This is a dummy test that repeats a few steps based on time"
     },
-    "DUMMY-REPEAT-004.js": {
-        "name": "DUMMY-REPEAT-004.js",
+    "DUMMY-REPEAT-004": {
+        "name": "DUMMY-REPEAT-004",
         "file": "js/tests/DUMMY-REPEAT-004.js",
         "title": "Dummy Test Repeat Time 2",
         "description": "This is a dummy test that repeats a few steps based on time"
     },
-    "DUMMY-REPEAT-005.js": {
-        "name": "DUMMY-REPEAT-005.js",
+    "DUMMY-REPEAT-005": {
+        "name": "DUMMY-REPEAT-005",
         "file": "js/tests/DUMMY-REPEAT-005.js",
         "title": "Dummy Test Repeat Time 5m",
         "description": "This is a dummy test that repeats a few steps for 5 minutes"
     },
-    "DUMMY-SIMPLE-001.js": {
-        "name": "DUMMY-SIMPLE-001.js",
+    "DUMMY-SIMPLE-001": {
+        "name": "DUMMY-SIMPLE-001",
         "file": "js/tests/DUMMY-SIMPLE-001.js",
         "title": "Dummy Test",
         "description": "This is a simple dummy test"
     },
-    "DUMMY-SIMPLE-002.js": {
-        "name": "DUMMY-SIMPLE-002.js",
+    "DUMMY-SIMPLE-002": {
+        "name": "DUMMY-SIMPLE-002",
         "file": "js/tests/DUMMY-SIMPLE-002.js",
         "title": "Dummy Test",
         "description": "This is a dummy test"
     },
-    "DUMMY-TIMEOUT-001.js": {
-        "name": "DUMMY-TIMEOUT-001.js",
+    "DUMMY-TIMEOUT-001": {
+        "name": "DUMMY-TIMEOUT-001",
         "file": "js/tests/DUMMY-TIMEOUT-001.js",
         "title": "Dummy Test",
         "description": "This is a dummy test"
     },
-    "DUMMY-TIMEOUT-002.js": {
-        "name": "DUMMY-TIMEOUT-002.js",
+    "DUMMY-TIMEOUT-002": {
+        "name": "DUMMY-TIMEOUT-002",
         "file": "js/tests/DUMMY-TIMEOUT-002.js",
         "title": "Dummy Test timeout2",
         "description": "This test times out at the task level"
     },
-    "DUMMY-TIMEOUT-003.js": {
-        "name": "DUMMY-TIMEOUT-003.js",
+    "DUMMY-TIMEOUT-003": {
+        "name": "DUMMY-TIMEOUT-003",
         "file": "js/tests/DUMMY-TIMEOUT-003.js",
         "title": "Dummy Test",
         "description": "This is a dummy test"
     },
-    "DUMMY-USER-001.js": {
-        "name": "DUMMY-USER-001.js",
+    "DUMMY-USER-001": {
+        "name": "DUMMY-USER-001",
         "file": "js/tests/DUMMY-USER-001.js",
         "title": "Dummy Test",
         "description": "Testing user input"
     },
-    "DUMMY-USER-002.js": {
-        "name": "DUMMY-USER-002.js",
+    "DUMMY-USER-002": {
+        "name": "DUMMY-USER-002",
         "file": "js/tests/DUMMY-USER-002.js",
         "title": "Dummy Test",
         "description": "Testing user input"
     },
-    "DUMMY-USER-003.js": {
-        "name": "DUMMY-USER-003.js",
+    "DUMMY-USER-003": {
+        "name": "DUMMY-USER-003",
         "file": "js/tests/DUMMY-USER-003.js",
         "title": "Dummy Test",
         "description": "Testing user input that times out"
     },
-    "FRAMEWORK-CONTROLLER-001.js": {
-        "name": "FRAMEWORK-CONTROLLER-001.js",
+    "FRAMEWORK-CONTROLLER-001": {
+        "name": "FRAMEWORK-CONTROLLER-001",
         "file": "js/tests/FRAMEWORK-CONTROLLER-001.js",
         "title": "Framework Controller test 01",
         "description": "Tests basic functionality of the controller module"
     },
-    "FRAMEWORK-CONTROLLER-002.js": {
-        "name": "FRAMEWORK-CONTROLLER-002.js",
+    "FRAMEWORK-CONTROLLER-002": {
+        "name": "FRAMEWORK-CONTROLLER-002",
         "file": "js/tests/FRAMEWORK-CONTROLLER-002.js",
         "title": "Framework Controller test 02",
         "description": "Tests start/stop functionality of the controller module"
     },
-    "FRAMEWORK-CONTROLLER-003.js": {
-        "name": "FRAMEWORK-CONTROLLER-003.js",
+    "FRAMEWORK-CONTROLLER-003": {
+        "name": "FRAMEWORK-CONTROLLER-003",
         "file": "js/tests/FRAMEWORK-CONTROLLER-003.js",
         "title": "Framework Controller API test",
         "description": "Iterate over a list of Framework APIs, both valid and not valid and see if Framework continues to run"
     },
-    "FRAMEWORK-CONTROLLER-004.js": {
-        "name": "FRAMEWORK-CONTROLLER-004.js",
+    "FRAMEWORK-CONTROLLER-004": {
+        "name": "FRAMEWORK-CONTROLLER-004",
         "file": "js/tests/FRAMEWORK-CONTROLLER-004.js",
         "title": "Framework Controller test 04",
         "description": "Tests for duplicate plugins in controller module"
     },
-    "FRAMEWORK-DEVICEINFO-001.js": {
-        "name": "FRAMEWORK-DEVICEINFO-001.js",
+    "FRAMEWORK-DEVICEINFO-001": {
+        "name": "FRAMEWORK-DEVICEINFO-001",
         "file": "js/tests/FRAMEWORK-DEVICEINFO-001.js",
         "title": "Framework Device Info test",
         "description": "Validates functionality of the Device Info plugin"
     },
-    "FRAMEWORK-DEVICEINFO-002.js": {
-        "name": "FRAMEWORK-DEVICEINFO-002.js",
+    "FRAMEWORK-DEVICEINFO-002": {
+        "name": "FRAMEWORK-DEVICEINFO-002",
         "file": "js/tests/FRAMEWORK-DEVICEINFO-002.js",
         "title": "Framework Device Info test",
         "description": "Check if there is a valid IP returned"
     },
-    "FRAMEWORK-DIAL-001.js": {
-        "name": "FRAMEWORK-DIAL-001.js",
+    "FRAMEWORK-DIAL-001": {
+        "name": "FRAMEWORK-DIAL-001",
         "file": "js/tests/FRAMEWORK-DIAL-001.js",
         "title": "Framework DIAL test 01",
         "description": "Tests if the host is discoverable on DIAL and returns a list of applications"
     },
-    "FRAMEWORK-HEADERS-CACHE-001.js": {
-        "name": "FRAMEWORK-HEADERS-CACHE-001.js",
+    "FRAMEWORK-HEADERS-CACHE-001": {
+        "name": "FRAMEWORK-HEADERS-CACHE-001",
         "file": "js/tests/FRAMEWORK-HEADERS-CACHE-001.js",
         "title": "Validate cache headers on all plugins",
         "description": "Iterate over all plugins and verify their cache headers when activated"
     },
-    "FRAMEWORK-HEADERS-CACHE-002.js": {
-        "name": "FRAMEWORK-HEADERS-CACHE-002.js",
+    "FRAMEWORK-HEADERS-CACHE-002": {
+        "name": "FRAMEWORK-HEADERS-CACHE-002",
         "file": "js/tests/FRAMEWORK-HEADERS-CACHE-002.js",
         "title": "Validate cache headers on all plugins",
         "description": "Iterate over all plugins and verify their cache headers when deactivated"
     },
-    "FRAMEWORK-MONITOR-001.js": {
-        "name": "FRAMEWORK-MONITOR-001.js",
+    "FRAMEWORK-MONITOR-001": {
+        "name": "FRAMEWORK-MONITOR-001",
         "file": "js/tests/FRAMEWORK-MONITOR-001.js",
         "title": "Framework Monitor tests",
         "description": "Tests if the Framework Monitor module works"
     },
-    "FRAMEWORK-MONITOR-002.js": {
-        "name": "FRAMEWORK-MONITOR-002.js",
+    "FRAMEWORK-MONITOR-002": {
+        "name": "FRAMEWORK-MONITOR-002",
         "file": "js/tests/FRAMEWORK-MONITOR-002.js",
         "title": "Framework Monitor tests",
         "description": "Tests if the Framework Monitor module return measurement values for WebKitBrowser"
     },
-    "FRAMEWORK-MONITOR-003.js": {
-        "name": "FRAMEWORK-MONITOR-003.js",
+    "FRAMEWORK-MONITOR-003": {
+        "name": "FRAMEWORK-MONITOR-003",
         "file": "js/tests/FRAMEWORK-MONITOR-003.js",
         "title": "Framework Monitor tests",
         "description": "Tests if the Framework Monitor module returns measurement values for YouTube"
     },
-    "FRAMEWORK-OPENCDM-001.js": {
-        "name": "FRAMEWORK-OPENCDM-001.js",
+    "FRAMEWORK-OPENCDM-001": {
+        "name": "FRAMEWORK-OPENCDM-001",
         "file": "js/tests/FRAMEWORK-OPENCDM-001.js",
         "title": "OCDM startup robustness test",
         "description": "Starts and stops the OCDM plugin repeatedly and checks if everything is started correctly"
     },
-    "FRAMEWORK-OPENCDM-002.js": {
-        "name": "FRAMEWORK-OPENCDM-002.js",
+    "FRAMEWORK-OPENCDM-002": {
+        "name": "FRAMEWORK-OPENCDM-002",
         "file": "js/tests/FRAMEWORK-OPENCDM-002.js",
         "title": "OCDM shutdown of Framework robustness test",
         "description": "Starts OCDM and stops Framework. Checks if everything is shutdown correctly"
     },
-    "FRAMEWORK-OPENCDM-003.js": {
-        "name": "FRAMEWORK-OPENCDM-003.js",
+    "FRAMEWORK-OPENCDM-003": {
+        "name": "FRAMEWORK-OPENCDM-003",
         "file": "js/tests/FRAMEWORK-OPENCDM-003.js",
         "title": "OCDM playback test",
         "description": "Start a playready video and validate if video plays"
     },
-    "FRAMEWORK-OPENCDM-004.js": {
-        "name": "FRAMEWORK-OPENCDM-004.js",
+    "FRAMEWORK-OPENCDM-004": {
+        "name": "FRAMEWORK-OPENCDM-004",
         "file": "js/tests/FRAMEWORK-OPENCDM-004.js",
         "title": "OCDM playback test",
         "description": "Start a playready video while OCDM plugin is disabled"
     },
-    "FRAMEWORK-PROVISIONING-001.js": {
-        "name": "FRAMEWORK-PROVISIONING-001.js",
+    "FRAMEWORK-PROVISIONING-001": {
+        "name": "FRAMEWORK-PROVISIONING-001",
         "file": "js/tests/FRAMEWORK-PROVISIONING-001.js",
         "title": "Framework provision tests",
         "description": "Tests if the Framework provision module works"
     },
-    "FRAMEWORK-PROVISIONING-002.js": {
-        "name": "FRAMEWORK-PROVISIONING-002.js",
+    "FRAMEWORK-PROVISIONING-002": {
+        "name": "FRAMEWORK-PROVISIONING-002",
         "file": "js/tests/FRAMEWORK-PROVISIONING-002.js",
         "title": "Framework provision tests",
         "description": "Check if device is provisioned"
     },
-    "FRAMEWORK-PROVISIONING-003.js": {
-        "name": "FRAMEWORK-PROVISIONING-003.js",
+    "FRAMEWORK-PROVISIONING-003": {
+        "name": "FRAMEWORK-PROVISIONING-003",
         "file": "js/tests/FRAMEWORK-PROVISIONING-003.js",
         "title": "Framework provision tests",
         "description": "Device provisioning stress test"
     },
-    "FRAMEWORK-PROVISIONING-004.js": {
-        "name": "FRAMEWORK-PROVISIONING-004.js",
+    "FRAMEWORK-PROVISIONING-004": {
+        "name": "FRAMEWORK-PROVISIONING-004",
         "file": "js/tests/FRAMEWORK-PROVISIONING-004.js",
         "title": "Framework request provision stress test",
         "description": "Perform multiple device provision requests and see if it is still running"
     },
-    "FRAMEWORK-REMOTE-001.js": {
-        "name": "FRAMEWORK-REMOTE-001.js",
+    "FRAMEWORK-REMOTE-001": {
+        "name": "FRAMEWORK-REMOTE-001",
         "file": "js/tests/FRAMEWORK-REMOTE-001.js",
         "title": "Remote control keys test",
         "description": "sends and verifies key through the remote control plugin"
     },
-    "FRAMEWORK-SNAPSHOT-001.js": {
-        "name": "FRAMEWORK-SNAPSHOT-001.js",
+    "FRAMEWORK-SNAPSHOT-001": {
+        "name": "FRAMEWORK-SNAPSHOT-001",
         "file": "js/tests/FRAMEWORK-SNAPSHOT-001.js",
         "title": "Framework snapshot test",
         "description": "Tests if the Framework snapshot module works"
     },
-    "FRAMEWORK-SNAPSHOT-002.js": {
-        "name": "FRAMEWORK-SNAPSHOT-002.js",
+    "FRAMEWORK-SNAPSHOT-002": {
+        "name": "FRAMEWORK-SNAPSHOT-002",
         "file": "js/tests/FRAMEWORK-SNAPSHOT-002.js",
         "title": "Framework snapshot test with multiple start/stops",
         "description": "Tests if the Framework snapshot module works"
     },
-    "FRAMEWORK-SNAPSHOT-003.js": {
-        "name": "FRAMEWORK-SNAPSHOT-003.js",
+    "FRAMEWORK-SNAPSHOT-003": {
+        "name": "FRAMEWORK-SNAPSHOT-003",
         "file": "js/tests/FRAMEWORK-SNAPSHOT-003.js",
         "title": "Framework snapshot test with no active components that render anything",
         "description": "Tests if the Framework snapshot module works"
     },
-    "FRAMEWORK-SNAPSHOT-004.js": {
-        "name": "FRAMEWORK-SNAPSHOT-004.js",
+    "FRAMEWORK-SNAPSHOT-004": {
+        "name": "FRAMEWORK-SNAPSHOT-004",
         "file": "js/tests/FRAMEWORK-SNAPSHOT-004.js",
         "title": "Framework snapshot test",
         "description": "Tests if the Framework snapshot module works by updating the WPEWebkit and checking if it changed"
     },
-    "FRAMEWORK-SNAPSHOT-005.js": {
-        "name": "FRAMEWORK-SNAPSHOT-005.js",
+    "FRAMEWORK-SNAPSHOT-005": {
+        "name": "FRAMEWORK-SNAPSHOT-005",
         "file": "js/tests/FRAMEWORK-SNAPSHOT-005.js",
         "title": "Framework snapshot test",
         "description": "Test if the snapshot returns a valid PNG"
     },
-    "FRAMEWORK-STABILITY-001.js": {
-        "name": "FRAMEWORK-STABILITY-001.js",
+    "FRAMEWORK-STABILITY-001": {
+        "name": "FRAMEWORK-STABILITY-001",
         "file": "js/tests/FRAMEWORK-STABILITY-001.js",
         "title": "Framework Controller Robustness test",
         "description": "Tests start/stop functionality of the controller module and repeats 100 times"
     },
-    "FRAMEWORK-STABILITY-002.js": {
-        "name": "FRAMEWORK-STABILITY-002.js",
+    "FRAMEWORK-STABILITY-002": {
+        "name": "FRAMEWORK-STABILITY-002",
         "file": "js/tests/FRAMEWORK-STABILITY-002.js",
         "title": "Framework stability key test",
         "description": "Stress loads the system with keys and see if the Framework process continues to operate nominally"
     },
-    "FRAMEWORK-STABILITY-003.js": {
-        "name": "FRAMEWORK-STABILITY-003.js",
+    "FRAMEWORK-STABILITY-003": {
+        "name": "FRAMEWORK-STABILITY-003",
         "file": "js/tests/FRAMEWORK-STABILITY-003.js",
         "title": "Framework stability set URL test",
         "description": "Stress loads the system by setting the URL in a loop and see if the Framework process continues to operate nominally"
     },
-    "FRAMEWORK-STARTUP-001.js": {
-        "name": "FRAMEWORK-STARTUP-001.js",
+    "FRAMEWORK-STARTUP-001": {
+        "name": "FRAMEWORK-STARTUP-001",
         "file": "js/tests/FRAMEWORK-STARTUP-001.js",
         "title": "Framework startup robustness test",
         "description": "Starts and stops Framework repeatedly and checks if everything is started correctly"
     },
-    "FRAMEWORK-SWITCH-001.js": {
-        "name": "FRAMEWORK-SWITCH-001.js",
+    "FRAMEWORK-SWITCH-001": {
+        "name": "FRAMEWORK-SWITCH-001",
         "file": "js/tests/FRAMEWORK-SWITCH-001.js",
         "title": "WPEWebkit/YouTube switch robustness test",
         "description": "Switches between YouTube/WPEWebkit and checks if everything is started and suspended correctly"
     },
-    "FRAMEWORK-SWITCH-002.js": {
-        "name": "FRAMEWORK-SWITCH-002.js",
+    "FRAMEWORK-SWITCH-002": {
+        "name": "FRAMEWORK-SWITCH-002",
         "file": "js/tests/FRAMEWORK-SWITCH-002.js",
         "title": "WPEWebkit/Netflix switch robustness test",
         "description": "Switches between Netflix/WPEWebkit and checks if everything is started and suspended correctly"
     },
-    "FRAMEWORK-SWITCH-003.js": {
-        "name": "FRAMEWORK-SWITCH-003.js",
+    "FRAMEWORK-SWITCH-003": {
+        "name": "FRAMEWORK-SWITCH-003",
         "file": "js/tests/FRAMEWORK-SWITCH-003.js",
         "title": "YouTube/Netflix switch robustness test",
         "description": "Switches between YouTube/Netflix and checks if everything is started and suspended correctly"
     },
-    "FRAMEWORK-SWITCH-004.js": {
-        "name": "FRAMEWORK-SWITCH-004.js",
+    "FRAMEWORK-SWITCH-004": {
+        "name": "FRAMEWORK-SWITCH-004",
         "file": "js/tests/FRAMEWORK-SWITCH-004.js",
         "title": "YouTube/Netflix/WPEWebkit switch robustness test",
         "description": "Switches between YouTube/Netflix/WPEWebkit and checks if everything is started and suspended correctly"
     },
-    "HORIZON-NETFLIX-001.js": {
-        "name": "HORIZON-NETFLIX-001.js",
+    "HORIZON-NETFLIX-001": {
+        "name": "HORIZON-NETFLIX-001",
         "file": "js/tests/HORIZON-NETFLIX-001.js",
         "title": "Horizon Netflix suspend/resume test case",
         "description": "Repeatedly goes into Netflix, plays a movie and during playback presses Main Menu. Netflix should suspend, Cisco should take over and no artifacts should be seen. Upon re-entering Netflix, Netflix should resume, no spinner show be shown and usr should land on the resume movie section"
     },
-    "HORIZON-NETFLIX-002.js": {
-        "name": "HORIZON-NETFLIX-002.js",
+    "HORIZON-NETFLIX-002": {
+        "name": "HORIZON-NETFLIX-002",
         "file": "js/tests/HORIZON-NETFLIX-002.js",
         "title": "Horizon Netflix quit within Netflix test case",
         "description": "Repeatedly goes into Netflix, do not play a movie and quits from within Netflix. Netflix should deactivate and from the App Store it should start when the user decides to go into Netflix again"
     },
-    "HORIZON-NETFLIX-003.js": {
-        "name": "HORIZON-NETFLIX-003.js",
+    "HORIZON-NETFLIX-003": {
+        "name": "HORIZON-NETFLIX-003",
         "file": "js/tests/HORIZON-NETFLIX-003.js",
         "title": "Horizon Netflix exit within Netflix test case",
         "description": "Repeatedly goes into Netflix, do not play a movie and exits from within Netflix. Netflix should suspend and from the App Store it should resume when the user decides to go into Netflix again"
     },
-    "HORIZON-NETFLIX-004.js": {
-        "name": "HORIZON-NETFLIX-004.js",
+    "HORIZON-NETFLIX-004": {
+        "name": "HORIZON-NETFLIX-004",
         "file": "js/tests/HORIZON-NETFLIX-004.js",
         "title": "Horizon Netflix Pause/Resume playback",
         "description": "Pause/resume multiple times on a Netflix video"
     },
-    "HORIZON-NETFLIX-005.js": {
-        "name": "HORIZON-NETFLIX-005.js",
+    "HORIZON-NETFLIX-005": {
+        "name": "HORIZON-NETFLIX-005",
         "file": "js/tests/HORIZON-NETFLIX-005.js",
         "title": "Horizon Netflix RW/FF on playback",
         "description": "RW/FW multiple times on a Netflix video"
     },
-    "HORIZON-NETFLIX-006.js": {
-        "name": "HORIZON-NETFLIX-006.js",
+    "HORIZON-NETFLIX-006": {
+        "name": "HORIZON-NETFLIX-006",
         "file": "js/tests/HORIZON-NETFLIX-006.js",
         "title": "Horizon Netflix gallery navigation",
         "description": "navigating through the gallery up/down/right/left"
     },
-    "NETFLIX-DIAL-001.js": {
-        "name": "NETFLIX-DIAL-001.js",
+    "NETFLIX-DIAL-001": {
+        "name": "NETFLIX-DIAL-001",
         "file": "js/tests/NETFLIX-DIAL-001.js",
         "title": "Framework DIAL Netflix test",
         "description": "Tests the DIAL server for the Netflix application"
     },
-    "NETFLIX-DIAL-002.js": {
-        "name": "NETFLIX-DIAL-002.js",
+    "NETFLIX-DIAL-002": {
+        "name": "NETFLIX-DIAL-002",
         "file": "js/tests/NETFLIX-DIAL-002.js",
         "title": "Framework DIAL Netflix robustness test",
         "description": "Tests the DIAL server for the Netflix application, robustness of the DIAL implementation"
     },
-    "NETFLIX-DIAL-003.js": {
-        "name": "NETFLIX-DIAL-003.js",
+    "NETFLIX-DIAL-003": {
+        "name": "NETFLIX-DIAL-003",
         "file": "js/tests/NETFLIX-DIAL-003.js",
         "title": "Framework DIAL Netflix robustness test",
         "description": "Repeatedly starts and stops Netflix through DIAL"
     },
-    "NETFLIX-PROVISIONING-001.js": {
-        "name": "NETFLIX-PROVISIONING-001.js",
+    "NETFLIX-PROVISIONING-001": {
+        "name": "NETFLIX-PROVISIONING-001",
         "file": "js/tests/NETFLIX-PROVISIONING-001.js",
         "title": "Netflix provisioning tests",
         "description": "Validate if the device is correctly provisioned for Netflix"
     },
-    "NETFLIX-PROVISIONING-002.js": {
-        "name": "NETFLIX-PROVISIONING-002.js",
+    "NETFLIX-PROVISIONING-002": {
+        "name": "NETFLIX-PROVISIONING-002",
         "file": "js/tests/NETFLIX-PROVISIONING-002.js",
         "title": "Netflix provisioning tests",
         "description": "Validate if Netflix can start without provisioning"
     },
-    "NETFLIX-PROVISIONING-003.js": {
-        "name": "NETFLIX-PROVISIONING-003.js",
+    "NETFLIX-PROVISIONING-003": {
+        "name": "NETFLIX-PROVISIONING-003",
         "file": "js/tests/NETFLIX-PROVISIONING-003.js",
         "title": "Netflix provisioning tests",
         "description": "Validate if Framework does not crash if you start Netflix without the provisioning module being active"
     },
-    "NETFLIX-PROVISIONING-004.js": {
-        "name": "NETFLIX-PROVISIONING-004.js",
+    "NETFLIX-PROVISIONING-004": {
+        "name": "NETFLIX-PROVISIONING-004",
         "file": "js/tests/NETFLIX-PROVISIONING-004.js",
         "title": "Netflix provisioning tests",
         "description": "Validate if Framework does not crash if you start Netflix without the provisioning module being active"
     },
-    "NETFLIX-STARTUP-001.js": {
-        "name": "NETFLIX-STARTUP-001.js",
+    "NETFLIX-STARTUP-001": {
+        "name": "NETFLIX-STARTUP-001",
         "file": "js/tests/NETFLIX-STARTUP-001.js",
         "title": "Netflix startup robustness test",
         "description": "Starts and stops the Netflix plugin repeatedly and checks if everything is started correctly"
     },
-    "NETFLIX-STARTUP-002.js": {
-        "name": "NETFLIX-STARTUP-002.js",
+    "NETFLIX-STARTUP-002": {
+        "name": "NETFLIX-STARTUP-002",
         "file": "js/tests/NETFLIX-STARTUP-002.js",
         "title": "Netflix shutdown of Framework robustness test",
         "description": "Starts Netflix and stops Framework. Checks if everything is shutdown correctly"
     },
-    "NETFLIX-SUSPEND-001.js": {
-        "name": "NETFLIX-SUSPEND-001.js",
+    "NETFLIX-SUSPEND-001": {
+        "name": "NETFLIX-SUSPEND-001",
         "file": "js/tests/NETFLIX-SUSPEND-001.js",
         "title": "Netflix Suspend/Resume robustness test",
         "description": "Suspends and Resumes Netflix plugin repeatedly and checks if everything is started correctly"
     },
-    "WEBDRIVER-BENCHMARK-001.js": {
-        "name": "WEBDRIVER-BENCHMARK-001.js",
+    "WEBDRIVER-BENCHMARK-001": {
+        "name": "WEBDRIVER-BENCHMARK-001",
         "file": "js/tests/WEBDRIVER-BENCHMARK-001.js",
         "title": "WebDriver HTML5 score test",
         "description": "Load beta.html5test.com and get the score"
     },
-    "WEBDRIVER-STARTUP-001.js": {
-        "name": "WEBDRIVER-STARTUP-001.js",
+    "WEBDRIVER-STARTUP-001": {
+        "name": "WEBDRIVER-STARTUP-001",
         "file": "js/tests/WEBDRIVER-STARTUP-001.js",
         "title": "WebDriver StartUp",
         "description": "Load the WebDriver plugin and check the status"
     },
-    "WEBDRIVER-STARTUP-002.js": {
-        "name": "WEBDRIVER-STARTUP-002.js",
+    "WEBDRIVER-STARTUP-002": {
+        "name": "WEBDRIVER-STARTUP-002",
         "file": "js/tests/WEBDRIVER-STARTUP-002.js",
         "title": "WebDriver StartUp",
         "description": "Load the WebDriver plugin and check the status"
     },
-    "WEBDRIVER-STARTUP-003.js": {
-        "name": "WEBDRIVER-STARTUP-003.js",
+    "WEBDRIVER-STARTUP-003": {
+        "name": "WEBDRIVER-STARTUP-003",
         "file": "js/tests/WEBDRIVER-STARTUP-003.js",
         "title": "WebDriver shutdown of Framework robustness test",
         "description": "Starts WebDriver and stops Framework. Checks if everything is shutdown correctly"
     },
-    "WEBKIT-EME-PLAYREADY-001.js": {
-        "name": "WEBKIT-EME-PLAYREADY-001.js",
+    "WEBKIT-EME-PLAYREADY-001": {
+        "name": "WEBKIT-EME-PLAYREADY-001",
         "file": "js/tests/WEBKIT-EME-PLAYREADY-001.js",
         "title": "loads eme.html tests",
         "description": "runs eme.html test page and runs tests"
     },
-    "WEBKIT-EME-STRESS-001.js": {
-        "name": "WEBKIT-EME-STRESS-001.js",
+    "WEBKIT-EME-STRESS-001": {
+        "name": "WEBKIT-EME-STRESS-001",
         "file": "js/tests/WEBKIT-EME-STRESS-001.js",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by playing a video for 3 hours"
     },
-    "WEBKIT-EME-STRESS-002.js": {
-        "name": "WEBKIT-EME-STRESS-002.js",
+    "WEBKIT-EME-STRESS-002": {
+        "name": "WEBKIT-EME-STRESS-002",
         "file": "js/tests/WEBKIT-EME-STRESS-002.js",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by changing channels"
     },
-    "WEBKIT-EME-STRESS-003.js": {
-        "name": "WEBKIT-EME-STRESS-003.js",
+    "WEBKIT-EME-STRESS-003": {
+        "name": "WEBKIT-EME-STRESS-003",
         "file": "js/tests/WEBKIT-EME-STRESS-003.js",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by playing a video for 3 hours"
     },
-    "WEBKIT-EME-STRESS-004.js": {
-        "name": "WEBKIT-EME-STRESS-004.js",
+    "WEBKIT-EME-STRESS-004": {
+        "name": "WEBKIT-EME-STRESS-004",
         "file": "js/tests/WEBKIT-EME-STRESS-004.js",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by changing channels"
     },
-    "WEBKIT-MEMORY-001.js": {
-        "name": "WEBKIT-MEMORY-001.js",
+    "WEBKIT-MEMORY-001": {
+        "name": "WEBKIT-MEMORY-001",
         "file": "js/tests/WEBKIT-MEMORY-001.js",
         "title": "WPEWebkit Memory test",
         "description": "Loads about blank and checks the memory usage"
     },
-    "WEBKIT-MEMORY-002.js": {
-        "name": "WEBKIT-MEMORY-002.js",
+    "WEBKIT-MEMORY-002": {
+        "name": "WEBKIT-MEMORY-002",
         "file": "js/tests/WEBKIT-MEMORY-002.js",
         "title": "WPEWebkit Memory test",
         "description": "Loads youtube and checks the memory usage"
     },
-    "WEBKIT-PERFORMANCE-001.js": {
-        "name": "WEBKIT-PERFORMANCE-001.js",
+    "WEBKIT-PERFORMANCE-001": {
+        "name": "WEBKIT-PERFORMANCE-001",
         "file": "js/tests/WEBKIT-PERFORMANCE-001.js",
         "title": "WPEWebkit performance poster circle",
         "description": "Loads the Poster Circle CSS3 animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-002.js": {
-        "name": "WEBKIT-PERFORMANCE-002.js",
+    "WEBKIT-PERFORMANCE-002": {
+        "name": "WEBKIT-PERFORMANCE-002",
         "file": "js/tests/WEBKIT-PERFORMANCE-002.js",
         "title": "WPEWebkit performance morphing cube",
         "description": "Loads the Morphing Cube CSS3 animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-003.js": {
-        "name": "WEBKIT-PERFORMANCE-003.js",
+    "WEBKIT-PERFORMANCE-003": {
+        "name": "WEBKIT-PERFORMANCE-003",
         "file": "js/tests/WEBKIT-PERFORMANCE-003.js",
         "title": "WPEWebkit performance falling leaves",
         "description": "Loads the falling leaves CSS3 animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-004.js": {
-        "name": "WEBKIT-PERFORMANCE-004.js",
+    "WEBKIT-PERFORMANCE-004": {
+        "name": "WEBKIT-PERFORMANCE-004",
         "file": "js/tests/WEBKIT-PERFORMANCE-004.js",
         "title": "WPEWebkit performance smashcat",
         "description": "Loads the smashcat Canvas animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-005.js": {
-        "name": "WEBKIT-PERFORMANCE-005.js",
+    "WEBKIT-PERFORMANCE-005": {
+        "name": "WEBKIT-PERFORMANCE-005",
         "file": "js/tests/WEBKIT-PERFORMANCE-005.js",
         "title": "WPEWebkit performance man in blue",
         "description": "Loads the Man in Blue Canvas animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-006.js": {
-        "name": "WEBKIT-PERFORMANCE-006.js",
+    "WEBKIT-PERFORMANCE-006": {
+        "name": "WEBKIT-PERFORMANCE-006",
         "file": "js/tests/WEBKIT-PERFORMANCE-006.js",
         "title": "WPEWebkit performance fishietank",
         "description": "Loads the Fish IE tank canvas animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-007.js": {
-        "name": "WEBKIT-PERFORMANCE-007.js",
+    "WEBKIT-PERFORMANCE-007": {
+        "name": "WEBKIT-PERFORMANCE-007",
         "file": "js/tests/WEBKIT-PERFORMANCE-007.js",
         "title": "WPEWebkit performance anisotropic",
         "description": "Loads the Particles webGL animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-008.js": {
-        "name": "WEBKIT-PERFORMANCE-008.js",
+    "WEBKIT-PERFORMANCE-008": {
+        "name": "WEBKIT-PERFORMANCE-008",
         "file": "js/tests/WEBKIT-PERFORMANCE-008.js",
         "title": "WPEWebkit performance helloracer",
         "description": "Loads the Helloracer WebGL animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-009.js": {
-        "name": "WEBKIT-PERFORMANCE-009.js",
+    "WEBKIT-PERFORMANCE-009": {
+        "name": "WEBKIT-PERFORMANCE-009",
         "file": "js/tests/WEBKIT-PERFORMANCE-009.js",
         "title": "WPEWebkit performance pasta",
         "description": "Loads the pasta WebGL animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-010.js": {
-        "name": "WEBKIT-PERFORMANCE-010.js",
+    "WEBKIT-PERFORMANCE-010": {
+        "name": "WEBKIT-PERFORMANCE-010",
         "file": "js/tests/WEBKIT-PERFORMANCE-010.js",
         "title": "WPEWebkit performance racer-s",
         "description": "Loads the Racer-S WebGL animation and measures its performance"
     },
-    "WEBKIT-PERFORMANCE-011.js": {
-        "name": "WEBKIT-PERFORMANCE-011.js",
+    "WEBKIT-PERFORMANCE-011": {
+        "name": "WEBKIT-PERFORMANCE-011",
         "file": "js/tests/WEBKIT-PERFORMANCE-011.js",
         "title": "WPEWebkit Peacekeeper Benchmark test",
         "description": "Loads the Peacekeeper Benchmark test and get the results"
     },
-    "WEBKIT-PERFORMANCE-012.js": {
-        "name": "WEBKIT-PERFORMANCE-012.js",
+    "WEBKIT-PERFORMANCE-012": {
+        "name": "WEBKIT-PERFORMANCE-012",
         "file": "js/tests/WEBKIT-PERFORMANCE-012.js",
         "title": "WPEWebkit performance test using perf.html",
         "description": "Loads perf.html test page and runs fake guide"
     },
-    "WEBKIT-PERFORMANCE-013.js": {
-        "name": "WEBKIT-PERFORMANCE-013.js",
+    "WEBKIT-PERFORMANCE-013": {
+        "name": "WEBKIT-PERFORMANCE-013",
         "file": "js/tests/WEBKIT-PERFORMANCE-013.js",
         "title": "WPEWebkit performance test using performance.html",
         "description": "Loads performance.html test page and calculates FPS"
     },
-    "WEBKIT-STARTUP-001.js": {
-        "name": "WEBKIT-STARTUP-001.js",
+    "WEBKIT-STARTUP-001": {
+        "name": "WEBKIT-STARTUP-001",
         "file": "js/tests/WEBKIT-STARTUP-001.js",
         "title": "WPEWebkit startup robustness test",
         "description": "Starts and stops the WPEWebkit plugin repeatedly and checks if everything is started correctly"
     },
-    "WEBKIT-STARTUP-002.js": {
-        "name": "WEBKIT-STARTUP-002.js",
+    "WEBKIT-STARTUP-002": {
+        "name": "WEBKIT-STARTUP-002",
         "file": "js/tests/WEBKIT-STARTUP-002.js",
         "title": "WPEWebkit shutdown of Framework robustness test",
         "description": "Starts WPEWebkit and stops Framework. Checks if everything is shutdown correctly"
     },
-    "WEBKIT-STRESS-001.js": {
-        "name": "WEBKIT-STRESS-001.js",
+    "WEBKIT-STRESS-001": {
+        "name": "WEBKIT-STRESS-001",
         "file": "js/tests/WEBKIT-STRESS-001.js",
         "title": "WPEWebkit stability xmlhttprequest test",
         "description": "Stress loads the system with xmlhttprequests and see if the WPEWebkit process continues to operate nominally"
     },
-    "WEBKIT-STRESS-002.js": {
-        "name": "WEBKIT-STRESS-002.js",
+    "WEBKIT-STRESS-002": {
+        "name": "WEBKIT-STRESS-002",
         "file": "js/tests/WEBKIT-STRESS-002.js",
         "title": "WPEWebkit stability images test",
         "description": "Stress loads the system with images and see if the WPEWebkit process continues to operate nominally"
     },
-    "WEBKIT-STRESS-003.js": {
-        "name": "WEBKIT-STRESS-003.js",
+    "WEBKIT-STRESS-003": {
+        "name": "WEBKIT-STRESS-003",
         "file": "js/tests/WEBKIT-STRESS-003.js",
         "title": "WPEWebkit stability redirect test",
         "description": "Stress loads the system with redirects and see if the WPEWebkit process continues to operate nominally"
     },
-    "WEBKIT-SUSPEND-001.js": {
-        "name": "WEBKIT-SUSPEND-001.js",
+    "WEBKIT-SUSPEND-001": {
+        "name": "WEBKIT-SUSPEND-001",
         "file": "js/tests/WEBKIT-SUSPEND-001.js",
         "title": "WPEWebkit Suspend/Resume robustness test",
         "description": "Suspends and Resumes WPEWebkit plugin repeatedly and checks if everything is started correctly"
     },
-    "WEBKIT-VIDEO-RESIZE-001.js": {
-        "name": "WEBKIT-VIDEO-RESIZE-001.js",
+    "WEBKIT-VIDEO-RESIZE-001": {
+        "name": "WEBKIT-VIDEO-RESIZE-001",
         "file": "js/tests/WEBKIT-VIDEO-RESIZE-001.js",
         "title": "Video resizing test",
         "description": "Start a test video and resize to different sizes"
     },
-    "WEBSERVER-STARTUP-001.js": {
-        "name": "WEBSERVER-STARTUP-001.js",
+    "WEBSERVER-STARTUP-001": {
+        "name": "WEBSERVER-STARTUP-001",
         "file": "js/tests/WEBSERVER-STARTUP-001.js",
         "title": "WebServer startup robustness test",
         "description": "Starts and stops the webserver plugin repeatedly and checks if everything is started correctly"
     },
-    "WEBSERVER-STARTUP-002.js": {
-        "name": "WEBSERVER-STARTUP-002.js",
+    "WEBSERVER-STARTUP-002": {
+        "name": "WEBSERVER-STARTUP-002",
         "file": "js/tests/WEBSERVER-STARTUP-002.js",
         "title": "WebServer shutdown of Framework robustness test",
         "description": "Starts WebServer and stops Framework. Checks if everything is shutdown correctly"
     },
-    "YOUTUBE-DIAL-001.js": {
-        "name": "YOUTUBE-DIAL-001.js",
+    "YOUTUBE-DIAL-001": {
+        "name": "YOUTUBE-DIAL-001",
         "file": "js/tests/YOUTUBE-DIAL-001.js",
         "title": "Framework DIAL YouTube test",
         "description": "Tests the DIAL server for the YouTube application"
     },
-    "YOUTUBE-DIAL-002.js": {
-        "name": "YOUTUBE-DIAL-002.js",
+    "YOUTUBE-DIAL-002": {
+        "name": "YOUTUBE-DIAL-002",
         "file": "js/tests/YOUTUBE-DIAL-002.js",
         "title": "Framework DIAL YouTube robustness test",
         "description": "Tests the DIAL server for the YouTube application, robustness of the DIAL implementation"
     },
-    "YOUTUBE-DIAL-003.js": {
-        "name": "YOUTUBE-DIAL-003.js",
+    "YOUTUBE-DIAL-003": {
+        "name": "YOUTUBE-DIAL-003",
         "file": "js/tests/YOUTUBE-DIAL-003.js",
         "title": "Framework DIAL YouTube robustness test",
         "description": "Repeatedly starts and stops YouTube through DIAL"
     },
-    "YOUTUBE-EME-001.js": {
-        "name": "YOUTUBE-EME-001.js",
+    "YOUTUBE-EME-001": {
+        "name": "YOUTUBE-EME-001",
         "file": "js/tests/YOUTUBE-EME-001.js",
         "title": "YouTube Encrupted Media conformance test",
         "description": "Loads the YouTube EME 2016 conformance test and captures the output"
     },
-    "YOUTUBE-EME-002.js": {
-        "name": "YOUTUBE-EME-002.js",
+    "YOUTUBE-EME-002": {
+        "name": "YOUTUBE-EME-002",
         "file": "js/tests/YOUTUBE-EME-002.js",
         "title": "YouTube Encrupted Media conformance test",
         "description": "Loads the YouTube EME 2017 conformance test and captures the output"
     },
-    "YOUTUBE-MSE-001.js": {
-        "name": "YOUTUBE-MSE-001.js",
+    "YOUTUBE-MSE-001": {
+        "name": "YOUTUBE-MSE-001",
         "file": "js/tests/YOUTUBE-MSE-001.js",
         "title": "YouTube Media Source conformance test",
         "description": "Loads the YouTube MSE 2018 conformance test and captures the output"
     },
-    "YOUTUBE-PLAYBACK-001.js": {
-        "name": "YOUTUBE-PLAYBACK-001.js",
+    "YOUTUBE-PLAYBACK-001": {
+        "name": "YOUTUBE-PLAYBACK-001",
         "file": "js/tests/YOUTUBE-PLAYBACK-001.js",
         "title": "YouTube Playback test",
         "description": "Start playback of a movie on YouTube and let it run for 12 hours"
     },
-    "YOUTUBE-PLAYBACK-002.js": {
-        "name": "YOUTUBE-PLAYBACK-002.js",
+    "YOUTUBE-PLAYBACK-002": {
+        "name": "YOUTUBE-PLAYBACK-002",
         "file": "js/tests/YOUTUBE-PLAYBACK-002.js",
         "title": "YouTube Playback test",
         "description": "Start playback of an 8 hour movie on YouTube and let it run"
     },
-    "YOUTUBE-PLAYBACK-003.js": {
-        "name": "YOUTUBE-PLAYBACK-003.js",
+    "YOUTUBE-PLAYBACK-003": {
+        "name": "YOUTUBE-PLAYBACK-003",
         "file": "js/tests/YOUTUBE-PLAYBACK-003.js",
         "title": "YouTube Playback test",
         "description": "Start playback of an 8 hour movie on YouTube and let it run"
     },
-    "YOUTUBE-RANDOM-001.js": {
-        "name": "YOUTUBE-RANDOM-001.js",
+    "YOUTUBE-RANDOM-001": {
+        "name": "YOUTUBE-RANDOM-001",
         "file": "js/tests/YOUTUBE-RANDOM-001.js",
         "title": "YouTube Random Key test",
         "description": "Sends random keys to YouTube and checks if YouTube is still working"
     },
-    "YOUTUBE-RANDOM-002.js": {
-        "name": "YOUTUBE-RANDOM-002.js",
+    "YOUTUBE-RANDOM-002": {
+        "name": "YOUTUBE-RANDOM-002",
         "file": "js/tests/YOUTUBE-RANDOM-002.js",
         "title": "YouTube Random Key test",
         "description": "Send random keys to youtube, only to navigate the the UI. No enter is send so the device will never start playback"
     },
-    "YOUTUBE-STARTUP-001.js": {
-        "name": "YOUTUBE-STARTUP-001.js",
+    "YOUTUBE-STARTUP-001": {
+        "name": "YOUTUBE-STARTUP-001",
         "file": "js/tests/YOUTUBE-STARTUP-001.js",
         "title": "YouTube startup robustness test",
         "description": "Starts and stops the YouTube plugin repeatedly and checks if everything is started correctly"
     },
-    "YOUTUBE-SUSPEND-001.js": {
-        "name": "YOUTUBE-SUSPEND-001.js",
+    "YOUTUBE-SUSPEND-001": {
+        "name": "YOUTUBE-SUSPEND-001",
         "file": "js/tests/YOUTUBE-SUSPEND-001.js"
     }
 }
