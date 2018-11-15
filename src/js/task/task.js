@@ -209,7 +209,7 @@ function timedout() {
 function checkAndCleanup(cb) {
     if (test.cleanup !== undefined) {
         test.cleanup( (result) => {
-            testMessage.cleanup(result);
+            testMessage.cleanedup(result);
             testMessage.complete();
 
             setTimeout(cb, 1000);

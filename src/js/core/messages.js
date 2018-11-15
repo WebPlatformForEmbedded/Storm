@@ -109,7 +109,7 @@ class TestMessage extends Message {
         this.send();
     }
 
-    cleanup(e) {
+    cleanedup(e) {
         this.cleanup = 'true';
         this.cleanupResult = e;
         this.send();
