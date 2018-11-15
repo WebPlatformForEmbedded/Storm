@@ -87,9 +87,6 @@ class Core {
 
     run(test, updateProgressCb) {
         this.worker = new Worker('js/task/task.js');
-        this.testMessage = new TestMessage();
-        this.stepMessage = new StepMessage();
-
         this.worker.onmessage = (message) => {
             //console.log('APP message: ', message.data);
 
@@ -105,37 +102,8 @@ class Core {
                     _loadTest.send(this.worker);
                     break;
 
-                case 'TestMessage':
-                    if (data.completed === true) {
-                        console.log('APP: Test completed');
-                        console.log('Test result: ', data.result);
-                    } 
-
-                    else if (data.state === this.testMessage.states.start)
-                        console.log('APP: Test started');
-                    else if (data.state === this.testMessage.states.error)
-                        console.log('APP: Test error');
-                    else if (data.state === this.testMessage.states.timedout)
-                        console.log('APP: Test timedout');
-                    else if (data.state === this.testMessage.states.notapplicable)
-                        console.log('APP: Test NA');
-
-                    break;
-
-                case 'StepMessage':
-                    if (data.state === this.stepMessage.states.init)
-                        console.log(`APP: Step ${data.stepIdx} init`);
-                    else if (data.state === this.stepMessage.states.start)
-                        console.log(`APP: Step ${data.stepIdx} start`);
-                    else if (data.state === this.stepMessage.states.response)
-                        console.log(`APP: Step ${data.stepIdx} response`);
-                    else if (data.state === this.stepMessage.states.success)
-                        console.log(`APP: Step ${data.stepIdx} success`);
-                    else if (data.state === this.stepMessage.states.failed)
-                        console.log(`APP: Step ${data.stepIdx} failed`);
-
-                    break;
-
+                default:
+                    updateProgressCb(data);
             }
         };
     }

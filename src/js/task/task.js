@@ -130,7 +130,7 @@ var NotApplicable = function (reason) {
 function initTest(testName) {
     // Load test
     try {
-        importScripts('../tests/' + testName)
+        importScripts('../tests/' + testName + '.js');
     } catch (e) {
         if (testIsNA !== true) {
             process_end('Error, could not load test ' + e);

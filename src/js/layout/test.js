@@ -1,109 +1,154 @@
 /** The landing page */
 
 class Test extends BaseView {
-	constructor() {
-		super()
+    constructor() {
+        super()
 
-		this.testName = null;
-		this.test = null;
-	}
+        this.testName = null;
+        this.test = null;
+        this.testMessage = new TestMessage();
+        this.stepMessage = new StepMessage();
+    }
 
-	render(_testName) {
-		this.testName = _testName;
-		this.test = null;
+    render(_testName) {
+        this.testName = _testName;
+        this.test = null;
 
-		// todo, no device onboarded, let user know
-		if (host === undefined) {
-			this.mainDiv.innerHTML = '<div class="title grid__col grid__col--8-of-8">No device onboarded, please go to devices and select a device</div>';
-			return;
-		}
+        // todo, no device onboarded, let user know
+        if (host === undefined) {
+            this.mainDiv.innerHTML = '<div class="title grid__col grid__col--8-of-8">No device onboarded, please go to devices and select a device</div>';
+            return;
+        }
 
-		// read test from server, load it
-		let _t = wtf.tests[ this.testName ];
+        // read test from server, load it
+        let _t = wtf.tests[ this.testName ];
 
-		if (_t === undefined) {
-			navigate('tests');
-			return;
-		}
+        if (_t === undefined) {
+            navigate('tests');
+            return;
+        }
 
-		loadTest(_t.file, (resp) => {
-			if (resp.error) {
-				this.mainDiv.innerHTML = `
-				<div class="text grid__col grid__col--8-of-8">Error loading test:</div>'
-				<div class="text grid__col grid__col--8-of-8">${resp.error}</div>'`;
+        loadTest(_t.file, (resp) => {
+            if (resp.error) {
+                this.mainDiv.innerHTML = `
+                <div class="text grid__col grid__col--8-of-8">Error loading test:</div>'
+                <div class="text grid__col grid__col--8-of-8">${resp.error}</div>'`;
 
-				return;
-			}
+                return;
+            }
 
-			if (resp.test) {
-				this.test = resp.test;
+            if (resp.test) {
+                this.test = resp.test;
 
-				// render title / description
-				let html = `
-					<div class="title grid__col grid__col--2-of-8">Name</div>
-					<div class="text grid__col grid__col--6-of-8">${this.testName}</div>
+                // render title / description
+                let html = `
+                    <div class="title grid__col grid__col--2-of-8">Name</div>
+                    <div class="text grid__col grid__col--6-of-8">${this.testName}</div>
 
-					<div class="title grid__col grid__col--2-of-8">Title</div>
-					<div class="text grid__col grid__col--6-of-8">${this.test.title}</div>
+                    <div class="title grid__col grid__col--2-of-8">Title</div>
+                    <div class="text grid__col grid__col--6-of-8">${this.test.title}</div>
 
-					<div class="title grid__col grid__col--2-of-8">Description</div>
-					<div class="text grid__col grid__col--6-of-8">${this.test.description}</div>
+                    <div class="title grid__col grid__col--2-of-8">Description</div>
+                    <div class="text grid__col grid__col--6-of-8">${this.test.description}</div>
 
-					<div class="title grid__col grid__col--2-of-8">Progress</div>
-					<div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
+                    <div class="title grid__col grid__col--2-of-8">Progress</div>
+                    <div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
 
-					<div class="title grid__col grid__col--2-of-8"></div>
-					<div id="result" class="text grid__col grid__col--2-of-8">-</div>
+                    <div class="title grid__col grid__col--2-of-8"></div>
+                    <div id="result" class="text grid__col grid__col--2-of-8">-</div>
 
-					<div class="text grid__col grid__col--8-of-8"> </div>
+                    <div class="text grid__col grid__col--1-of-8"></div>
+                    <div id="error" class="text grid__col grid__col--7-of-8"></div>
 
-					<div class="grid__col grid__col--7-of-8">
-						<div class="table">
-							<div class="row header">
-								<div class="cell">Step</div>
-								<div class="cell">Result</div>
-							</div>`;
+                    <div class="grid__col grid__col--7-of-8">
+                        <div class="table">
+                            <div class="row header">
+                                <div class="cell">Step</div>
+                                <div class="cell">Result</div>
+                            </div>`;
 
-				var _steps = Object.keys(this.test.steps);
+                var _steps = Object.keys(this.test.steps);
+                this.stepLength = _steps.length;
 
-				for (var i=0; i<_steps.length; i++) {
-					var _step = this.test.steps[ _steps[ i ] ];
+                for (var i=0; i<_steps.length; i++) {
+                    var _step = this.test.steps[ _steps[ i ] ];
 
-					html += `
-						<div id="" class="row">
-							<div class="cell">${i+1}. ${_step.description}</div>
-							<div class="cell">Not Started</div>
-						</div>`;
-				}
-
-
-				html += `</div></div>
-
-					<div class="title grid__col grid__col--6-of-8"></div>
-					<div class="text grid__col grid__col--2-of-8">
-						<button id="start_button" type="button">Run</button>
-					</div>`;
+                    html += `
+                        <div class="row">
+                            <div class="cell">${i+1}. ${_step.description}</div>
+                            <div id="step_progress_${i}" class="cell">Not Started</div>
+                        </div>`;
+                }
 
 
-				this.mainDiv.innerHTML = html;
+                html += `</div></div>
 
-				this.progressEl 		= document.getElementById('progress');
-				let start_button 		= document.getElementById('start_button');
-				start_button.onclick 	= this.startTest.bind(this);
+                    <div class="title grid__col grid__col--6-of-8"></div>
+                    <div class="text grid__col grid__col--2-of-8">
+                        <button id="start_button" type="button">Run</button>
+                    </div>`;
 
-				console.log(this.test);
-			}
-		});
 
-	}
+                this.mainDiv.innerHTML = html;
 
-	startTest() {
-		wtf.run(this.testName, this.updateProgress);
-	}
+                this.progressEl         = document.getElementById('progress');
+                this.resultEl           = document.getElementById('result');
+                this.errorEl            = document.getElementById('error');
+                let start_button        = document.getElementById('start_button');
+                start_button.onclick    = this.startTest.bind(this);
+            }
+        });
 
-	updateProgress(message) {
-		console.log('updateProgress: ' + message);
-	}
+    }
+
+    startTest() {
+        wtf.run(this.testName, this.updateProgress.bind(this));
+    }
+
+    updateProgress(data) {
+        switch (data.name) {
+            case 'TestMessage':
+                if (data.completed === true) {
+                    if (data.state !== this.testMessage.states.success)
+                        this.errorEl.innerHTML = data.result;
+                }
+
+                else if (data.state === this.testMessage.states.start)
+                    this.resultEl.innerHTML = 'Started';
+                else if (data.state === this.testMessage.states.error)
+                    this.resultEl.innerHTML = 'Error';
+                else if (data.state === this.testMessage.states.timedout)
+                    this.resultEl.innerHTML = 'Timed out';
+                else if (data.state === this.testMessage.states.notapplicable)
+                    this.resultEl.innerHTML = 'Not Applicable';
+
+                break;
+
+            case 'StepMessage':
+                let stepEl = document.getElementById('step_progress_' + data.stepIdx);
+
+                if (data.state === this.stepMessage.states.init)
+                    stepEl.innerHTML = 'Init';
+                else if (data.state === this.stepMessage.states.start)
+                    stepEl.innerHTML = 'Running';
+                else if (data.state === this.stepMessage.states.response)
+                    stepEl.innerHTML = 'Response';
+                else if (data.state === this.stepMessage.states.success)
+                    stepEl.innerHTML = 'Success';
+                else if (data.state === this.stepMessage.states.failed)
+                    stepEl.innerHTML = 'Failed';
+
+
+                // only update % if state is > running
+                if (data.state > 1) {
+                    let progressPerct = ( (data.stepIdx+1) / this.stepLength) * 100;
+                    this.progressEl.innerHTML = progressPerct + '%';
+                }
+
+                break;
+        }
+
+    }
 
 }
 
