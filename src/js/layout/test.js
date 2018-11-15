@@ -109,12 +109,13 @@ class Test extends BaseView {
         switch (data.name) {
             case 'TestMessage':
                 if (data.completed === true) {
-                    if (data.state !== this.testMessage.states.success)
+                    if (data.state !== this.testMessage.states.success && data.result !== undefined)
                         this.errorEl.innerHTML = data.result;
-                }
-
+                } 
                 else if (data.state === this.testMessage.states.start)
                     this.resultEl.innerHTML = 'Started';
+                else if (data.state === this.testMessage.states.success) 
+                    this.resultEl.innerHTML = 'Success';
                 else if (data.state === this.testMessage.states.error)
                     this.resultEl.innerHTML = 'Error';
                 else if (data.state === this.testMessage.states.timedout)

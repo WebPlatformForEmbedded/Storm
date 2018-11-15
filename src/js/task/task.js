@@ -7,6 +7,7 @@
 /*jslint esnext: true*/
 
 const DEFAULT_TIMEOUT = 5 * 60 * 1000;
+const DEFAULT_TASK_TIMEOUT = 60 * 60 * 1000;
 
 var verbose = false;
 var window = this;
@@ -32,6 +33,7 @@ function globalize(file){
 var curIdx              = -1;
 var maxSteps, steps;
 var timer;
+var taskTimer;
 var timedOut            = false;
 var processEndRequested = false;
 var stepMessage;
@@ -190,10 +192,13 @@ function startTest() {
     testMessage.setStepCount(maxSteps-1);
     testMessage.start();
 
+    // set timer for the entire task, can be overwritten
+    taskTimer = setTimeout(timedout, test.timeout !== undefined ? test.timeout * 1000 : DEFAULT_TASK_TIMEOUT);
+
     lookForNextStep();
 }
 
-function timedout(step) {
+function timedout() {
     testMessage.timedout();
     checkAndCleanup( () => {
         testMessage.complete();
@@ -239,6 +244,7 @@ function process_end(error) {
 }
 
 function lookForNextStep() {
+    //reset timers
     clearTimeout(timer);
 
     var nextIdx = curIdx+1;
@@ -347,7 +353,6 @@ function startStep(stepIdx) {
         validateStep(curIdx, response);
     }
 
-    if (this.currentStep.params === undefined) this.currentStep.params = handleResponse;
     setTimeout(execFnWrapper, sleepMs);
 }
 

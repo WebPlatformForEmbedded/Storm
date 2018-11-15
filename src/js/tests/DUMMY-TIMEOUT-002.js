@@ -3,8 +3,9 @@
  */
 
 test = {
-    'title'         : 'Dummy Test timeout2',
+    'title'         : 'Timeout main task',
     'description'   : 'This test times out at the task level',
+    'timeout'       : 10, //s
     'steps'         : {
         'dummystep1' : {
             'description'   : 'Just a dummy test assert',
@@ -14,7 +15,7 @@ test = {
             'assert'        : 1
         },
         'dummystep2' : {
-            'description'   : 'Just a dummy test using validate',
+            'description'   : 'A step that never ends',
             'timeout'       : 100000000, // ehhh, i dunno
             'test'          : (x, cb) => { /* ooops! */ },
             'assert'        : true
