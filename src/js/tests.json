@@ -14,7 +14,7 @@
     "DUMMY-ERROR-003": {
         "name": "DUMMY-ERROR-003",
         "file": "js/tests/DUMMY-ERROR-003.js",
-        "title": "Dummy Test Error2",
+        "title": "Dummy Test Error 3",
         "description": "This tests extends a test that does not exist"
     },
     "DUMMY-ERROR-004": {
@@ -39,7 +39,7 @@
         "name": "DUMMY-EXTEND-001",
         "file": "js/tests/DUMMY-EXTEND-001.js",
         "title": "Dummy Test",
-        "description": "Testing inheritance, changing the first step"
+        "description": "Testing inheritance, changing the first step of DUMMY-SIMPLE-001"
     },
     "DUMMY-HTTP-001": {
         "name": "DUMMY-HTTP-001",
@@ -57,19 +57,19 @@
         "name": "DUMMY-NOTAPPLICABLE-001",
         "file": "js/tests/DUMMY-NOTAPPLICABLE-001.js",
         "title": "Dummy Test",
-        "description": "This is a simple dummy test"
+        "description": "This test throws a N/A in the beginning of the test with invalid objects in the test"
     },
     "DUMMY-NOTAPPLICABLE-002": {
         "name": "DUMMY-NOTAPPLICABLE-002",
         "file": "js/tests/DUMMY-NOTAPPLICABLE-002.js",
         "title": "Dummy Test",
-        "description": "This is a simple dummy test"
+        "description": "This test throws a N/A in the beginning of the test with invalid objects in the test"
     },
     "DUMMY-NOTAPPLICABLE-003": {
         "name": "DUMMY-NOTAPPLICABLE-003",
         "file": "js/tests/DUMMY-NOTAPPLICABLE-003.js",
-        "title": "Dummy Test",
-        "description": "This is a simple dummy test"
+        "title": "N/A Test",
+        "description": "This test will throw a N/A at step 4"
     },
     "DUMMY-REPEAT-001": {
         "name": "DUMMY-REPEAT-001",
@@ -352,42 +352,6 @@
         "file": "js/tests/FRAMEWORK-SWITCH-004.js",
         "title": "YouTube/Netflix/WPEWebkit switch robustness test",
         "description": "Switches between YouTube/Netflix/WPEWebkit and checks if everything is started and suspended correctly"
-    },
-    "HORIZON-NETFLIX-001": {
-        "name": "HORIZON-NETFLIX-001",
-        "file": "js/tests/HORIZON-NETFLIX-001.js",
-        "title": "Horizon Netflix suspend/resume test case",
-        "description": "Repeatedly goes into Netflix, plays a movie and during playback presses Main Menu. Netflix should suspend, Cisco should take over and no artifacts should be seen. Upon re-entering Netflix, Netflix should resume, no spinner show be shown and usr should land on the resume movie section"
-    },
-    "HORIZON-NETFLIX-002": {
-        "name": "HORIZON-NETFLIX-002",
-        "file": "js/tests/HORIZON-NETFLIX-002.js",
-        "title": "Horizon Netflix quit within Netflix test case",
-        "description": "Repeatedly goes into Netflix, do not play a movie and quits from within Netflix. Netflix should deactivate and from the App Store it should start when the user decides to go into Netflix again"
-    },
-    "HORIZON-NETFLIX-003": {
-        "name": "HORIZON-NETFLIX-003",
-        "file": "js/tests/HORIZON-NETFLIX-003.js",
-        "title": "Horizon Netflix exit within Netflix test case",
-        "description": "Repeatedly goes into Netflix, do not play a movie and exits from within Netflix. Netflix should suspend and from the App Store it should resume when the user decides to go into Netflix again"
-    },
-    "HORIZON-NETFLIX-004": {
-        "name": "HORIZON-NETFLIX-004",
-        "file": "js/tests/HORIZON-NETFLIX-004.js",
-        "title": "Horizon Netflix Pause/Resume playback",
-        "description": "Pause/resume multiple times on a Netflix video"
-    },
-    "HORIZON-NETFLIX-005": {
-        "name": "HORIZON-NETFLIX-005",
-        "file": "js/tests/HORIZON-NETFLIX-005.js",
-        "title": "Horizon Netflix RW/FF on playback",
-        "description": "RW/FW multiple times on a Netflix video"
-    },
-    "HORIZON-NETFLIX-006": {
-        "name": "HORIZON-NETFLIX-006",
-        "file": "js/tests/HORIZON-NETFLIX-006.js",
-        "title": "Horizon Netflix gallery navigation",
-        "description": "navigating through the gallery up/down/right/left"
     },
     "NETFLIX-DIAL-001": {
         "name": "NETFLIX-DIAL-001",

@@ -32,7 +32,7 @@ class Tests extends BaseView {
 			let _testName 	= testsArray[i];
 			let test 		= wtf.tests[ _testName ];
 
-			if (wtf.showDummyTests == false && test.name.slice(0,5) === 'DUMMY')
+			if (wtf.dummyMode !== true && test.name.slice(0,5) === 'DUMMY')
 				continue;
 
 			tableStr += `<div id="${test.name}_row" class="row">
