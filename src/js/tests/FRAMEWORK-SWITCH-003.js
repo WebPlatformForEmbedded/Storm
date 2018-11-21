@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'YouTube/Netflix switch robustness test',
     'description'       : 'Switches between YouTube/Netflix and checks if everything is started and suspended correctly',
     'requiredPlugins'   : ['Switch', 'Netflix'],

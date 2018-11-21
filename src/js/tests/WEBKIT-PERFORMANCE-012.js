@@ -5,7 +5,7 @@
 const fs = require('fs');
 require('shelljs/global');
 
-module.exports = {
+test = {
 	'title'             : 'WPEWebkit performance test using perf.html',
     'description'       : 'Loads perf.html test page and runs fake guide',
     'requiredPlugins'   : ['WebKitBrowser'],

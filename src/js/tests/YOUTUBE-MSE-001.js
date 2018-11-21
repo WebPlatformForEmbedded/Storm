@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'YouTube Media Source conformance test',
     'description'   : 'Loads the YouTube MSE 2018 conformance test and captures the output',
     'testCount'     : 105,

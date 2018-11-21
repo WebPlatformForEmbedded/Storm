@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework DIAL Netflix robustness test',
     'description'       : 'Tests the DIAL server for the Netflix application, robustness of the DIAL implementation',
     'requiredPlugins'   : ['Netflix', 'DIALServer'],

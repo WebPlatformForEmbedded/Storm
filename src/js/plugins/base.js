@@ -114,7 +114,7 @@ class Base {
     }
 
     startHttpServer(requestFunction, cb) {
-        throw Error('This is no logner supported in the web version, please point your test to the webserver instead');
+        throw Error('This is no longer supported in the web version, please point your test to the webserver instead');
     }
 
     startFileServer(cb) {

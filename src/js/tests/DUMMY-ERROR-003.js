@@ -3,7 +3,7 @@
  */
 
 test = {
-    'title'         : 'Dummy Test Error2',
+    'title'         : 'Dummy Test Error 3',
     'description'   : 'This tests extends a test that does not exist',
     'extends'       : 'foo',
     'steps'         : {

@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'YouTube Random Key test',
     'description'       : 'Send random keys to youtube, only to navigate the the UI. No enter is send so the device will never start playback',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot', 'YouTube'],

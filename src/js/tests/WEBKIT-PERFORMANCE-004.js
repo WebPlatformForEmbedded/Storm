@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance smashcat',
     'description'       : 'Loads the smashcat Canvas animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

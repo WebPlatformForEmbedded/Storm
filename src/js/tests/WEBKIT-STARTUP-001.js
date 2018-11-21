@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit startup robustness test',
     'description'       : 'Starts and stops the WPEWebkit plugin repeatedly and checks if everything is started correctly',
     'requiredPlugins'   : ['WebKitBrowser'],

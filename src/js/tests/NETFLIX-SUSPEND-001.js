@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Netflix Suspend/Resume robustness test',
     'description'       : 'Suspends and Resumes Netflix plugin repeatedly and checks if everything is started correctly',
     'requiredPlugins'   : ['Netflix'],

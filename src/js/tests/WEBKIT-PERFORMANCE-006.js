@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance fishietank',
     'description'       : 'Loads the Fish IE tank canvas animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

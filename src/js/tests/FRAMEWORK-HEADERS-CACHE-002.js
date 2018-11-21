@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Validate cache headers on all plugins',
     'description'   : 'Iterate over all plugins and verify their cache headers when deactivated',
     'controllerResp': undefined,

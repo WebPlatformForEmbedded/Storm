@@ -10,7 +10,7 @@ const resemble = require('node-resemble-js');
 
 require('shelljs/global');
 
-module.exports = {
+test = {
     'title'             : 'Video resizing test',
     'description'       : 'Start a test video and resize to different sizes',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],

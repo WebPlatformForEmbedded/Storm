@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework snapshot test with multiple start/stops',
     'description'       : 'Tests if the Framework snapshot module works',
     'requiredPlugins'   : ['Snapshot'],

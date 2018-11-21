@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance poster circle',
     'description'       : 'Loads the Poster Circle CSS3 animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

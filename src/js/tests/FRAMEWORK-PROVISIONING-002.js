@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework provision tests',
     'description'       : 'Check if device is provisioned',
     'requiredPlugins'   : ['Provisioning'],

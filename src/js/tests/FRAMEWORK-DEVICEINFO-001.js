@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework Device Info test',
     'description'       : 'Validates functionality of the Device Info plugin',
     'requiredPlugins'   : ['DeviceInfo'],

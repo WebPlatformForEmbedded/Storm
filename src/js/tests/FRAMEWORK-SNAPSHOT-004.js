@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework snapshot test',
     'description'       : 'Tests if the Framework snapshot module works by updating the WPEWebkit and checking if it changed',
     'requiredPlugins'   : ['Snapshot'],

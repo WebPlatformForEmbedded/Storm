@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'YouTube startup robustness test',
     'description'       : 'Starts and stops the YouTube plugin repeatedly and checks if everything is started correctly',
     'requiredPlugins'   : ['WebKitBrowser', 'YouTube'],

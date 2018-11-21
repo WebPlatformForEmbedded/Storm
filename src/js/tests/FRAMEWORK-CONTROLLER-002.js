@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Framework Controller test 02',
     'description'   : 'Tests start/stop functionality of the controller module',
     'plugin'        : '', //place holder to store selected plugin value

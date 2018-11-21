@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Framework Controller test 01',
     'description'   : 'Tests basic functionality of the controller module',
     'steps'         : {

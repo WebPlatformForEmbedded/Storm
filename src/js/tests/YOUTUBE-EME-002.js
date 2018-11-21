@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'YouTube Encrupted Media conformance test',
     'description'       : 'Loads the YouTube EME 2017 conformance test and captures the output',
     'requiredPlugins'   : ['WebKitBrowser'],

@@ -39,9 +39,7 @@ class Test extends BaseView {
                 return;
             }
 
-
-
-            if (resp.test.extends !== undefined || resp.test.exteds !== '') {
+            if (resp.test.extends !== undefined && resp.test.exteds !== '') {
                 // test extends another test, lets load that one too
                 loadTest('js/tests/' + resp.test.extends + '.js', (_resp) => {
                     if (_resp.error) {
@@ -104,18 +102,25 @@ class Test extends BaseView {
                         <div class="cell">Result</div>
                     </div>`;
 
-        var _steps = Object.keys(test.steps);
-        this.stepLength = _steps.length;
-
-        for (var i=0; i<_steps.length; i++) {
-            var _step = test.steps[ _steps[ i ] ];
-
-            html += `
-                <div class="row">
-                    <div class="cell">${i+1}. ${_step.description}</div>
-                    <div id="step_progress_${i}" class="cell">Not Started</div>
+        if (test.steps === undefined) {
+            html += `<div class="row">
+                    <div class="text grid__col grid__col--2-of-8">Test has no steps</div>
                 </div>`;
+        } else {
+            var _steps = Object.keys(test.steps);
+            this.stepLength = _steps.length;
+
+            for (var i=0; i<_steps.length; i++) {
+                var _step = test.steps[ _steps[ i ] ];
+
+                html += `<div class="row">
+                        <div class="cell">${i+1}. ${_step.description}</div>
+                        <div id="step_progress_${i}" class="cell">Not Started</div>
+                    </div>`;
+            }
         }
+
+
 
 
         html += `</div></div>

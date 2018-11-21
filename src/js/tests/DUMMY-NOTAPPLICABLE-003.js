@@ -3,8 +3,8 @@
  */
 
 test = {
-    'title'         : 'Dummy Test',
-    'description'   : 'This is a simple dummy test',
+    'title'         : 'N/A Test',
+    'description'   : 'This test will throw a N/A at step 4',
     'steps'         : {
         'dummystep1' : {
             'description'   : 'Just a dummy test assert',

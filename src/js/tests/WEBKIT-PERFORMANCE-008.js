@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance helloracer',
     'description'       : 'Loads the Helloracer WebGL animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

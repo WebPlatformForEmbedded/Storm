@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WebServer startup robustness test',
     'description'       : 'Starts and stops the webserver plugin repeatedly and checks if everything is started correctly',
     'requiredPlugins'   : ['WebServer'],

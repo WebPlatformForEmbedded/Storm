@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit Peacekeeper Benchmark test',
     'description'       : 'Loads the Peacekeeper Benchmark test and get the results',
     'requiredPlugins'   : ['WebKitBrowser'],

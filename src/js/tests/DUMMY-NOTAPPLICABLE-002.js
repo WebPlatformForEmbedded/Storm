@@ -6,7 +6,7 @@ NotApplicable('This test is not applicable');
 
 test = {
     'title'         : 'Dummy Test',
-    'description'   : 'This is a simple dummy test',
+    'description'   : 'This test throws a N/A in the beginning of the test with invalid objects in the test',
     'steps'         : {
         'dummystep1' : {
             'description'   : 'Just a dummy test assert',

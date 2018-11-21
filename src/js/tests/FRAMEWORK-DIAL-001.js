@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework DIAL test 01',
     'description'       : 'Tests if the host is discoverable on DIAL and returns a list of applications',
     'requiredPlugins'   : ['DIALServer'],

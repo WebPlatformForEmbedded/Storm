@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance man in blue',
     'description'       : 'Loads the Man in Blue Canvas animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

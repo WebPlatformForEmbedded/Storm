@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance morphing cube',
     'description'       : 'Loads the Morphing Cube CSS3 animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

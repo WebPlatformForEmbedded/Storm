@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework request provision stress test',
     'description'       : 'Perform multiple device provision requests and see if it is still running',
     'requiredPlugins'   : ['Provisioning'],

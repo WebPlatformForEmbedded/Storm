@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Framework startup robustness test',
     'description'   : 'Starts and stops Framework repeatedly and checks if everything is started correctly',
     'steps'         : {

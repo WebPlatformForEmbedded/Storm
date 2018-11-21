@@ -7,7 +7,7 @@ const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
 
-module.exports = {
+test = {
     'title'             : 'Stress test using eme.html test',
     'description'       : 'Loads eme.html test page and runs stress tests by changing channels',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],

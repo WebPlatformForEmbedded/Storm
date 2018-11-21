@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'YouTube Playback test',
     'description'       : 'Start playback of an 8 hour movie on YouTube and let it run',
     'requiredPlugins'   : ['Snapshot', 'WebKitBrowser'],

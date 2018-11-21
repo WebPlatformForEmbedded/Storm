@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Framework Controller API test',
     'description'   : 'Iterate over a list of Framework APIs, both valid and not valid and see if Framework continues to run',
     'controllerResp': undefined,

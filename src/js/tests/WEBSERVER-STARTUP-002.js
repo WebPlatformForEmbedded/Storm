@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WebServer shutdown of Framework robustness test',
     'description'       : 'Starts WebServer and stops Framework. Checks if everything is shutdown correctly',
     'requiredPlugins'   : ['WebServer'],

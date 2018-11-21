@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit shutdown of Framework robustness test',
     'description'       : 'Starts WPEWebkit and stops Framework. Checks if everything is shutdown correctly',
     'requiredPlugins'   : ['WebKitBrowser'],

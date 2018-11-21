@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance falling leaves',
     'description'       : 'Loads the falling leaves CSS3 animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

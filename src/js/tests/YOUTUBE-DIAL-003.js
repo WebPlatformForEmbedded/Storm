@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework DIAL YouTube robustness test',
     'description'       : 'Repeatedly starts and stops YouTube through DIAL',
     'requiredPlugins'   : ['YouTube', 'DIALServer'],

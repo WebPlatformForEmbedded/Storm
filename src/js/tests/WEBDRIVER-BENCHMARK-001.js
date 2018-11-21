@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WebDriver HTML5 score test',
     'description'       : 'Load beta.html5test.com and get the score',
     'requiredPlugins'   : ['WebDriver'],

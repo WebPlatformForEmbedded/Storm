@@ -4,7 +4,7 @@
 
 test = {
     'title'         : 'Dummy Test',
-    'description'   : 'Testing inheritance, changing the first step',
+    'description'   : 'Testing inheritance, changing the first step of DUMMY-SIMPLE-001',
     'extends'       : 'DUMMY-SIMPLE-001',
     'steps'         : {
         'dummystep1' : {

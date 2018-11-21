@@ -20,7 +20,7 @@ function ServeApp2(request, response) {
     response.end(html);
 }
 
-module.exports = {
+test = {
     'title'         : 'Framework stability set URL test',
     'description'   : 'Stress loads the system by setting the URL in a loop and see if the Framework process continues to operate nominally',
     'ip'            : undefined,

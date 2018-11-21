@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Framework Monitor tests',
     'description'       : 'Tests if the Framework Monitor module returns measurement values for YouTube',
     'requiredPlugins'   : ['Monitor', 'YouTube'],

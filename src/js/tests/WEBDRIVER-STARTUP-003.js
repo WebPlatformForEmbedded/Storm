@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WebDriver shutdown of Framework robustness test',
     'description'       : 'Starts WebDriver and stops Framework. Checks if everything is shutdown correctly',
     'requiredPlugins'   : ['WebDriver'],

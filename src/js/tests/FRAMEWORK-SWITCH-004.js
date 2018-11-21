@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'YouTube/Netflix/WPEWebkit switch robustness test',
     'description'   : 'Switches between YouTube/Netflix/WPEWebkit and checks if everything is started and suspended correctly',
     'requiredPlugins'   : ['Switch', 'Netflix', 'YouTube', 'WebKitBrowser'],

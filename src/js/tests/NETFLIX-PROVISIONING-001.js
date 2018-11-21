@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Netflix provisioning tests',
     'description'       : 'Validate if the device is correctly provisioned for Netflix',
     'requiredPlugins'   : ['Netflix', 'Provisioning'],

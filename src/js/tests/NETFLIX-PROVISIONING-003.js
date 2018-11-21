@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'Netflix provisioning tests',
     'description'       : 'Validate if Framework does not crash if you start Netflix without the provisioning module being active',
     'requiredPlugins'   : ['Netflix', 'Provisioning'],

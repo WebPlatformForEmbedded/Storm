@@ -8,7 +8,7 @@ const url = require('url');
 const querystring = require('querystring');
 require('shelljs/global');
 
-module.exports = {
+test = {
     'title'             : 'Stress test using eme.html test',
     'description'       : 'Loads eme.html test page and runs stress tests by playing a video for 3 hours',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],

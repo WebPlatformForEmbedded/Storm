@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'OCDM shutdown of Framework robustness test',
     'description'       : 'Starts OCDM and stops Framework. Checks if everything is shutdown correctly',
     'requiredPlugins'   : ['OCDM'],

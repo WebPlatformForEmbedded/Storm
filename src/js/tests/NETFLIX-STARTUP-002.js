@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Netflix shutdown of Framework robustness test',
     'description'   : 'Starts Netflix and stops Framework. Checks if everything is shutdown correctly',
     'requiredPlugins'   : ['Netflix'],

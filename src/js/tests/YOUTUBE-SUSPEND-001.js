@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'YouTube Suspend/Resume robustness test',
     'description'       : 'Suspends and Resumes YouTube plugin repeatedly and checks if everything is started correctly',
     'requiredPlugins'   : ['YouTube'],

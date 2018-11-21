@@ -38,6 +38,7 @@ class Framework extends Base {
         this.getCpuLoad             = this.getCpuLoad.bind(this);
         this.getMemoryUsage         = this.getMemoryUsage.bind(this);
         this.getMemoryUsageForPlugin = this.getMemoryUsageForPlugin.bind(this);
+        this.restartFramework       = this.restartFramework.bind(this);
         this.startFramework         = this.startFramework.bind(this);
         this.stopFramework          = this.stopFramework.bind(this);
         this.killFramework          = this.killFramework.bind(this);

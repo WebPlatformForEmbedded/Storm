@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance anisotropic',
     'description'       : 'Loads the Particles webGL animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

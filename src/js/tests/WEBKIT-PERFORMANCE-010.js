@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance racer-s',
     'description'       : 'Loads the Racer-S WebGL animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

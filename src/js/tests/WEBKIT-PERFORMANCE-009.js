@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit performance pasta',
     'description'       : 'Loads the pasta WebGL animation and measures its performance',
     'requiredPlugins'   : ['WebKitBrowser'],

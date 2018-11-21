@@ -5,7 +5,7 @@
 
 const MAX_MEMORY = 85 * 1000 * 1000; // b
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit Memory test',
     'description'       : 'Loads youtube and checks the memory usage',
     'requiredPlugins'   : ['WebKitBrowser', 'Monitor'],

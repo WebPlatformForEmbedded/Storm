@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'         : 'Framework Controller Robustness test',
     'description'   : 'Tests start/stop functionality of the controller module and repeats 100 times',
     'plugin'        : '', //place holder to store selected plugin value

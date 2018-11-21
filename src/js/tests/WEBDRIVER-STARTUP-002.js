@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
     'title'             : 'WebDriver StartUp',
     'description'       : 'Load the WebDriver plugin and check the status',
     'requiredPlugins'   : ['WebDriver'],

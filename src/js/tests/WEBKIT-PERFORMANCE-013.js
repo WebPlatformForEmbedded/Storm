@@ -3,7 +3,7 @@
  */
 /*jslint esnext: true*/
 
-module.exports = {
+test = {
 	'title'             : 'WPEWebkit performance test using performance.html',
     'description'       : 'Loads performance.html test page and calculates FPS',
     'requiredPlugins'   : ['WebKitBrowser'],

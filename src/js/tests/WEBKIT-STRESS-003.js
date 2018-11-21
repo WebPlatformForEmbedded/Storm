@@ -6,7 +6,7 @@
 const fs = require('fs');
 const url = require('url');
 
-module.exports = {
+test = {
     'title'             : 'WPEWebkit stability redirect test',
     'description'       : 'Stress loads the system with redirects and see if the WPEWebkit process continues to operate nominally',
     'requiredPlugins'   : ['WebKitBrowser'],
