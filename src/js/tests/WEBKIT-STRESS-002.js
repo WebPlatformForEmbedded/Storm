@@ -17,7 +17,7 @@ module.exports = {
     'appRequested'      : false,
     'imageRequested'    : false,
     'notFoundReq'       : false,
-    'extends'           : 'WEBKIT-STRESS-001.js',
+    'extends'           : 'WEBKIT-STRESS-001',
     'steps'             : {
         'init1' : {
             'description'   : 'Load resources to start the test',

@@ -10,7 +10,7 @@ module.exports = {
     'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
     'prevScreenshot'    : undefined,
-	'extends'           : 'YOUTUBE-PLAYBACK-001.js', // use YOUTUBE-PLAYBACK-001.js as base, extend just the required functions
+	'extends'           : 'YOUTUBE-PLAYBACK-001', // use YOUTUBE-PLAYBACK-001.js as base, extend just the required functions
     'steps'             : {
         'step5' : {
             'description'   : 'Set YouTube URL',

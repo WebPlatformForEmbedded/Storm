@@ -9,7 +9,7 @@ module.exports = {
     'requiredPlugins'   : ['WebKitBrowser'],
     'samples'           : [],
     'minFPS'            : 20, // minimum FPS or this test will fail
-    'extends'           : 'WEBKIT-PERFORMANCE-001.js', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
+    'extends'           : 'WEBKIT-PERFORMANCE-001', // use WEBKIT-PERFORMANCE-001.js as base, extend just the required functions
     'steps'             : {
         'step5' : {
             'description'   : 'http://oos.moxiecode.com/js_webgl/particles_morph/',

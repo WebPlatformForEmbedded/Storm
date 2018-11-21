@@ -30,75 +30,109 @@ class Test extends BaseView {
 
         loadTest(_t.file, (resp) => {
             if (resp.error) {
-                this.mainDiv.innerHTML = `
-                <div class="text grid__col grid__col--8-of-8">Error loading test:</div>'
-                <div class="text grid__col grid__col--8-of-8">${resp.error}</div>'`;
-
+                this.renderError(resp.error);
                 return;
             }
 
-            if (resp.test) {
-                this.test = resp.test;
-
-                // render title / description
-                let html = `
-                    <div class="title grid__col grid__col--2-of-8">Name</div>
-                    <div class="text grid__col grid__col--6-of-8">${this.testName}</div>
-
-                    <div class="title grid__col grid__col--2-of-8">Title</div>
-                    <div class="text grid__col grid__col--6-of-8">${this.test.title}</div>
-
-                    <div class="title grid__col grid__col--2-of-8">Description</div>
-                    <div class="text grid__col grid__col--6-of-8">${this.test.description}</div>
-
-                    <div class="title grid__col grid__col--2-of-8">Progress</div>
-                    <div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
-
-                    <div class="title grid__col grid__col--2-of-8"></div>
-                    <div id="result" class="text grid__col grid__col--2-of-8">-</div>
-
-                    <div class="text grid__col grid__col--1-of-8"></div>
-                    <div id="error" class="text grid__col grid__col--7-of-8"></div>
-
-                    <div class="grid__col grid__col--7-of-8">
-                        <div class="table">
-                            <div class="row header">
-                                <div class="cell">Step</div>
-                                <div class="cell">Result</div>
-                            </div>`;
-
-                var _steps = Object.keys(this.test.steps);
-                this.stepLength = _steps.length;
-
-                for (var i=0; i<_steps.length; i++) {
-                    var _step = this.test.steps[ _steps[ i ] ];
-
-                    html += `
-                        <div class="row">
-                            <div class="cell">${i+1}. ${_step.description}</div>
-                            <div id="step_progress_${i}" class="cell">Not Started</div>
-                        </div>`;
-                }
-
-
-                html += `</div></div>
-
-                    <div class="title grid__col grid__col--6-of-8"></div>
-                    <div class="text grid__col grid__col--2-of-8">
-                        <button id="start_button" type="button">Run</button>
-                    </div>`;
-
-
-                this.mainDiv.innerHTML = html;
-
-                this.progressEl         = document.getElementById('progress');
-                this.resultEl           = document.getElementById('result');
-                this.errorEl            = document.getElementById('error');
-                let start_button        = document.getElementById('start_button');
-                start_button.onclick    = this.startTest.bind(this);
+            if (resp.test === undefined) {
+                this.renderError('Test not found');
+                return;
             }
+
+
+
+            if (resp.test.extends !== undefined || resp.test.exteds !== '') {
+                // test extends another test, lets load that one too
+                loadTest('js/tests/' + resp.test.extends + '.js', (_resp) => {
+                    if (_resp.error) {
+                        this.renderError(_resp.error);
+                        return;
+                    }
+
+
+                    if (_resp.test) {
+                        // merge tests
+                        for (var attrname in _resp.test.steps)
+                            resp.test.steps[attrname] = _resp.test.steps[attrname];
+
+                        this.renderTest(resp.test);
+                    } else {
+                        this.renderError('Cannot load test that needs to be extended: ', resp.test.extends);
+                    }
+                });
+            } else {
+                this.renderTest(resp.test);
+            }
+
         });
 
+    }
+
+    renderError(error) {
+        this.mainDiv.innerHTML = `
+        <div class="text grid__col grid__col--8-of-8">Error loading test:</div>'
+        <div class="text grid__col grid__col--8-of-8">${error}</div>'`;
+
+        return;
+    }
+
+    renderTest(test) {
+        // render title / description
+        let html = `
+            <div class="title grid__col grid__col--2-of-8">Name</div>
+            <div class="text grid__col grid__col--6-of-8">${this.testName}</div>
+
+            <div class="title grid__col grid__col--2-of-8">Title</div>
+            <div class="text grid__col grid__col--6-of-8">${test.title}</div>
+
+            <div class="title grid__col grid__col--2-of-8">Description</div>
+            <div class="text grid__col grid__col--6-of-8">${test.description}</div>
+
+            <div class="title grid__col grid__col--2-of-8">Progress</div>
+            <div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
+
+            <div class="title grid__col grid__col--2-of-8"></div>
+            <div id="result" class="text grid__col grid__col--2-of-8">-</div>
+
+            <div class="text grid__col grid__col--1-of-8"></div>
+            <div id="error" class="text grid__col grid__col--7-of-8"></div>
+
+            <div class="grid__col grid__col--7-of-8">
+                <div class="table">
+                    <div class="row header">
+                        <div class="cell">Step</div>
+                        <div class="cell">Result</div>
+                    </div>`;
+
+        var _steps = Object.keys(test.steps);
+        this.stepLength = _steps.length;
+
+        for (var i=0; i<_steps.length; i++) {
+            var _step = test.steps[ _steps[ i ] ];
+
+            html += `
+                <div class="row">
+                    <div class="cell">${i+1}. ${_step.description}</div>
+                    <div id="step_progress_${i}" class="cell">Not Started</div>
+                </div>`;
+        }
+
+
+        html += `</div></div>
+
+            <div class="title grid__col grid__col--6-of-8"></div>
+            <div class="text grid__col grid__col--2-of-8">
+                <button id="start_button" type="button">Run</button>
+            </div>`;
+
+
+        this.mainDiv.innerHTML = html;
+
+        this.progressEl         = document.getElementById('progress');
+        this.resultEl           = document.getElementById('result');
+        this.errorEl            = document.getElementById('error');
+        let start_button        = document.getElementById('start_button');
+        start_button.onclick    = this.startTest.bind(this);
     }
 
     startTest() {

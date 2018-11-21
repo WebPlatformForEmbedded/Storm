@@ -6,7 +6,7 @@
 test = {
     'title'         : 'Dummy Test',
     'description'   : 'Testing user input',
-    'extends'       : 'DUMMY-SIMPLE-001.js',
+    'extends'       : 'DUMMY-SIMPLE-001',
     'steps'         : {
         'dummystep1' : {
             'description'   : 'User input step',

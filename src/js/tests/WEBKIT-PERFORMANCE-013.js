@@ -9,7 +9,7 @@ module.exports = {
     'requiredPlugins'   : ['WebKitBrowser'],
     'samples'           : [],
     'minFPS'            : 25, // minimum FPS or this test will fail
-    'extends'           : 'WEBKIT-PERFORMANCE-012.js', // use WEBKIT-PERFORMANCE-012.js as base, extend just the required functions
+    'extends'           : 'WEBKIT-PERFORMANCE-012', // use WEBKIT-PERFORMANCE-012.js as base, extend just the required functions
     'steps'             : {
     	'step5' : {
             'description'   : 'Load the app on WPEWebkit',

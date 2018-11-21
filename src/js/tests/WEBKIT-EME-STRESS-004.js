@@ -16,7 +16,7 @@ module.exports = {
     'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
     'prevScreenshot'    : undefined,
-    'extends'           : 'WEBKIT-EME-STRESS-001.js', // use WEBKIT-EME-STRESS-001.js as base, extend just the required functions
+    'extends'           : 'WEBKIT-EME-STRESS-001', // use WEBKIT-EME-STRESS-001.js as base, extend just the required functions
     'steps'         : {
         'step1' : {
             'description'   : 'Load the app on WebKit',

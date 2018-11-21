@@ -143,10 +143,10 @@ function initTest(testName) {
 
     if (test && test.extends !== undefined){
         try {
-            var parentTest = importScripts('js/tests/' + testName);
-            var extendSteps = test.steps;
-            test.steps = parentTest.steps;
-            mergeObjects(test.steps, extendSteps);
+            var extendTest = test;
+            importScripts('../tests/' + test.extends + '.js');
+            mergeObjects(extendTest.steps, test.steps);
+            test = extendTest;
         } catch (e) {
             process_end('Could not load test to extend, test file not found');
         }

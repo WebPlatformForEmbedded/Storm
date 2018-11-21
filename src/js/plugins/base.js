@@ -62,7 +62,7 @@ class Base {
                         cb({ 'headers' : xmlHttp.getAllResponseHeaders(), 'body' : xmlHttp.responseText, 'status' : xmlHttp.status, 'statusMessage' : xmlHttp.statusText });
                     } else if (xmlHttp.status >= 300) {
                         //console.log('ERR: ' + xmlHttp.responseText);
-                        cb({ 'error' : `HTTP Status ${xmlHttp.status}, with message: ${xmlHttp.statusMessage}` });
+                        cb({ 'error' : `HTTP Status ${xmlHttp.status}${XMLHttpRequest.statusMessage !== undefined ? `, with message: ${xmlHttp.statusMessage}` : '' }`});
                     } else if (xmlHttp.status === 0) {
                         //console.log('ERR: connection interrupted');
                         cb({ 'error' : 'Connection interrupted' });

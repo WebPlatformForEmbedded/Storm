@@ -5,7 +5,7 @@
 test = {
     'title'         : 'Dummy Test Error2',
     'description'   : 'This tests extends a test that does not exist',
-    'extends'       : 'foo.js',
+    'extends'       : 'foo',
     'steps'         : {
         'dummystep1' : {
             'description'   : 'Just a dummy test assert',

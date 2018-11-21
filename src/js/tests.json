@@ -116,20 +116,20 @@
     "DUMMY-TIMEOUT-001": {
         "name": "DUMMY-TIMEOUT-001",
         "file": "js/tests/DUMMY-TIMEOUT-001.js",
-        "title": "Dummy Test",
+        "title": "Timeout at step",
         "description": "This is a dummy test"
     },
     "DUMMY-TIMEOUT-002": {
         "name": "DUMMY-TIMEOUT-002",
         "file": "js/tests/DUMMY-TIMEOUT-002.js",
-        "title": "Dummy Test timeout2",
+        "title": "Timeout main task",
         "description": "This test times out at the task level"
     },
     "DUMMY-TIMEOUT-003": {
         "name": "DUMMY-TIMEOUT-003",
         "file": "js/tests/DUMMY-TIMEOUT-003.js",
-        "title": "Dummy Test",
-        "description": "This is a dummy test"
+        "title": "Timeout cleanup",
+        "description": "Timeout test with cleanup"
     },
     "DUMMY-USER-001": {
         "name": "DUMMY-USER-001",

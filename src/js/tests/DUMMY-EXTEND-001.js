@@ -5,7 +5,7 @@
 test = {
     'title'         : 'Dummy Test',
     'description'   : 'Testing inheritance, changing the first step',
-    'extends'       : 'DUMMY-SIMPLE-001.js',
+    'extends'       : 'DUMMY-SIMPLE-001',
     'steps'         : {
         'dummystep1' : {
             'description'   : 'This test is changed by extending it and overwriting it',
