@@ -261,7 +261,7 @@ function lookForNextStep() {
     // GOTO Repeat handling
     if (nextStep.goto !== undefined){
 
-        repeatMessage = new RepeatMessage(nextIdx, nextIdx, gotoStep);
+        repeatMessage = new RepeatMessage(nextIdx, stepList[ nextIdx ], nextStep.goto);
 
         // look up goto step in the list
         var gotoStep = stepList.indexOf(nextStep.goto);

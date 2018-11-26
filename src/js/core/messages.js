@@ -175,15 +175,15 @@ class StepMessage extends Message {
  * Special class for repeating steps within the step, not sure if this needs be merged with the main step message class
  */
 class RepeatMessage extends Message {
-    constructor(step, fromIdx, toIdx) {
+    constructor(currentStepIdx, fromStep, toStep) {
         super();
 
         this.name = 'RepeatMessage';
+        this.stepIdx = currentStepIdx;
 
         this.repeat = {
-            'step'   : step,
-            'fromIdx': fromIdx,
-            'toIdx'  : toIdx,
+            'fromStep'  : fromStep,
+            'toStep'    : toStep
         };
 
         this.states = {

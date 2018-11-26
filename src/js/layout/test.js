@@ -8,6 +8,7 @@ class Test extends BaseView {
         this.test = null;
         this.testMessage = new TestMessage();
         this.stepMessage = new StepMessage();
+        this.repeatMessage = new RepeatMessage();
     }
 
     render(_testName) {
@@ -88,7 +89,7 @@ class Test extends BaseView {
 
             <div class="title grid__col grid__col--2-of-8">Progress</div>
             <div id="progressBarDiv" class="text grid__col grid__col--2-of-8">
-                <progress max="100" id="progressBar"></progress>
+                <progress max="100" value="0" id="progressBar"></progress>
             </div>
             <div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
 
@@ -117,8 +118,7 @@ class Test extends BaseView {
 
                 html += `<div class="row">
                         <div class="cell">${i+1}. ${_step.description}</div>
-                        <div id="step_progress_${i}" class="cell">Not Started</div>
-                    </div>`;
+                        <div id="step_progress_${i}" class="cell">Not Started</div></div>`;
             }
         }
 
@@ -153,10 +153,10 @@ class Test extends BaseView {
                 if (data.completed === true) {
                     if (data.state !== this.testMessage.states.success && data.result !== undefined)
                         this.errorEl.innerHTML = data.result;
-                } 
+                }
                 else if (data.state === this.testMessage.states.start)
                     this.resultEl.innerHTML = 'Started';
-                else if (data.state === this.testMessage.states.success) 
+                else if (data.state === this.testMessage.states.success)
                     this.resultEl.innerHTML = 'Success';
                 else if (data.state === this.testMessage.states.error)
                     this.resultEl.innerHTML = 'Error';
@@ -187,6 +187,16 @@ class Test extends BaseView {
                     let progressPerct = ( ((data.stepIdx+1) / this.stepLength) * 100).toFixed(0);
                     this.progressBar.value = progressPerct;
                     this.progressEl.innerHTML = progressPerct + '%';
+                }
+
+                break;
+
+            case 'RepeatMessage':
+                let repeatStepEl = document.getElementById('step_progress_' + data.stepIdx);
+
+                if (data.repeatType === this.repeatMessage.repeatTypes.count) {
+                    let repeatProgress = (( (data.repeatByCount.total - data.repeatByCount.remaining) / data.repeatByCount.total) * 100).toFixed(0);
+                    repeatStepEl.innerHTML = `Running. <br><progress max="100" value="${repeatProgress}"></progress> ${repeatProgress}%`;
                 }
 
                 break;
