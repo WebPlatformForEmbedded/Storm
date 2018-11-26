@@ -37,6 +37,7 @@ var taskTimer;
 var timedOut            = false;
 var processEndRequested = false;
 var stepMessage;
+var repeatStepMessage;
 var stepList;
 var repeatMessage;
 let bootStep            = 0;
@@ -267,15 +268,22 @@ function lookForNextStep() {
 
         // count based repeat
         if (nextStep.repeat){
-            if (nextStep.repeatTotal === undefined)
+            if (nextStep.repeatTotal === undefined) {
+                // first time were running the repeat, lets set some variables
+                repeatStepMessage = new StepMessage(curIdx+1);
+                repeatStepMessage.start();
+
                 nextStep.repeatTotal = nextStep.repeat;
+            }
 
             repeatMessage.repeatCount(nextStep.repeat, nextStep.repeatTotal);
+
             nextStep.repeat -= 1;
 
             // were done
             if (nextStep.repeat <= 0) {
                 repeatMessage.done();
+                repeatStepMessage.success();
                 curIdx+=1;
                 lookForNextStep();
             } else {
@@ -285,6 +293,9 @@ function lookForNextStep() {
         } else if (nextStep.repeatTime){
             if (nextStep.repeatTimeStamp === undefined){
                 //first time, set timestamp
+                repeatStepMessage = new StepMessage(curIdx+1);
+                repeatStepMessage.start();
+
                 nextStep.repeatTimeStamp = moment().add(nextStep.repeatTime, 'minutes');
                 nextStep.repeatTimes = 0;
             }
@@ -293,6 +304,7 @@ function lookForNextStep() {
 
             if (moment().isAfter(nextStep.repeatTimeStamp)){
                 repeatMessage.done();
+                repeatStepMessage.success();
                 curIdx+=1;
                 lookForNextStep();
             } else {

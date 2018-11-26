@@ -87,9 +87,11 @@ class Test extends BaseView {
             <div class="text grid__col grid__col--6-of-8">${test.description}</div>
 
             <div class="title grid__col grid__col--2-of-8">Progress</div>
+            <div id="progressBarDiv" class="text grid__col grid__col--2-of-8">
+                <progress max="100" id="progressBar"></progress>
+            </div>
             <div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
 
-            <div class="title grid__col grid__col--2-of-8"></div>
             <div id="result" class="text grid__col grid__col--2-of-8">-</div>
 
             <div class="text grid__col grid__col--1-of-8"></div>
@@ -134,6 +136,7 @@ class Test extends BaseView {
         this.mainDiv.innerHTML = html;
 
         this.progressEl         = document.getElementById('progress');
+        this.progressBar        = document.getElementById('progressBar');
         this.resultEl           = document.getElementById('result');
         this.errorEl            = document.getElementById('error');
         let start_button        = document.getElementById('start_button');
@@ -181,7 +184,8 @@ class Test extends BaseView {
 
                 // only update % if state is > running
                 if (data.state > 1) {
-                    let progressPerct = ( (data.stepIdx+1) / this.stepLength) * 100;
+                    let progressPerct = ( ((data.stepIdx+1) / this.stepLength) * 100).toFixed(0);
+                    this.progressBar.value = progressPerct;
                     this.progressEl.innerHTML = progressPerct + '%';
                 }
 

@@ -180,7 +180,7 @@ class RepeatMessage extends Message {
 
         this.name = 'RepeatMessage';
 
-        this._repeat = {
+        this.repeat = {
             'step'   : step,
             'fromIdx': fromIdx,
             'toIdx'  : toIdx,
@@ -192,44 +192,41 @@ class RepeatMessage extends Message {
             'done'      : 1
         };
 
-        this._state = this.states.init;
+        this.state = this.states.init;
 
-        this._repeatByCount = {
+        this.repeatByCount = {
             remaining   : null,
             total       : null,
         };
 
-        this._repeatByTime = {
+        this.repeatByTime = {
             until           : null,
             timesRepeated   : null
         };
 
-        this._repeatType = this.repeatTypes.count;
-        this._repeatTypes = {
+        this.repeatTypes = {
             count   : 0,
             time    : 1
         };
+
+        this.repeatType = this.repeatTypes.count;
     }
 
-    get repeat()        { return this._repeat; }
-    get getRepeatCount()   { return this._repeatByCount; }
-    get repeatTime()    { return this._repeatByTime; }
-
     repeatCount(remaining, total) {
-        this._repeatType                    = this.repeatTypes.count;
-        this._state                         = this.states.repeating;
+        this.repeatType                    = this.repeatTypes.count;
+        this.state                         = this.states.repeating;
 
-        this._repeatByCount.remaining       = remaining;
-        this._repeatByCount.total           = total;
+        this.repeatByCount.remaining       = remaining;
+        this.repeatByCount.total           = total;
         this.send();
     }
 
     timedRepeat(until, times) {
-        this._repeatType                    = this.repeatTypes.time;
-        this._state                         = this.states.repeating;
+        this.repeatType                    = this.repeatTypes.time;
+        this.state                         = this.states.repeating;
 
-        this._repeatByTime.until            = until;
-        this._repeatByTime.timesRepeated    = times;
+        this.repeatByTime.until            = until;
+        this.repeatByTime.timesRepeated    = times;
         this.send();
     }
 
