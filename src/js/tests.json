@@ -86,13 +86,13 @@
     "DUMMY-REPEAT-003": {
         "name": "DUMMY-REPEAT-003",
         "file": "js/tests/DUMMY-REPEAT-003.js",
-        "title": "Dummy Test Repeat Timebased",
+        "title": "Repeat Timebased",
         "description": "This is a dummy test that repeats a few steps based on time"
     },
     "DUMMY-REPEAT-004": {
         "name": "DUMMY-REPEAT-004",
         "file": "js/tests/DUMMY-REPEAT-004.js",
-        "title": "Dummy Test Repeat Time 2",
+        "title": "Repeat Timebased 2",
         "description": "This is a dummy test that repeats a few steps based on time"
     },
     "DUMMY-REPEAT-005": {

@@ -53,6 +53,10 @@ class Tests extends BaseView {
 		// bind all tests after theyve been added to the DOM
 		for (var k=0; k<testsArray.length; k++) {
 			let _testName 	= testsArray[k];
+
+			if (wtf.dummyMode !== true && _testName.slice(0,5) === 'DUMMY')
+				continue;
+
 			let test 		= wtf.tests[ _testName ];
 			let _div 		= document.getElementById(test.name + '_row');
 			_div.onclick 	= this.showTest.bind(this, test.name);
