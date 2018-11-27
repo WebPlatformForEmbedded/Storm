@@ -3,7 +3,7 @@
  */
 
 test = {
-    'title'         : 'Dummy Test Repeat Time 2',
+    'title'         : 'Repeat Timebased 2',
     'description'   : 'This is a dummy test that repeats a few steps based on time',
     'steps'         : {
         'dummystep1' : {
@@ -28,7 +28,7 @@ test = {
             'assert'        : 1
         }, 
         'dummystep4' : {
-            'description'   : 'Repeat step 1, 10 times',
+            'description'   : 'Repeat step 1, for 1 minute',
             'goto'          : 'dummystep1',
             'repeatTime'    : 1, //minutes
         },

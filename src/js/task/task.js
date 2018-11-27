@@ -296,7 +296,7 @@ function lookForNextStep() {
                 repeatStepMessage = new StepMessage(curIdx+1);
                 repeatStepMessage.start();
 
-                nextStep.repeatTimeStamp = moment().add(nextStep.repeatTime, 'minutes');
+                nextStep.repeatTimeStamp = moment().add(nextStep.repeatTime, 'minutes').format();
                 nextStep.repeatTimes = 0;
             }
 

@@ -194,9 +194,16 @@ class Test extends BaseView {
             case 'RepeatMessage':
                 let repeatStepEl = document.getElementById('step_progress_' + data.stepIdx);
 
+                console.log(data);
+
                 if (data.repeatType === this.repeatMessage.repeatTypes.count) {
                     let repeatProgress = (( (data.repeatByCount.total - data.repeatByCount.remaining) / data.repeatByCount.total) * 100).toFixed(0);
                     repeatStepEl.innerHTML = `Running. <br><progress max="100" value="${repeatProgress}"></progress> ${repeatProgress}%`;
+                }
+
+                if (data.repeatType === this.repeatMessage.repeatTypes.time) {
+                    let timeRemaining = moment(data.repeatByTime.until).toNow(true);
+                    repeatStepEl.innerHTML = `Running. <br><br>Repeats: ${data.repeatByTime.timesRepeated} and ${timeRemaining} remaining.`;
                 }
 
                 break;

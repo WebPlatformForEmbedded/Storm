@@ -28,7 +28,7 @@ test = {
             'assert'        : 1
         }, 
         'dummystep4' : {
-            'description'   : 'Repeat step 1, 10 times',
+            'description'   : 'Repeat step 1 for 5 minutes',
             'goto'          : 'dummystep1',
             'repeatTime'    : 5, //minutes
         },
