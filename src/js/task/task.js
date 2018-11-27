@@ -52,6 +52,7 @@ addEventListener('message', function(message) {
         return;
 
     if (message.data.name === 'InitReady' && message.data.test !== '') {
+        this.host = message.data.host;
         initTest(message.data.test);
     }
 }, false);

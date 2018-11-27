@@ -32,10 +32,15 @@ class InitReady extends Message {
 
         this.name = 'InitReady';
         this.test = '';
+        this.host = '';
     }
 
     ready() { this.send(); }
-    loadTest(test) { this.test = test; this.send(); }
+    loadTest(test, host) {
+        this.test = test;
+        this.host = host;
+        this.send();
+    }
 }
 /*
 class LoadTest extends Message {

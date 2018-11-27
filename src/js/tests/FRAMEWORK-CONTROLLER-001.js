@@ -73,6 +73,5 @@ test = {
             'params'        : { url: `http://${host}:80/Service/Controller/UI`, method: 'GET' },
             'validate'      : httpResponseBody
         }
-    },
-    'cleanup'       : restartFramework
+    }
 };

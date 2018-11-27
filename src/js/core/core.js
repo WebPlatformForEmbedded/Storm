@@ -98,7 +98,7 @@ class Core {
                 case 'InitReady':
                     //worker is ready, launch test through loadtest message
                     var _loadTest = new InitReady();
-                    _loadTest.loadTest(test);
+                    _loadTest.loadTest(test, host);
                     _loadTest.send(this.worker);
                     break;
 
@@ -132,7 +132,6 @@ class Core {
 
     // Getters
     getDeviceDetails()  { return { 'devicename' : this.devicename, 'deviceid' : this.deviceid, 'version': this.version }; }
-    getHost()           { return this.host; }
     getActiveTask()     { return this.activeTask; }
     getActiveDevces()   { return this.devices; }
 

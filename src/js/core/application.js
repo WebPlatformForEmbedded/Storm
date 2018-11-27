@@ -172,7 +172,7 @@
             }
 
             // auto onboard if host is provided in the url and nothing is activated already
-            if (options.host !== undefined && options.host !== '' && wtf.getHost() === null) {
+            if (options.host !== undefined && options.host !== '' && host === null) {
                 wtf.activateDevice(options.host, () => {
                     cb(null, 100);
                 });
