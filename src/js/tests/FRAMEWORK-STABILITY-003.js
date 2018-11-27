@@ -10,13 +10,13 @@ html += '</script></body></html>';
 
 function ServeApp1(request, response) {
     response.writeHead(200, {'Content-Type': 'text/html'});
-    task.appLoaded1 = true;
+    test.appLoaded1 = true;
     response.end(html);
 }
 
 function ServeApp2(request, response) {
     response.writeHead(200, {'Content-Type': 'text/html'});
-    task.appLoaded2 = true;
+    test.appLoaded2 = true;
     response.end(html);
 }
 
@@ -38,14 +38,14 @@ test = {
             'params'        : function (request, response) {
                 response.writeHead(200, {'Content-Type': 'text/html'});
                 console.log('Got request on server1');
-                task.appLoaded1 = true;
+                test.appLoaded1 = true;
                 response.end(html);
             },
             'validate'      : (port) => {
                 if (port === null || port === undefined)
                     return false;
 
-                task.server1 = port;
+                test.server1 = port;
                 return true;
             }
         },
@@ -56,14 +56,14 @@ test = {
             'params'        : function (request, response) {
                 response.writeHead(200, {'Content-Type': 'text/html'});
                 console.log('Got request on server2');
-                task.appLoaded2 = true;
+                test.appLoaded2 = true;
                 response.end(html);
             },
             'validate'      : (port) => {
                 if (port === null || port === undefined)
                     return false;
 
-                task.server2 = port;
+                test.server2 = port;
                 return true;
             }
         },
@@ -74,14 +74,14 @@ test = {
             'params'        : function (request, response) {
                 response.writeHead(200, {'Content-Type': 'text/html'});
                 console.log('Got request on server3');
-                task.appLoaded3 = true;
+                test.appLoaded3 = true;
                 response.end(html);
             },
             'validate'      : (port) => {
                 if (port === null || port === undefined)
                     return false;
 
-                task.server3 = port;
+                test.server3 = port;
                 return true;
             }
         },
@@ -93,7 +93,7 @@ test = {
                 if (response === undefined)
                     return false;
 
-                task.ip = response;
+                test.ip = response;
                 return true;
             }
         },
@@ -118,9 +118,9 @@ test = {
         'step1' : {
             'description'   : 'Load 3 different urls on WPEWebkit in a very short sequence',
             'test'          : function (x, cb) {
-                var url1 = `http://${task.ip}:${task.server1}/app`;
-                var url2 = `http://${task.ip}:${task.server2}/app`;
-                var url3 = `http://${task.ip}:${task.server3}/app`;
+                var url1 = `http://${test.ip}:${test.server1}/app`;
+                var url2 = `http://${test.ip}:${test.server2}/app`;
+                var url3 = `http://${test.ip}:${test.server3}/app`;
 
                 setUrl(url1)
                 setTimeout(setUrl, 1000, url2);
@@ -131,17 +131,17 @@ test = {
             'sleep'         : 5,
             'description'   : 'Check if all apps are loaded on WPEWebkit',
             'test'          : (x, cb) => {
-                cb(`app1: ${task.appLoaded1}, app2: ${task.appLoaded2}, app3: ${task.appLoaded3}`);
+                cb(`app1: ${test.appLoaded1}, app2: ${test.appLoaded2}, app3: ${test.appLoaded3}`);
             },
             'validate'      : () => {
-                if (task.appLoaded1 === true && task.appLoaded2 === true && task.appLoaded3 === true){
-                    task.appLoaded1 = false;
-                    task.appLoaded2 = false;
-                    task.appLoaded3 = false;
+                if (test.appLoaded1 === true && test.appLoaded2 === true && test.appLoaded3 === true){
+                    test.appLoaded1 = false;
+                    test.appLoaded2 = false;
+                    test.appLoaded3 = false;
                     return true;
                 }
 
-                throw new Error(`App(s) did not load on WPEWebkit, app1: ${task.appLoaded1}, app2: ${task.appLoaded2}, app3: ${task.appLoaded3}`);
+                throw new Error(`App(s) did not load on WPEWebkit, app1: ${test.appLoaded1}, app2: ${test.appLoaded2}, app3: ${test.appLoaded3}`);
             }
         },
         'step3' : {

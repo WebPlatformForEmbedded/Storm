@@ -14,7 +14,7 @@ test = {
             'test'          : getPlugin,
             'params'        : 'Controller',
             'validate'      : (resp) => {
-                task.controllerResp = JSON.parse(resp.body);
+                test.controllerResp = JSON.parse(resp.body);
                 return true;
             }
         },
@@ -22,29 +22,29 @@ test = {
             'description'   : 'Parse list of modules and setup URLs to test',
             'test'          : (x, cb) => {
                 var modules = [];
-                task.urls.push( { method: 'GET', path: '/Service/Controller'} );
+                test.urls.push( { method: 'GET', path: '/Service/Controller'} );
                 // plugin based urls
-                for (var i=0; i < task.controllerResp.plugins.length; i++) {
-                    var module = task.controllerResp.plugins[i].callsign;
+                for (var i=0; i < test.controllerResp.plugins.length; i++) {
+                    var module = test.controllerResp.plugins[i].callsign;
                     console.log(module);
                     if (module === 'Controller')
                         continue;
 
                     // keep state the same as we left it when we're done
-                    if (task.controllerResp.plugins[i].state.toLowerCase() === 'activated' || task.controllerResp.plugins[i].state.toLowerCase() === 'resumed') {
+                    if (test.controllerResp.plugins[i].state.toLowerCase() === 'activated' || test.controllerResp.plugins[i].state.toLowerCase() === 'resumed') {
                         if (module === 'WebServer' || module === 'WebProxy') {
-                            task.urls.push( {method: 'GET', path: `/Service/Controller/${module}`} )
+                            test.urls.push( {method: 'GET', path: `/Service/Controller/${module}`} )
                         } else {
-                            task.urls.push( {method: 'GET', path: `/Service/${module}`} )
+                            test.urls.push( {method: 'GET', path: `/Service/${module}`} )
                         }
                     } else {
-                        task.urls.push( { method: 'PUT', path: `/Service/Controller/Activate/${module}`} );
-                        task.urls.push( {method: 'GET', path: `/Service/${module}`} )
+                        test.urls.push( { method: 'PUT', path: `/Service/Controller/Activate/${module}`} );
+                        test.urls.push( {method: 'GET', path: `/Service/${module}`} )
 
                     }
                 }
 
-                setTimeout(cb, 2000, task.urls);
+                setTimeout(cb, 2000, test.urls);
             }
         },
         'step1' : {
@@ -55,8 +55,8 @@ test = {
 
                 function makeRequest() {
                     var opts = {
-                        url     : `http://${host}:80${task.urls[idx].path}`,
-                        method  : task.urls[idx].method
+                        url     : `http://${host}:80${test.urls[idx].path}`,
+                        method  : test.urls[idx].method
                     };
 
                     console.log('Calling Framework with opts: ', opts);
@@ -68,9 +68,9 @@ test = {
                         // console.log(headerObj);
 
                         if (headerObj['cache-control'] === undefined && headerObj['access-control-allow-origin'] === undefined)
-                            throw new Error(`Error making request ${task.urls[idx].method} ${task.urls[idx].path}: ${resp.error}`);
+                            throw new Error(`Error making request ${test.urls[idx].method} ${test.urls[idx].path}: ${resp.error}`);
 
-                        if (idx === task.urls.length-1){
+                        if (idx === test.urls.length-1){
                             cb(); // we're done.
                         } else {
                             idx++;

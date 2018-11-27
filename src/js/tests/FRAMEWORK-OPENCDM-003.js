@@ -26,7 +26,7 @@ module.exports = {
                     if (err || app === undefined) 
                         callback(false);
 
-                    task.app = '' + app;
+                    test.app = '' + app;
                     callback(true);
                 });
             },
@@ -43,7 +43,7 @@ module.exports = {
 
                 function returnApp(){
                     response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.end(task.app);
+                    response.end(test.app);
                 }
 
                 var responseLookup = {
@@ -63,7 +63,7 @@ module.exports = {
                 if (port === null || port === undefined)
                     return false;
 
-                task.port = port;
+                test.port = port;
                 return true;
             }
         },
@@ -75,11 +75,11 @@ module.exports = {
                 if (response === undefined)
                     return false;
 
-                task.server = response;
+                test.server = response;
 
                 // update the app to reflect what we are going to use the serve the app from
-                task.app = task.app.replace(/{{server}}/g, task.server);
-                task.app = task.app.replace(/{{port}}/g, task.port);
+                test.app = test.app.replace(/{{server}}/g, test.server);
+                test.app = test.app.replace(/{{port}}/g, test.port);
 
                 return true;
             }
@@ -141,7 +141,7 @@ module.exports = {
         'step9' : {
             'description'   : 'Load the app on WebKit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:${task.port}/app`;
+                var _url = `http://${test.server}:${test.port}/app`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple,
@@ -151,7 +151,7 @@ module.exports = {
             'description'   : 'Check if app is loaded on WebKit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:${task.port}/app`)
+                if (resp === `http://${test.server}:${test.port}/app`)
                     return true;
                 
                 throw new Error('URL did not load on WebKit');
@@ -164,31 +164,31 @@ module.exports = {
             'validate'      : (res) => {
                 // check if we got an empty response
                 if (res !== undefined && res.length > 0) {
-                    if ( (task.prevSceenshot === undefined) ||
-                       (task.prevSceenshot !== undefined && task.prevSceenshot.equals(res) === false)
+                    if ( (test.prevSceenshot === undefined) ||
+                       (test.prevSceenshot !== undefined && test.prevSceenshot.equals(res) === false)
                        ) {
 
                         // screen updated, save it and reset stuck counter
-                    task.prevSceenshot = res;
-                    task.curSameScreenshot = 0;
+                    test.prevSceenshot = res;
+                    test.curSameScreenshot = 0;
                     return true;
                 } else {
                         // screen is stuck
                         // check if we have reached the max threshold
-                        if (task.curSameScreenshot >= task.maxSameScreenshot)
-                            throw new Error('Screen is stuck, new screenshot is the same as previous screenshot for ' + task.curSameScreenshot + ' times.');
+                        if (test.curSameScreenshot >= test.maxSameScreenshot)
+                            throw new Error('Screen is stuck, new screenshot is the same as previous screenshot for ' + test.curSameScreenshot + ' times.');
 
                         // update counter and go again
-                        task.curSameScreenshot++;
+                        test.curSameScreenshot++;
                         return true;
                     }
                 } else {
                     // empty response is an annoying bug in the Snapshot module. Trying to be a little more graceful about it by allowing webbridge to return an empty screenshot from time to time
-                    if (task.curSameScreenshot >= task.maxSameScreenshot)
-                        throw new Error('Error screenshot returned is empty for ' + task.curSameScreenshot + ' times.');
+                    if (test.curSameScreenshot >= test.maxSameScreenshot)
+                        throw new Error('Error screenshot returned is empty for ' + test.curSameScreenshot + ' times.');
 
                     // update counter and go again
-                    task.curSameScreenshot++;
+                    test.curSameScreenshot++;
                     return true;
                 }
             }

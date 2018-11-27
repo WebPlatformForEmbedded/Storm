@@ -26,12 +26,12 @@ test = {
                     if (err || app === undefined) 
                         callback(false);
 
-                    task.app = '' + app;
+                    test.app = '' + app;
                     readImage((err, image) => {
                         if (err || image === undefined) 
                             callback(false);                        
 
-                        task.image = image;
+                        test.image = image;
                         callback(true);
                     });
                 });
@@ -49,8 +49,8 @@ test = {
 
                 function returnApp(){
                     response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.end(task.app);
-                    task.appRequested = true;
+                    response.end(test.app);
+                    test.appRequested = true;
                 }
 
                 function returnImage(){
@@ -58,9 +58,9 @@ test = {
                         {'Content-Type': 'image/png; charset=utf-8'},
                         {'Content-Length': 12388}
                     );
-                    response.write(task.image);
+                    response.write(test.image);
                     response.end();
-                    task.imageRequested = true;
+                    test.imageRequested = true;
                 }
 
                 if (parsedUrl.pathname == '/app'){
@@ -70,7 +70,7 @@ test = {
                 } else {
                     response.writeHead(404, {'Content-Type': 'text/html'});
                     response.end('Not found');
-                    task.notFoundReq = true;
+                    test.notFoundReq = true;
                 }
 
             },
@@ -78,19 +78,19 @@ test = {
                 if (port === null || port === undefined)
                     return false;
 
-                task.port = port;
+                test.port = port;
                 return true;
             }
         },
         'step1' : {
             'description'   : 'Reset checks and check if image requests are still being made',
             'test'          : (x, cb) => {
-                task.imageRequested = false;
-                task.notFoundReq = false;
+                test.imageRequested = false;
+                test.notFoundReq = false;
                 setTimeout(cb, 10 * 1000, true);
             },
             'validate'      : () => {
-                if (task.imageRequested === true && task.notFoundReq === false)
+                if (test.imageRequested === true && test.notFoundReq === false)
                     return true;
                 
                 throw new Error('Images are no longer being requested or not found error has occured');

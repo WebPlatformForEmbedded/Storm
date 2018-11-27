@@ -21,7 +21,7 @@ test = {
         'step1' : {
             'description'   : 'Load the app on WebKit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:${task.port}/app?type=francetv`;
+                var _url = `http://${test.server}:${test.port}/app?type=francetv`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
@@ -31,7 +31,7 @@ test = {
             'description'   : 'Check if app is loaded on WebKit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:${task.port}/app?type=francetv`)
+                if (resp === `http://${test.server}:${test.port}/app?type=francetv`)
                     return true;
                 
                 throw new Error('URL did not load on WebKit');
@@ -44,31 +44,31 @@ test = {
             'validate'      : (res) => {
                 // check if we got an empty response
                 if (res !== undefined && res.length > 0) {
-                    if ( (task.previousSceenshot === undefined) ||
-                         (task.previousSceenshot !== undefined && task.previousSceenshot.equals(res) === false)
+                    if ( (test.previousSceenshot === undefined) ||
+                         (test.previousSceenshot !== undefined && test.previousSceenshot.equals(res) === false)
                        ) {
 
                         // screen updated, save it and reset stuck counter
-                        task.previousSceenshot = res;
-                        task.curSameScreenshot = 0;
+                        test.previousSceenshot = res;
+                        test.curSameScreenshot = 0;
                         return true;
                     } else {
                         // screen is stuck
                         // check if we have reached the max threshold
-                        if (task.curSameScreenshot >= task.maxSameScreenshot)
-                            throw new Error('Screen is stuck, new screenshot is the same as previous screenshot for ' + task.curSameScreenshot + ' times.');
+                        if (test.curSameScreenshot >= test.maxSameScreenshot)
+                            throw new Error('Screen is stuck, new screenshot is the same as previous screenshot for ' + test.curSameScreenshot + ' times.');
 
                         // update counter and go again
-                        task.curSameScreenshot++;
+                        test.curSameScreenshot++;
                         return true;
                     }
                 } else {
                     // empty response is an annoying bug in the Snapshot module. Trying to be a little more graceful about it by allowing webbridge to return an empty screenshot from time to time
-                    if (task.curSameScreenshot >= task.maxSameScreenshot)
-                        throw new Error('Error screenshot returned is empty for ' + task.curSameScreenshot + ' times.');
+                    if (test.curSameScreenshot >= test.maxSameScreenshot)
+                        throw new Error('Error screenshot returned is empty for ' + test.curSameScreenshot + ' times.');
 
                     // update counter and go again
-                    task.curSameScreenshot++;
+                    test.curSameScreenshot++;
                     return true;
                 }
             }

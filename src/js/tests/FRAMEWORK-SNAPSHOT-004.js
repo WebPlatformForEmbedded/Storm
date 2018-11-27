@@ -68,7 +68,7 @@ test = {
                 if (resp === undefined || resp.length === 0) {
                     throw new Error('Error while reading snapshot from Framework');
                 } else {
-                    task.screenshot = resp;
+                    test.screenshot = resp;
                     return true;
                 }
             }
@@ -84,7 +84,7 @@ test = {
             'description'   : 'Get another screenshot and check if it changed',
             'test'          : screenshot,
             'validate'      : (resp) => {
-                if (task.screenshot !== undefined && resp !== undefined && resp.length > 0 && task.screenshot.equals(resp) === false){
+                if (test.screenshot !== undefined && resp !== undefined && resp.length > 0 && test.screenshot.equals(resp) === false){
                     return true;
                 } else {
                     throw new Error('Screenshot did not change or empty response');
@@ -103,7 +103,7 @@ test = {
             'test'          : screenshot,
             'validate'      : (resp) => {
                 if (resp !== undefined && resp.length > 0){
-                    task.screenshot = resp;
+                    test.screenshot = resp;
                     return true;
                 } else {
                     throw new Error('');
@@ -115,7 +115,7 @@ test = {
             'description'   : 'Take another screenshot, screen should be the same',
             'test'          : screenshot,
             'validate'      : (resp) => {
-                if (task.screenshot !== undefined && resp !== undefined && resp.length > 0 && task.screenshot.equals(resp) === true){
+                if (test.screenshot !== undefined && resp !== undefined && resp.length > 0 && test.screenshot.equals(resp) === true){
                     return true;
                 } else {
                     throw new Error('Screenshot changed or empty response');

@@ -49,13 +49,13 @@ test = {
 
                 if (d.addresses !== undefined && d.addresses.length !== 0) {
                     for (var i=0; i<d.addresses.length; i++) {
-                        var interface = d.addresses[i];
+                        var _interface = d.addresses[i];
 
-                        if (interface.name === undefined ||
-                            interface.mac  === undefined)
+                        if (_interface.name === undefined ||
+                            _interface.mac  === undefined)
                             throw new Error('Error reading interface name or mac on interface idx: ' + i);
 
-                        if (interface.ip !== undefined && interface.ip !== '127.0.0.1')
+                        if (_interface.ip !== undefined && _interface.ip !== '127.0.0.1')
                             return true;
 
                         if (i == d.addresses.length-1)

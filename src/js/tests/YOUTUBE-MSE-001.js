@@ -123,15 +123,15 @@ test = {
                     // In case where we are running subsequent MSE/EME tests this may mess up the parsing.
                     // only start parsins when the url is set through the ready boolean
                     setTimeout(readyToParse, 1000);
-                    setTimeout(setUrl, 1000, task.url);
+                    setTimeout(setUrl, 1000, test.url);
                 });
             },
             'validate'      : (results) => {
-                if (results.failed.amount === 0 && results.timedout.amount === 0 && results.testsRun === task.testCount)
+                if (results.failed.amount === 0 && results.timedout.amount === 0 && results.testsRun === test.testCount)
                     return true;
 
 
-                var error = `Tests run: ${results.testsRun} of ${task.testCount}. `;
+                var error = `Tests run: ${results.testsRun} of ${test.testCount}. `;
                 error += 'Tests failed: ' + results.failed.tests + '. ';
                 error += 'Tests timedout: ' + results.timedout.tests + '. ';
                 throw new Error(error);

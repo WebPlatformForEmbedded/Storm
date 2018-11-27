@@ -19,13 +19,13 @@ test = {
             'description'   : 'Check if response is a JSON response',
             'timeout'       : 180, //seconds
             'test'          : function(cb) {
-                var x = JSON.parse(task.steps.step1.response.body);
+                var x = JSON.parse(test.steps.step1.response.body);
 
                 for (var i=0; i<x.plugins.length; i++) {
                     var module = x.plugins[i].callsign;
-                    task.plugins.push(module);
+                    test.plugins.push(module);
                 }
-                console.log(task.plugins);
+                console.log(test.plugins);
                 cb();
             },
         },
@@ -33,10 +33,10 @@ test = {
             'description'   : 'Check for duplicate plugins in response',
             'timeout'       : 180, //seconds
             'test'          : function(cb){
-                console.log(task.plugins.length);
-                for (var i=0; i<task.plugins.length; i++) {
-                    var y = task.plugins.pop(task.plugins[i]);
-                    var z = task.plugins.indexOf(y);
+                console.log(test.plugins.length);
+                for (var i=0; i<test.plugins.length; i++) {
+                    var y = test.plugins.pop(test.plugins[i]);
+                    var z = test.plugins.indexOf(y);
                     console.log(y, z);
 
                     if (z !== -1)

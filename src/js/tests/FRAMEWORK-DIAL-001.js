@@ -39,7 +39,7 @@ test = {
                 for (var i=0; i < response.length; i++) {
                     // check if the ip matches
                     if (host === response[i].URL.hostname) {
-                        task.steps.step1.dialDevice = response[i];
+                        test.steps.step1.dialDevice = response[i];
                         return true;
                     }
 
@@ -52,7 +52,7 @@ test = {
         'step4' : {
             'description'   : 'Validate if the device returns a valide DIAL response',
             'test'          : function(cb) {
-                var dialDevice = task.steps.step1.dialDevice;
+                var dialDevice = test.steps.step1.dialDevice;
 
                 /*
               applicationUrl: 'http://192.168.11.103:8080/Service/DIALServer/Apps',

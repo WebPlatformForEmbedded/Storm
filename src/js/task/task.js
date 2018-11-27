@@ -348,6 +348,7 @@ function startStep(stepIdx) {
     var sleepMs = this.currentStep.sleep !== undefined ? this.currentStep.sleep * 1000 : 1000;
     // execution
     var execFn = this.currentStep.test !== undefined ? this.currentStep.test : dummy;
+    if (this.currentStep.params === undefined) this.currentStep.params = handleResponse;
 
     // wrap the function in a try/catch block
     function execFnWrapper (params) {

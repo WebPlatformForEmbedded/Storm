@@ -1,8 +1,6 @@
 /**
  * WPETestFramework test
  */
-/*jslint esnext: true*/
-
 test = {
     'title'             : 'Framework Device Info test',
     'description'       : 'Validates functionality of the Device Info plugin',
@@ -29,7 +27,7 @@ test = {
             'timeout'       : 10, //seconds
             'test'          : startPlugin,
             'params'        : 'DeviceInfo',
-            'validate'        : httpResponseSimple
+            'validate'      : httpResponseSimple
         },
         'step4' : {
             'description'   : 'Check if DeviceInfo plugin is started',
@@ -49,10 +47,10 @@ test = {
 
                 if (d.addresses !== undefined && d.addresses.length !== 0) {
                     for (var i=0; i<d.addresses.length; i++) {
-                        var interface = d.addresses[i];
+                        var _interface = d.addresses[i];
 
-                        if (interface.name === undefined ||
-                            interface.mac  === undefined)
+                        if (_interface.name === undefined ||
+                            _interface.mac  === undefined)
                             throw new Error('Error reading interface name or mac on interface idx: ' + i);
                     }
                 } else {

@@ -44,7 +44,7 @@ test = {
                 if (response === undefined)
                     return false;
 
-                task.server = response;
+                test.server = response;
                 return true;
             }
         },
@@ -69,7 +69,7 @@ test = {
     	'step5' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:8080/maf-ui-hzn4/tests/perf.html`;
+                var _url = `http://${test.server}:8080/maf-ui-hzn4/tests/perf.html`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
@@ -79,7 +79,7 @@ test = {
             'description'   : 'Check if app is loaded on WPEWebkit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:8080/maf-ui-hzn4/tests/perf.html`)
+                if (resp === `http://${test.server}:8080/maf-ui-hzn4/tests/perf.html`)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');
@@ -93,7 +93,7 @@ test = {
             'validate'      : (fps) => {
                 // if FPS is a number, add it to our samples. Else fail the test
                 if (isNaN(fps) === false){
-                    task.samples.push(fps);
+                    test.samples.push(fps);
                     return true;
                 } else {
                     throw new Error('Returned FPS value from Framework is not a number');
@@ -112,11 +112,11 @@ test = {
                 var results = {};
                 function calcAverage(_cb) {
                     var sum = 0;
-                    for (var i=0; i<task.samples.length; i++){
-                        sum += task.samples[i];
+                    for (var i=0; i<test.samples.length; i++){
+                        sum += test.samples[i];
 
-                        if (i == task.samples.length-1){
-                            results.average = sum/task.samples.length;
+                        if (i == test.samples.length-1){
+                            results.average = sum/test.samples.length;
                             results.average = results.average.toFixed(2);
                             console.log('Average: ' + results.average);
                             _cb();
@@ -125,7 +125,7 @@ test = {
                 }
 
                 function calcMedian(_cb) {
-                    var sortedSamples = task.samples.sort(function(a, b){return a-b;});
+                    var sortedSamples = test.samples.sort(function(a, b){return a-b;});
                     results.lowest = sortedSamples[0];
                     results.highest = sortedSamples[sortedSamples.length-1];
                     results.median = sortedSamples[ Math.round(sortedSamples.length/2) ];
@@ -144,10 +144,10 @@ test = {
             'validate'      : (results) => {
                 msg = JSON.stringify(results);
 
-                if (results.average > task.minFPS)
+                if (results.average > test.minFPS)
                     return true
                 else
-                    throw new Error(`Minimum FPS was not met. Expected minimum is ${task.minFPS}, average is: ${results.average}`);
+                    throw new Error(`Minimum FPS was not met. Expected minimum is ${test.minFPS}, average is: ${results.average}`);
             }
         },
         'cleanup1' : {

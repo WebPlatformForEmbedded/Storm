@@ -19,14 +19,14 @@ test = {
             'description'   : 'Select a plugin from plugin list',
             'timeout'       : 10, //seconds
             'test'          : function(cb) {
-                var resp = JSON.parse(task.steps.step1.response.body);
+                var resp = JSON.parse(test.steps.step1.response.body);
 
                 var pluginsToTry = [ 'DeviceInfo', 'Monitor', 'Tracing' ];
 
                 for (var i=0; i < resp.plugins.length; i++) {
                     if (pluginsToTry.indexOf( resp.plugins[i].callsign ) != -1) {
-                        task.plugin = resp.plugins[i].callsign;
-                        console.log('Selected ' + task.plugin);
+                        test.plugin = resp.plugins[i].callsign;
+                        console.log('Selected ' + test.plugin);
                         cb(true);
                         break;
                     }
@@ -37,27 +37,27 @@ test = {
         'step3' : {
             'description'   : 'Stop plugin',
             'timeout'       : 180, //seconds
-            'test'          : (cb) => { stopPlugin(task.plugin, cb) },
+            'test'          : (cb) => { stopPlugin(test.plugin, cb) },
             'validate'      : httpResponseSimple
         },
         'step4' : {
             'description'   : 'Check if plugin is stopped',
             'sleep'         : 10,
             'timeout'       : 20, //seconds
-            'test'          : (cb) => { getPluginState(task.plugin, cb) },
+            'test'          : (cb) => { getPluginState(test.plugin, cb) },
             'assert'        : 'deactivated'
         },
         'step5' : {
             'description'   : 'Start plugin',
             'timeout'       : 180, //seconds
-            'test'          : (cb) => { startPlugin(task.plugin, cb) },
+            'test'          : (cb) => { startPlugin(test.plugin, cb) },
             'validate'      : httpResponseSimple
         },
         'step6' : {
             'description'   : 'Check if plugin is started',
             'sleep'         : 10,
             'timeout'       : 20, //seconds
-            'test'          : (cb) => { getPluginState(task.plugin, cb) },
+            'test'          : (cb) => { getPluginState(test.plugin, cb) },
             'assert'        : 'activated'
         },
         'step7' : {

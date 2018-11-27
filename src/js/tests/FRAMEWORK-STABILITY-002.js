@@ -22,7 +22,7 @@ module.exports = {
                     if (err || app === undefined) 
                         callback(false);
 
-                    task.app = '' + app;
+                    test.app = '' + app;
                     callback(true);
                 });
             },
@@ -39,14 +39,14 @@ module.exports = {
 
                 function returnApp(){
                     response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.end(task.app);
+                    response.end(test.app);
                 }
 
                 function getKey(){
                     var parsedQuery = querystring.parse(parsedUrl.query);
                     //console.log('Got key req with: ' + parsedQuery.key);
                     if (parsedQuery.key !== undefined)
-                        task.keys.push(parsedQuery.key);
+                        test.keys.push(parsedQuery.key);
 
                     response.writeHead(200);
                     response.end();
@@ -71,7 +71,7 @@ module.exports = {
                 if (port === null || port === undefined)
                     return false;
 
-                task.port = port;
+                test.port = port;
                 return true;
             }
         },
@@ -83,11 +83,11 @@ module.exports = {
                 if (response === undefined)
                     return false;
 
-                task.server = response;
+                test.server = response;
 
                 // update the app to reflect what we are going to use the serve the app from
-                task.app = task.app.replace(/{{server}}/g, task.server);
-                task.app = task.app.replace(/{{port}}/g, task.port);
+                test.app = test.app.replace(/{{server}}/g, test.server);
+                test.app = test.app.replace(/{{port}}/g, test.port);
 
                 return true;
             }
@@ -113,7 +113,7 @@ module.exports = {
         'init7' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:${task.port}/app`;
+                var _url = `http://${test.server}:${test.port}/app`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
@@ -123,7 +123,7 @@ module.exports = {
             'description'   : 'Check if app is loaded on WPEWebkit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:${task.port}/app`)
+                if (resp === `http://${test.server}:${test.port}/app`)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');
@@ -133,8 +133,8 @@ module.exports = {
             'description'   : 'Send 5 random keys to Framework in a 100ms interval',
             'test'          : (cb) => {
 
-                task.expectedKeys = [];
-                task.keys = [];
+                test.expectedKeys = [];
+                test.keys = [];
                 var FrameworkKeys = [];
 
                 function sendKeys(){
@@ -143,7 +143,7 @@ module.exports = {
                         //console.log('sending: ' + FrameworkKeys[k]);
 
                         if (k==FrameworkKeys.length-1) 
-                            setTimeout(key, 250 * k, FrameworkKeys[k], (resp) => { setTimeout(cb, 2000, JSON.stringify(task.expectedKeys)) });
+                            setTimeout(key, 250 * k, FrameworkKeys[k], (resp) => { setTimeout(cb, 2000, JSON.stringify(test.expectedKeys)) });
                         else
                             setTimeout(key, 250 * k, FrameworkKeys[k], (resp) => {});
                         
@@ -156,13 +156,13 @@ module.exports = {
                     var idx = Math.floor(Math.random() * (keyMapArray.length));
 
                     // lets make sure it is unique, else retry
-                    if (task.expectedKeys.indexOf( keyMapArray[ idx ] ) !== -1) {
+                    if (test.expectedKeys.indexOf( keyMapArray[ idx ] ) !== -1) {
                         i--;
                         continue;
                     }
 
                     // set the expected key
-                    task.expectedKeys.push(keyMapArray[ idx ]);
+                    test.expectedKeys.push(keyMapArray[ idx ]);
                     FrameworkKeys.push( keyMap[ keyMapArray[ idx ] ] ); //reverse lookup
 
                     if (i==4) sendKeys();
@@ -172,17 +172,17 @@ module.exports = {
             'validate'      : () => {
 
                 // sort our arrays, since ajax requests may come in out of order
-                task.expectedKeys.sort(function(a, b){return a-b});
-                task.keys.sort(function(a, b){return a-b});
+                test.expectedKeys.sort(function(a, b){return a-b});
+                test.keys.sort(function(a, b){return a-b});
 
-                //console.log(task.expectedKeys);
-                //console.log(task.keys);
+                //console.log(test.expectedKeys);
+                //console.log(test.keys);
 
                 // serialize the arrays into a string and compare them
-                if (JSON.stringify(task.keys) === JSON.stringify(task.expectedKeys))
+                if (JSON.stringify(test.keys) === JSON.stringify(test.expectedKeys))
                     return true;
                 
-                throw new Error(`Key did not match, expected ${task.expectedKeys} and got ${task.keys}`);
+                throw new Error(`Key did not match, expected ${test.expectedKeys} and got ${test.keys}`);
             }
         },
         'step2' : {

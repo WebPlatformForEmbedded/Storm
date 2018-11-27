@@ -25,7 +25,7 @@ test = {
                     if (err || app === undefined) 
                         callback(false);
 
-                    task.app = '' + app;
+                    test.app = '' + app;
                     callback(true);
                 });
             },
@@ -36,7 +36,7 @@ test = {
             'test'          : getUrl,
             'validate'      : (resp) => {
                 var parsedUrl = url.parse(resp, false);
-                if (parsedUrl.host === `${task.server}:${task.port}` && task.appRequested === true)
+                if (parsedUrl.host === `${test.server}:${test.port}` && test.appRequested === true)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');

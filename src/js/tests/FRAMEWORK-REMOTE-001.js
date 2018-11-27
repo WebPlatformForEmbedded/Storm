@@ -84,7 +84,7 @@ module.exports = {
                     if (err || app === undefined) 
                         callback(false);
 
-                    task.app = '' + app;
+                    test.app = '' + app;
                     callback(true);
                 });
             },
@@ -101,14 +101,14 @@ module.exports = {
 
                 function returnApp(){
                     response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.end(task.app);
+                    response.end(test.app);
                 }
 
                 function getKey(){
                     var parsedQuery = querystring.parse(parsedUrl.query);
                     //console.log('Got key req with: ' + parsedQuery.key);
                     if (parsedQuery.key !== undefined)
-                        task.key  = parsedQuery.key;
+                        test.key  = parsedQuery.key;
 
                     response.writeHead(200);
                     response.end();
@@ -133,7 +133,7 @@ module.exports = {
                 if (port === null || port === undefined)
                     return false;
 
-                task.port = port;
+                test.port = port;
                 return true;
             }
         },
@@ -145,11 +145,11 @@ module.exports = {
                 if (response === undefined)
                     return false;
 
-                task.server = response;
+                test.server = response;
 
                 // update the app to reflect what we are going to use the serve the app from
-                task.app = task.app.replace(/{{server}}/g, task.server);
-                task.app = task.app.replace(/{{port}}/g, task.port);
+                test.app = test.app.replace(/{{server}}/g, test.server);
+                test.app = test.app.replace(/{{port}}/g, test.port);
 
                 return true;
             }
@@ -175,7 +175,7 @@ module.exports = {
         'init7' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:${task.port}/app`;
+                var _url = `http://${test.server}:${test.port}/app`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
@@ -185,7 +185,7 @@ module.exports = {
             'description'   : 'Check if app is loaded on WPEWebkit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:${task.port}/app`)
+                if (resp === `http://${test.server}:${test.port}/app`)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');
@@ -209,25 +209,25 @@ module.exports = {
             'description'   : 'send key to remote control plugin',
             'test'          : (cb) => {
 
-                var currentJSKey = keyMapArray[task.keyindex];
+                var currentJSKey = keyMapArray[test.keyindex];
                 var hexKey = keyMap[ currentJSKey ];
                 setTimeout(key, 250, hexKey, (resp) => { setTimeout(cb, 2000) });
 
                 //console.log(currentJSKey);
                 //console.log(hexKey);
 
-                task.expectedKey = currentJSKey;
-                task.keyindex++;
+                test.expectedKey = currentJSKey;
+                test.keyindex++;
             },
             'validate'      : () => {
 
-                console.log(task.expectedKey);
-                console.log(task.key);
+                console.log(test.expectedKey);
+                console.log(test.key);
 
-                if (task.key === task.expectedKey)
+                if (test.key === test.expectedKey)
                     return true;
 
-                throw new Error(`Key did not match, expected ${task.expectedKey} and got ${task.key}`);
+                throw new Error(`Key did not match, expected ${test.expectedKey} and got ${test.key}`);
             }
         },
         'step4' : {

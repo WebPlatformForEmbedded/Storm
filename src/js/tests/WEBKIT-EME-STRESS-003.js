@@ -21,7 +21,7 @@ test = {
         'step1' : {
             'description'   : 'Load the app on WebKit',
             'test'          : function (x, cb) {
-                var _url = `http://${task.server}:${task.port}/app?type=lg`;
+                var _url = `http://${test.server}:${test.port}/app?type=lg`;
                 setUrl(_url, cb);
             },
             'validate'      : httpResponseSimple
@@ -31,7 +31,7 @@ test = {
             'description'   : 'Check if app is loaded on WebKit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:${task.port}/app?type=lg`)
+                if (resp === `http://${test.server}:${test.port}/app?type=lg`)
                     return true;
                 
                 throw new Error('URL did not load on WebKit');

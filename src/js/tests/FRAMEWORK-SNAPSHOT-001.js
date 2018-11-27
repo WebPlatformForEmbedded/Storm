@@ -61,7 +61,7 @@ test = {
                 if (resp === undefined || resp.length === 0) {
                     throw new Error('Error while reading snapshot from Framework');
                 } else {
-                    task.screenshot = resp;
+                    test.screenshot = resp;
                     return true;
                 }
             }

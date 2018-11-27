@@ -24,7 +24,7 @@ test = {
                     if (err || app === undefined) 
                         callback(false);
 
-                    task.app = '' + app;
+                    test.app = '' + app;
                     callback(true);
                 });
             },
@@ -42,24 +42,24 @@ test = {
                 console.log('New request with url: ' + parsedUrl.pathname);
 
                 function returnApp(){
-                    clearTimeout(task.timer);
-                    task.timer = setTimeout(timedOut, 5 * 60 * 1000);
-                    task.appRequested = true;
+                    clearTimeout(test.timer);
+                    test.timer = setTimeout(timedOut, 5 * 60 * 1000);
+                    test.appRequested = true;
                     response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.end(task.app);
+                    response.end(test.app);
                 }
 
                 function resetTimeout(){
-                    if (task.timedout === true) return;
+                    if (test.timedout === true) return;
 
-                    clearTimeout(task.timer);
-                    task.timer = setTimeout(timedOut, 5 * 60 * 1000);
+                    clearTimeout(test.timer);
+                    test.timer = setTimeout(timedOut, 5 * 60 * 1000);
                     response.writeHead(200);
                     response.end();
                 }
 
                 function timedOut(){
-                    task.timedout = true;
+                    test.timedout = true;
                     console.error('KeepAlive timed out');
                 }
 
@@ -83,7 +83,7 @@ test = {
                 if (port === null || port === undefined)
                     return false;
 
-                task.port = port;
+                test.port = port;
                 return true;
             }
         },
@@ -95,11 +95,11 @@ test = {
                 if (response === undefined)
                     return false;
 
-                task.server = response;
+                test.server = response;
 
                 // update the app to reflect what we are going to use the serve the app from
-                task.app = task.app.replace(/{{server}}/g, task.server);
-                task.app = task.app.replace(/{{port}}/g, task.port);
+                test.app = test.app.replace(/{{server}}/g, test.server);
+                test.app = test.app.replace(/{{port}}/g, test.port);
 
                 return true;
             }
@@ -125,7 +125,7 @@ test = {
         'init7' : {
             'description'   : 'Load the app on WPEWebkit',
             'test'          : function (x, cb) {
-                var url = `http://${task.server}:${task.port}/app`;
+                var url = `http://${test.server}:${test.port}/app`;
                 setUrl(url, cb);
             },
             'validate'      : httpResponseSimple
@@ -135,7 +135,7 @@ test = {
             'description'   : 'Check if app is loaded on WPEWebkit',
             'test'          : getUrl,
             'validate'      : (resp) => {
-                if (resp === `http://${task.server}:${task.port}/app` && task.appRequested === true)
+                if (resp === `http://${test.server}:${test.port}/app` && test.appRequested === true)
                     return true;
                 
                 throw new Error('URL did not load on WPEWebkit');
@@ -146,7 +146,7 @@ test = {
             'description'   : 'Check if requests are still being made',
             'test'          : dummy,
             'validate'      : () => {
-                if (task.timedout === false)
+                if (test.timedout === false)
                     return true;
                 
                 throw new Error('Requests timed out');
