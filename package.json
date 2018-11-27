@@ -7,8 +7,9 @@
     "start": "node WPETestFramework.js"
   },
   "dependencies": {
-    "http-server": "~0.9.x",
+    "http-server": "~0.11.x",
     "shelljs": "~0.5.x",
+    "jsdoc-to-markdown": "~4.0.*",
     "grunt": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify-es": "*",
@@ -16,7 +17,8 @@
     "grunt-contrib-concat": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-copy": "*",
-    "grunt-contrib-connect": "*"
+    "grunt-contrib-connect": "*",
+    "grunt-jsdoc-to-markdown": "*"
   },
   "repository": {
     "type": "git",

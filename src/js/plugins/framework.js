@@ -1,5 +1,5 @@
 /**
- * WPETestFramework WPEFramework functionality
+ * WPEFramework API functionality that can be used in test cases
  */
 
 class Framework extends Base {
@@ -49,14 +49,22 @@ class Framework extends Base {
 
     }
 
-    // send key (press + release) to Framework
+    /** send key (press + release) to Framework
+     * @param {string} key - Key to be sent to the framework
+     * @param {function} cb - Callback function to be called
+     * @returns {object}  HTTP response see HTTP in base
+     */
     key(key, cb) {
         this.keyPress(key, () => {
             this.keyRelease(key, cb);
         });
     }
 
-    // send key press
+    /** send key press to Framework
+     * @param {string} key - Key to be sent to the framework
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     keyPress(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
@@ -68,7 +76,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // send key release
+    /** send key release to Framework
+     * @param {string} key - Key to be sent to the framework
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     keyRelease(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
@@ -80,7 +92,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // set the URL at the Webkit plugin
+    /** set the URL at the Webkit plugin
+     * @param {string} url - URL to be set on WebKitBrowser
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     setUrl(url, cb) {
         var data = JSON.stringify({ 'url' : url });
         var opts = {
@@ -92,6 +108,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
+    /** set the URL at the YouTube plugin
+     * @param {string} url - URL to be set on YouTube tab
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     setYouTubeUrl(url, cb) {
         var data = JSON.stringify({ 'url' : url });
         var opts = {
@@ -103,7 +124,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // retrieve the URL from the Webkit plugin
+    /** retrieve the URL from the Webkit plugin
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     getUrl(x, cb) {
         this.getPlugin('WebKitBrowser', (response) => {
             var resp = JSON.parse(response.body);
@@ -111,7 +136,13 @@ class Framework extends Base {
         });
     }
 
-    // activate/deactivate a plugin using the action call
+    /** activate/deactivate a plugin using the action call
+     * @param {object} options - options to be set
+     * @param {string} options.action - Activate|Deactivate
+     * @param {string} options.plugin - Plugin Callsign on the WPEFramework API
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     controllerActionCall(options, cb) {
         var opts = {
             url     : `http://${host}:80/Service/Controller/${options.action}/${options.plugin}`,
@@ -120,7 +151,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // start a plugin
+    /** activate a plugin using the action call
+     * @param {string} plugin - Plugin Callsign on the WPEFramework API
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     startPlugin(plugin, cb) {
         var opts = {
             action  : 'Activate',
@@ -129,14 +164,22 @@ class Framework extends Base {
         this.controllerActionCall(opts, cb);
     }
 
-    // start and immediately resume a plugin
+    /** start and immediately resume a plugin
+     * @param {string} plugin - Plugin Callsign on the WPEFramework API
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     startAndResumePlugin(plugin, cb) {
         this.startPlugin(plugin, () => {
             setTimeout(resumePlugin, 300, plugin, cb);
         });
     }
 
-    // stop a plugin
+    /** stop a plugin
+     * @param {string} plugin - Plugin Callsign on the WPEFramework API
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     stopPlugin(plugin, cb) {
         var opts = {
             action  : 'Deactivate',
@@ -145,7 +188,11 @@ class Framework extends Base {
         this.controllerActionCall(opts, cb);
     }
 
-    // switch between plugins
+    /** switch between plugins
+     * @param {string} plugin - Plugin Callsign on the WPEFramework API
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     switchPlugin(plugin, cb) {
         var opts = {
             action  : 'Switch',
@@ -154,7 +201,11 @@ class Framework extends Base {
         this.controllerActionCall(opts, cb);
     }
 
-    // start multiple plugins
+    /** start multiple plugins
+     * @param {array} plugins - Array with plugin Callsigns that need to be started
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     startPlugins(plugins, cb) {
         for (var i=0; i < plugins.length; i++) {
             if (i==plugins.length-1)
@@ -164,7 +215,11 @@ class Framework extends Base {
         }
     }
 
-    // stop multiple plugins
+    /** stop multiple plugins
+     * @param {array} plugins - Array with plugin Callsigns that need to be stopped
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     stopPlugins(plugins, cb) {
         for (var i=0; i < plugins.length; i++) {
             if (i==plugins.length-1)
@@ -174,7 +229,11 @@ class Framework extends Base {
         }
     }
 
-    // get the plugin data
+    /** get the plugin data
+     * @param {string} plugin - Callsign of the plugin
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     getPlugin(plugin, cb) {
         var opts = {
             url     : `http://${host}:80/Service/${plugin}`,
@@ -183,7 +242,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // get list of plugins
+    /** get list of plugins from Controller
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     getPlugins(x, cb) {
         var opts = {
             url     : `http://${host}:80/Service/Controller/Plugins`,

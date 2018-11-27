@@ -95,6 +95,13 @@ module.exports = function(grunt) {
                 files: ['src/js/layout/*.js'],
                 tasks: ['compile']
             }
+        },
+        jsdoc2md: {
+            doc: {
+                files : [
+                    { src: 'src/js/plugins/*.js', dest: 'doc/documentation.md' },
+                ]
+            }
         }
     });
 
@@ -255,6 +262,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-jsdoc-to-markdown');
 
     grunt.registerTask('help', function() {
         console.log('Please provide the tast to run to the grunt');
@@ -265,8 +273,9 @@ module.exports = function(grunt) {
 
     //add the tasks
     grunt.registerTask('test', ['jshint']); //just runs jshint to validate all the javascript
+    grunt.registerTask('doc', ['jsdoc2md']);
     grunt.registerTask('compile', ['loadScripts', 'loadTests', 'parseTests', 'writeTestManifest', 'test']);
-    grunt.registerTask('release', ['compile', 'clean', 'copy', 'concat', 'uglify']); //generates the build
+    grunt.registerTask('release', ['compile', 'clean', 'copy', 'concat', 'uglify', 'doc']); //generates the build
 
     grunt.registerTask('default', ['compile']);
 };

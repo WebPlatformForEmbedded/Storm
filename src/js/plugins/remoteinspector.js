@@ -2,7 +2,7 @@
  * WPETestFramework remote webinspector class
  */
 
-/**
+/*
  * Attaches to the remote WebInspector to retrieve the console logs
  * NOTE: Only 1 webinspector connection can be made per host/agent, limited by the wpe webinspector itself
  */
