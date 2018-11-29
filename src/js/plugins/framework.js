@@ -255,7 +255,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // get the state of a plugin, Activated or Deactivated
+    /** get the state of a plugin, Activated or Deactivated
+     * @param {string} plugin - Callsign of the plugin that needs to be queried
+     * @param {function} cb - Callback function to be called
+     * @returns {string} state - State of the plugin Deactivated|Activated
+     */
     getPluginState(plugin, cb) {
         this.getPlugin('Controller', (response) => {
             var resp = JSON.parse(response.body);
@@ -273,7 +277,11 @@ class Framework extends Base {
         });
     }
 
-    // suspend a plugin, note: only works on select plugins (e.g. browser and netflix)
+    /** suspend a plugin, note: only works on select plugins (e.g. browser and netflix)
+     * @param {string} plugin - Callsign of the plugin
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     suspendPlugin(plugin, cb) {
         var opts = {
             url     : `http://${host}:80/Service/${plugin}/Suspend`,
@@ -282,7 +290,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // resume a plugin, note: only works on select plugins (e.g. browser and netflix)
+    /** resume a plugin, note: only works on select plugins (e.g. browser and netflix)
+     * @param {string} plugin - Callsign of the plugin
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     resumePlugin(plugin, cb) {
         var opts = {
             url     : `http://${host}:80/Service/${plugin}/Resume`,
@@ -291,7 +303,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
-    // reboot using Frameworks reboot API
+    /** reboot using Frameworks reboot API
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     reboot(x, cb) {
         var opts = {
             url     : `http://${host}:80/Service/Controller/Harakiri`,
@@ -300,6 +316,11 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
+    /** take a screenshot from the framework
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {image} image - Base64 encoded image
+     */
     screenshot(x, cb) {
         var url = `http://${host}:80/Service/Snapshot/Capture?` + moment().valueOf();
         var a = new Image();
@@ -309,7 +330,11 @@ class Framework extends Base {
         cb(getBase64Image(a));
     }
 
-    // gets the FPS from the Webkit plugin
+    /** gets the FPS from the Webkit plugin
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {int} FPS - Current FPS
+     */
     getFPS(x, cb) {
         this.getPlugin('WebKitBrowser', (response) => {
             var resp = JSON.parse(response.body);
@@ -318,7 +343,11 @@ class Framework extends Base {
         });
     }
 
-    // get the CPU load from deviceinfo
+    /** get the CPU load from deviceinfo
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {float} CPU Load
+     */
     getCpuLoad(x, cb) {
         this.getPlugin('DeviceInfo', (response) => {
             var resp = JSON.parse(response.body);
@@ -334,7 +363,11 @@ class Framework extends Base {
         });
     }
 
-    // get system memory usage
+    /** get system memory usage
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {integer} Memory usage of the device
+     */
     getMemoryUsage(x, cb) {
         getPlugin('DeviceInfo', (response) => {
             var resp = JSON.parse(response.body);
@@ -355,7 +388,11 @@ class Framework extends Base {
         });
     }
 
-    // get memory usage from monitor
+    /** get memory usage from monitor. Note this only applies to plugins that are monitored by the Monitor plugin
+     * @param {string} requestedPlugin - Callsign of the plugin that is being monitored by the monitor.
+     * @param {function} cb - Callback function to be called
+     * @returns {object} Plugin object from monitor plugin
+     */
     getMemoryUsageForPlugin(requestedPlugin, cb) {
         this.getPlugin('Monitor', (response) => {
             var resp = JSON.parse(response.body);
@@ -374,7 +411,7 @@ class Framework extends Base {
         });
     }
 
-    // start Framework in background mode
+    /** start Framework in background mode - FIXME needs to be revised in the webbased version. */
     startFramework(cb) {
         this.exec({ cmd : 'nohup WPEFramework -b &', cbWhenStarted : true }, (err) => {
             if (err)
@@ -384,17 +421,17 @@ class Framework extends Base {
         });
     }
 
-    // stop Framework
+    /** stop Framework - FIXME needs to be revised in the webbased version. */
     stopFramework(x, cb) {
         this.stopProcess('WPEFramework', cb);
     }
 
-    // kill (SIGTERM) Framework
+    /** kill (SIGTERM) Framework - FIXME needs to be revised in the webbased version. */
     killFramework(x, cb) {
         this.killProcess('WPEFramework', cb);
     }
 
-    // kill Framework and its WPEProcess subprocesses
+    /** kill Framework and its WPEProcess subprocesses - FIXME needs to be revised in the webbased version. */
     killallFramework(x, cb) {
         this.killProcess('WPEFramework', (resp) => {
             if (resp === true)
@@ -404,6 +441,7 @@ class Framework extends Base {
         });
     }
 
+    /** restart the Framework - FIXME needs to be revised in the webbased version. */
     restartFramework(x, cb) {
         this.killallFramework(x, (resp) => {
             if (resp === true)
@@ -413,6 +451,11 @@ class Framework extends Base {
         });
     }
 
+    /** request new provisioning details to the provisioning plugin
+     * @param {string} x - not used.
+     * @param {function} cb - Callback function to be called
+     * @returns {object} HTTP response see HTTP in base
+     */
     requestProvisioning(x, cb) {
         var opts = {
             url     : `http://${host}:80/Service/Provisioning`,
@@ -421,6 +464,10 @@ class Framework extends Base {
         this.http(opts, cb);
     }
 
+    /** check if plugin is resumed or activated
+     * @param {string} state of the plugin
+     * @returns {boolean} True if resumed or activated, throws error if not
+     */
     checkResumedOrActivated(state) {
         if (state === 'resumed' || state === 'activated')
             return true;
@@ -428,6 +475,10 @@ class Framework extends Base {
             throw Error(`Expected state to be resumed or activated, while state was ${state}`);
     }
 
+    /** check if plugin is suspended or deactivated
+     * @param {string} state of the plugin
+     * @returns {boolean} True if suspended or deactivated, throws error if not
+     */
     checkSuspendedOrDeactivated(state) {
         if (state === 'suspended' || state === 'deactivated')
             return true;

@@ -158,6 +158,23 @@ WPEFramework API functionality that can be used in test cases
     * [.stopPlugins(plugins, cb)](#Framework+stopPlugins) ⇒ <code>object</code>
     * [.getPlugin(plugin, cb)](#Framework+getPlugin) ⇒ <code>object</code>
     * [.getPlugins(x, cb)](#Framework+getPlugins) ⇒ <code>object</code>
+    * [.getPluginState(plugin, cb)](#Framework+getPluginState) ⇒ <code>string</code>
+    * [.suspendPlugin(plugin, cb)](#Framework+suspendPlugin) ⇒ <code>object</code>
+    * [.resumePlugin(plugin, cb)](#Framework+resumePlugin) ⇒ <code>object</code>
+    * [.reboot(x, cb)](#Framework+reboot) ⇒ <code>object</code>
+    * [.screenshot(x, cb)](#Framework+screenshot) ⇒ <code>image</code>
+    * [.getFPS(x, cb)](#Framework+getFPS) ⇒ <code>int</code>
+    * [.getCpuLoad(x, cb)](#Framework+getCpuLoad) ⇒ <code>float</code>
+    * [.getMemoryUsage(x, cb)](#Framework+getMemoryUsage) ⇒ <code>integer</code>
+    * [.getMemoryUsageForPlugin(requestedPlugin, cb)](#Framework+getMemoryUsageForPlugin) ⇒ <code>object</code>
+    * [.startFramework()](#Framework+startFramework)
+    * [.stopFramework()](#Framework+stopFramework)
+    * [.killFramework()](#Framework+killFramework)
+    * [.killallFramework()](#Framework+killallFramework)
+    * [.restartFramework()](#Framework+restartFramework)
+    * [.requestProvisioning(x, cb)](#Framework+requestProvisioning) ⇒ <code>object</code>
+    * [.checkResumedOrActivated(state)](#Framework+checkResumedOrActivated) ⇒ <code>boolean</code>
+    * [.checkSuspendedOrDeactivated(state)](#Framework+checkSuspendedOrDeactivated) ⇒ <code>boolean</code>
 
 <a name="Framework+key"></a>
 
@@ -355,4 +372,188 @@ get list of plugins from Controller
 | --- | --- | --- |
 | x | <code>string</code> | not used. |
 | cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+getPluginState"></a>
+
+### framework.getPluginState(plugin, cb) ⇒ <code>string</code>
+get the state of a plugin, Activated or Deactivated
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>string</code> - state - State of the plugin Deactivated|Activated  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| plugin | <code>string</code> | Callsign of the plugin that needs to be queried |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+suspendPlugin"></a>
+
+### framework.suspendPlugin(plugin, cb) ⇒ <code>object</code>
+suspend a plugin, note: only works on select plugins (e.g. browser and netflix)
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>object</code> - HTTP response see HTTP in base  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| plugin | <code>string</code> | Callsign of the plugin |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+resumePlugin"></a>
+
+### framework.resumePlugin(plugin, cb) ⇒ <code>object</code>
+resume a plugin, note: only works on select plugins (e.g. browser and netflix)
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>object</code> - HTTP response see HTTP in base  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| plugin | <code>string</code> | Callsign of the plugin |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+reboot"></a>
+
+### framework.reboot(x, cb) ⇒ <code>object</code>
+reboot using Frameworks reboot API
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>object</code> - HTTP response see HTTP in base  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>string</code> | not used. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+screenshot"></a>
+
+### framework.screenshot(x, cb) ⇒ <code>image</code>
+take a screenshot from the framework
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>image</code> - image - Base64 encoded image  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>string</code> | not used. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+getFPS"></a>
+
+### framework.getFPS(x, cb) ⇒ <code>int</code>
+gets the FPS from the Webkit plugin
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>int</code> - FPS - Current FPS  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>string</code> | not used. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+getCpuLoad"></a>
+
+### framework.getCpuLoad(x, cb) ⇒ <code>float</code>
+get the CPU load from deviceinfo
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>float</code> - CPU Load  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>string</code> | not used. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+getMemoryUsage"></a>
+
+### framework.getMemoryUsage(x, cb) ⇒ <code>integer</code>
+get system memory usage
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>integer</code> - Memory usage of the device  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>string</code> | not used. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+getMemoryUsageForPlugin"></a>
+
+### framework.getMemoryUsageForPlugin(requestedPlugin, cb) ⇒ <code>object</code>
+get memory usage from monitor. Note this only applies to plugins that are monitored by the Monitor plugin
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>object</code> - Plugin object from monitor plugin  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| requestedPlugin | <code>string</code> | Callsign of the plugin that is being monitored by the monitor. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+startFramework"></a>
+
+### framework.startFramework()
+start Framework in background mode - FIXME needs to be revised in the webbased version.
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+<a name="Framework+stopFramework"></a>
+
+### framework.stopFramework()
+stop Framework - FIXME needs to be revised in the webbased version.
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+<a name="Framework+killFramework"></a>
+
+### framework.killFramework()
+kill (SIGTERM) Framework - FIXME needs to be revised in the webbased version.
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+<a name="Framework+killallFramework"></a>
+
+### framework.killallFramework()
+kill Framework and its WPEProcess subprocesses - FIXME needs to be revised in the webbased version.
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+<a name="Framework+restartFramework"></a>
+
+### framework.restartFramework()
+restart the Framework - FIXME needs to be revised in the webbased version.
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+<a name="Framework+requestProvisioning"></a>
+
+### framework.requestProvisioning(x, cb) ⇒ <code>object</code>
+request new provisioning details to the provisioning plugin
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>object</code> - HTTP response see HTTP in base  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>string</code> | not used. |
+| cb | <code>function</code> | Callback function to be called |
+
+<a name="Framework+checkResumedOrActivated"></a>
+
+### framework.checkResumedOrActivated(state) ⇒ <code>boolean</code>
+check if plugin is resumed or activated
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>boolean</code> - True if resumed or activated, throws error if not  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | <code>string</code> | of the plugin |
+
+<a name="Framework+checkSuspendedOrDeactivated"></a>
+
+### framework.checkSuspendedOrDeactivated(state) ⇒ <code>boolean</code>
+check if plugin is suspended or deactivated
+
+**Kind**: instance method of [<code>Framework</code>](#Framework)  
+**Returns**: <code>boolean</code> - True if suspended or deactivated, throws error if not  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | <code>string</code> | of the plugin |
 
