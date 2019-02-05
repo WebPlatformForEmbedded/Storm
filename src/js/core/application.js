@@ -171,6 +171,11 @@
                 wtf.dummyMode = true;
             }
 
+            if (options.operator !== undefined) {
+                console.debug('Operator: ', options.operator);
+                wtf.operator = options.operator;
+            }
+
             // auto onboard if host is provided in the url and nothing is activated already
             if (options.host !== undefined && options.host !== '' && host === null) {
                 wtf.activateDevice(options.host, () => {

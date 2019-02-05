@@ -216,6 +216,10 @@ module.exports = function(grunt) {
                     if ( key.search(/"description"/i) !== -1 || key.search(/'description'/i) !== -1)  {
                         _t.description = findTextString(value);
                     }
+
+                    if ( key.search(/"operator"/i) !== -1 || key.search(/'operator'/i) !== -1)  {
+                        _t.operator = findTextString(value);
+                    }
                 }
             });
 

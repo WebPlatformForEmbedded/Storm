@@ -1,4 +1,11 @@
 {
+    "CHARTER-STABILITY-001": {
+        "name": "CHARTER-STABILITY-001",
+        "file": "js/tests/CHARTER-STABILITY-001.js",
+        "operator": "charter",
+        "title": "Charter John Doe UI test",
+        "description": "Navigate around in the Charter UI by navigating TV-> Netflix -> TV-> VOD -> guide -> TV -> Guide -> Menu"
+    },
     "DUMMY-ERROR-001": {
         "name": "DUMMY-ERROR-001",
         "file": "js/tests/DUMMY-ERROR-001.js",

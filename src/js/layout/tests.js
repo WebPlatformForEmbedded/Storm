@@ -32,7 +32,7 @@ class Tests extends BaseView {
 			let _testName 	= testsArray[i];
 			let test 		= wtf.tests[ _testName ];
 
-			if (wtf.dummyMode !== true && test.name.slice(0,5) === 'DUMMY')
+			if (this.checkIfTestCanBeRendered(test) === false)
 				continue;
 
 			tableStr += `<div id="${test.name}_row" class="row">
@@ -53,14 +53,31 @@ class Tests extends BaseView {
 		// bind all tests after theyve been added to the DOM
 		for (var k=0; k<testsArray.length; k++) {
 			let _testName 	= testsArray[k];
-
-			if (wtf.dummyMode !== true && _testName.slice(0,5) === 'DUMMY')
-				continue;
-
 			let test 		= wtf.tests[ _testName ];
 			let _div 		= document.getElementById(test.name + '_row');
+
+			if (this.checkIfTestCanBeRendered(test) === false)
+				continue;
+
 			_div.onclick 	= this.showTest.bind(this, test.name);
 		}
+	}
+
+	checkIfTestCanBeRendered(test) {
+		// if its a dummy test and dummy is not enabled, skip
+		if (wtf.dummyMode !== true && test.name.slice(0,5) === 'DUMMY')
+			return false;
+
+		// if its an operator specific test, yet we're not in operator specific mode, skip
+		if (wtf.operator === undefined && test.operator !== undefined)
+			return false;
+
+		// if its an operator mode and the test.operator is not equal, skip
+		if (wtf.operator !== undefined && test.operator !== undefined && wtf.operator !== test.operator)
+			return false;
+
+		// all else, lets go for it
+		return true;
 	}
 
 	showTest(test) {
