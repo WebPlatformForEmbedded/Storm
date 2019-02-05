@@ -86,6 +86,10 @@ class Core {
      */
 
     run(test, updateProgressCb) {
+        // setup need image messaging
+        this.needImage = new NeedImage();
+
+        // setup worker
         this.worker = new Worker('js/task/task.js');
         this.worker.onmessage = (message) => {
             //console.log('APP message: ', message.data);
@@ -94,6 +98,11 @@ class Core {
                 return;
 
             var data = message.data;
+
+            // update view
+            updateProgressCb(data);
+
+            // additional processing
             switch (data.name) {
                 case 'InitReady':
                     //worker is ready, launch test through loadtest message
@@ -102,9 +111,45 @@ class Core {
                     _loadTest.send(this.worker);
                     break;
 
-                default:
-                    updateProgressCb(data);
+                case 'NeedImage':
+                    this.loadImageData(data.url, (resp) => {
+                        this.needImage.setImageData(resp.imageData.data, this.worker);
+                    });
+                    break;
+
+                case 'TestMessage':
+                    // clean up if we're done, just make sure were not holding on to heavy image data across tests
+                    if (data.completed === true) {
+                        delete this.canvas;
+                        delete this.ctx;
+                        delete this.image;
+                        delete this.needImage.imageData;
+                    }
+                    break;
             }
+        };
+    }
+
+    loadImageData(url, cb) {
+        this.canvas = document.createElement('canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.image = new Image();
+        this.image.src = url;
+        this.image.crossOrigin = 'anonymous';
+        //document.getElementById("imageContainer").appendChild(canvas);
+        this.image.onload = () => {
+            this.canvas.width = this.image.width;
+            this.canvas.height = this.image.height;
+            this.ctx.drawImage(this.image, 0, 0);
+            //window.imgdata = ctx.getImageData(0, 0, image.width, image.height);
+            //n = ctx.createImageData(image.width, image.height);
+
+            console.debug(`Image loaded: ${this.image.width} x ${this.image.height} pixels`);
+            cb({ 'imageData': this.ctx.getImageData(0, 0, this.image.width, this.image.height) });
+        };
+
+        this.image.onerror = () => {
+            cb({ error: 'Could not load image' });
         };
     }
 

@@ -323,11 +323,14 @@ class Framework extends Base {
      */
     screenshot(x, cb) {
         var url = `http://${host}:80/Service/Snapshot/Capture?` + moment().valueOf();
-        var a = new Image();
-        a.src = url;
 
-        // returning Base64Image, no need to rely on pngjs. Browsers are cool with images. Much cooler then nodejs.
-        cb(getBase64Image(a));
+        // use prop fetchImageData defined in task.js that uses the NeedImage class in messages.js to talk to the main thread
+        // this is needed because the webworker that runs framework.js cannot processes images
+        // processing of images needs to be done on the main thread in a canvas object, so we shoot the image data back and forth
+        fetchImageData(url, (imageData) => {
+            // returning Base64Image, no need to rely on pngjs. Browsers are cool with images. Much cooler then nodejs.
+            cb(imageData);
+        });
     }
 
     /** gets the FPS from the Webkit plugin

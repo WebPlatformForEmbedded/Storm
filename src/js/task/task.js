@@ -48,13 +48,20 @@ console.log('Beep boop, task.js loaded');
 
 // Parent process messages
 addEventListener('message', function(message) {
-    if (message.data.name === undefined)
+    let data = message.data;
+
+    if (data.name === undefined)
         return;
 
-    if (message.data.name === 'InitReady' && message.data.test !== '') {
+    if (data.name === 'InitReady' && data.test !== '') {
         this.host = message.data.host;
         initTest(message.data.test);
     }
+
+    // returned image data from main thread
+    if (data.name === 'NeedImage' && data.imageData !== '' && this.fetchImageDataCallback !== undefined)
+        this.fetchImageDataCallback(data.imageData);
+
 }, false);
 
 var bootSequence = {
@@ -67,7 +74,8 @@ var bootSequence = {
 
         // setup our base messages
         testMessage = new TestMessage();
-        _initReady = new InitReady();
+        needImage   = new NeedImage();
+        _initReady  = new InitReady();
 
         cb();
     },
@@ -128,6 +136,12 @@ var testIsNA = false;
 var NotApplicable = function (reason) {
     testIsNA = true;
     testMessage.notApplicable(reason);
+}
+
+// global function to fetch image data across web worker and main thread
+var fetchImageData = function (url, cb) {
+    this.fetchImageDataCallback = cb;
+    needImage.setURL(url);
 }
 
 

@@ -42,10 +42,31 @@ class InitReady extends Message {
         this.send();
     }
 }
+
 /*
-class LoadTest extends Message {
-    get testName() { return this.testName; }
-}*/
+ * Special class to have the main thread fetch the image and return the image data out of the canvas
+ */
+class NeedImage extends Message {
+    constructor() {
+        super();
+
+        this.name = 'NeedImage';
+
+        this.url = '';
+        this.imageData = '';
+    }
+
+    setURL(url) {
+        this.url = url;
+        this.send();
+    }
+
+    setImageData(data, worker) {
+        this.imageData = data;
+        this.send(worker);
+    }
+}
+
 
 /*
  * This is the main task message object, it covers the entire task that needs to be executed (i.e. TEST that needs to be run) from start to finish
