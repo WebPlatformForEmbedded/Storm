@@ -78,14 +78,19 @@ class Test extends BaseView {
     renderTest(test) {
         // render title / description
         let html = `
+            <div id="screenshot" class="canvas_in_test"></div>
+
             <div class="title grid__col grid__col--2-of-8">Name</div>
-            <div class="text grid__col grid__col--6-of-8">${this.testName}</div>
+            <div class="text grid__col grid__col--3-of-8">${this.testName}</div>
+            <div class="grid__col grid__col--3-of-8"></div>
 
             <div class="title grid__col grid__col--2-of-8">Title</div>
-            <div class="text grid__col grid__col--6-of-8">${test.title}</div>
+            <div class="text grid__col grid__col--3-of-8">${test.title}</div>
+            <div class="grid__col grid__col--3-of-8"></div>
 
             <div class="title grid__col grid__col--2-of-8">Description</div>
-            <div class="text grid__col grid__col--6-of-8">${test.description}</div>
+            <div class="text grid__col grid__col--3-of-8">${test.description}</div>
+            <div class="grid__col grid__col--3-of-8"></div>
 
             <div class="title grid__col grid__col--2-of-8">Progress</div>
             <div id="progressBarDiv" class="text grid__col grid__col--2-of-8">

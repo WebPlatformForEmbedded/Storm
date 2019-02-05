@@ -136,14 +136,16 @@ class Core {
         this.image = new Image();
         this.image.src = url;
         this.image.crossOrigin = 'anonymous';
-        //document.getElementById("imageContainer").appendChild(canvas);
-        this.image.onload = () => {
-            this.canvas.width = this.image.width;
-            this.canvas.height = this.image.height;
-            this.ctx.drawImage(this.image, 0, 0);
-            //window.imgdata = ctx.getImageData(0, 0, image.width, image.height);
-            //n = ctx.createImageData(image.width, image.height);
 
+        let screenshot = document.getElementById('screenshot');
+        if (screenshot !== undefined)
+            screenshot.innerHTML = '';
+            screenshot.appendChild(this.canvas);
+
+        this.image.onload = () => {
+            this.canvas.width = '300';
+            this.canvas.height = '150';
+            this.ctx.drawImage(this.image, 0, 0, 300, 150);
             console.debug(`Image loaded: ${this.image.width} x ${this.image.height} pixels`);
             cb({ 'imageData': this.ctx.getImageData(0, 0, this.image.width, this.image.height) });
         };
