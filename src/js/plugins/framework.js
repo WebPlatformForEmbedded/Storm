@@ -7,6 +7,7 @@ class Framework extends Base {
         super();
 
         this.up       = '0x0001';
+        this.menu     = '0x8010';
         this.down     = '0x0002';
         this.right    = '0x0004';
         this.left     = '0x0003';
@@ -68,10 +69,10 @@ class Framework extends Base {
     keyPress(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${host}:80/Service/RemoteControl/keymap/Press`,
+            url     : `http://${host}:80/Service/RemoteControl/Web/Press`,
             body    : data,
             method  : 'PUT',
-            headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
+            //headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
         };
         this.http(opts, cb);
     }
@@ -84,10 +85,10 @@ class Framework extends Base {
     keyRelease(key, cb) {
         var data = JSON.stringify({ 'code' : key });
         var opts = {
-            url     : `http://${host}:80/Service/RemoteControl/keymap/Release`,
+            url     : `http://${host}:80/Service/RemoteControl/Web/Release`,
             body    : data,
             method  : 'PUT',
-            headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
+            //headers : { 'Content-Type': 'application/json', 'Content-Length': data.length }
         };
         this.http(opts, cb);
     }
