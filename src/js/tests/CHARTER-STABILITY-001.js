@@ -63,7 +63,7 @@ test = {
         'step3' : {
             'description'   : 'Navigate into Netflix',
             'test'          : (cb) => {
-                var keyQueue = [this.menu, this.left, this.enter, this.enter];
+                var keyQueue = [this.menu, this.left, this.left, this.left, this.enter, this.enter];
 
                 self = this;
                 function sendKey() {
