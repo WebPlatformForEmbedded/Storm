@@ -10,7 +10,8 @@ const DEFAULT_TIMEOUT = 5 * 60 * 1000;
 const DEFAULT_TASK_TIMEOUT = 60 * 60 * 1000;
 
 var verbose = false;
-var window = this;
+var debug   = false;
+var window  = this;
 
 // load framework
 function mergeObjects(a, b){
@@ -30,18 +31,19 @@ function globalize(file){
 /*****************************       INIT        ******************************/
 /******************************************************************************/
 
+let bootStep            = 0;
 var curIdx              = -1;
 var maxSteps, steps;
+var processEndRequested = false;
+var repeatStepMessage;
+var repeatMessage;
+var stepMessage;
+var stepList;
+var testId;
 var timer;
 var taskTimer;
 var timedOut            = false;
-var processEndRequested = false;
-var stepMessage;
-var repeatStepMessage;
-var stepList;
-var repeatMessage;
-let bootStep            = 0;
-var testId;
+
 this.test = test = undefined;
 
 console.log('Beep boop, task.js loaded');
@@ -53,7 +55,13 @@ addEventListener('message', function(message) {
     if (data.name === undefined)
         return;
 
-    if (data.name === 'InitReady' && data.test !== '') {
+    if (data.name === 'Init' && data.state === 1) {
+            debug = data.debug;
+
+        init();
+    }
+
+    if (data.name === 'Init' && data.state === 3 && data.test !== '') {
         this.host = message.data.host;
         initTest(message.data.test);
     }
@@ -66,16 +74,24 @@ addEventListener('message', function(message) {
 
 var bootSequence = {
     'loadScript' : function(cb) {
-        // dependencies
+
+
         importScripts('../lib/moment.min.js');
-        importScripts('../plugins/base.js');
-        importScripts('../plugins/framework.js');
-        importScripts('../core/messages.js');
+
+        // if debug load seperate files, else load minified plugins.js
+        if (debug === true) {
+            // dependencies
+            importScripts('../plugins/base.js');
+            importScripts('../plugins/framework.js');
+            importScripts('../plugins/messages.js');
+        } else {
+            importScripts('../plugins.js');
+        }
 
         // setup our base messages
         testMessage = new TestMessage();
         needImage   = new NeedImage();
-        _initReady  = new InitReady();
+        m_init      = new Init();
 
         cb();
     },
@@ -98,8 +114,13 @@ var bootSequence = {
     },
 
     'initReady' : function(cb) {
-        _initReady.send();
+        m_init.setInitReady();
     }
+}
+
+function loaded() {
+    // fake preinit message, since we dont know if we're going to be in debug or not
+    postMessage({ name: 'Init', state: 0 });
 }
 
 function init() {
@@ -460,5 +481,5 @@ function userResponse(message){
 
 
 //start init
-init();
+loaded();
 

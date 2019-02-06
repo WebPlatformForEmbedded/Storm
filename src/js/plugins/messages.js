@@ -26,20 +26,37 @@ class Message {
  * Individual messages and their properties
  */
 // Control messages used to control the init/start flow of the worker and main applications
-class InitReady extends Message {
+class Init extends Message {
     constructor() {
         super();
 
-        this.name = 'InitReady';
+        this.name = 'Init';
         this.test = '';
         this.host = '';
+        this.debug = false;
+
+        this.states = {
+            'initFailure'       : -1,
+            'loaded'            : 0,
+            'init'              : 1,
+            'initReady'         : 2,
+            'loadTest'          : 3,
+        };
+
+        this.state = -1;
     }
 
-    ready() { this.send(); }
-    loadTest(test, host) {
+    initialize(worker)  { this.state = this.states.init;        this.send(worker);  }
+
+    setInitReady(worker)   { this.state = this.states.initReady;   this.send(worker);  }
+    setInitFailure(worker) { this.state = this.states.initFailure; this.send(worker);  }
+    setDebug()          { this.debug = true; }
+
+    setLoadTest(test, host, worker) {
         this.test = test;
         this.host = host;
-        this.send();
+        this.state = this.states.loadTest;
+        this.send(worker);
     }
 }
 

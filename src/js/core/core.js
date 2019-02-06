@@ -88,6 +88,7 @@ class Core {
     run(test, updateProgressCb) {
         // setup need image messaging
         this.needImage = new NeedImage();
+        this.init = new Init();
 
         // setup worker
         this.worker = new Worker('js/task/task.js');
@@ -104,11 +105,19 @@ class Core {
 
             // additional processing
             switch (data.name) {
-                case 'InitReady':
-                    //worker is ready, launch test through loadtest message
-                    var _loadTest = new InitReady();
-                    _loadTest.loadTest(test, host);
-                    _loadTest.send(this.worker);
+                case 'Init':
+                    if (data.state === this.init.states.loaded) {
+                        if (window.DEBUG === true)
+                            this.init.setDebug();
+
+                        this.init.initialize(this.worker);
+                    }
+
+                    if (data.state === this.init.states.initReady) {
+                        //worker is ready, launch test through loadtest message
+                        this.init.setLoadTest(test, host, this.worker);
+                    }
+
                     break;
 
                 case 'NeedImage':
