@@ -7,12 +7,15 @@ class Framework extends Base {
         super();
 
         this.up       = '0x0001';
-        this.menu     = '0x8010';
         this.down     = '0x0002';
         this.right    = '0x0004';
         this.left     = '0x0003';
-        this.enter    = '0x002B';
         this.esc      = '0x0009';
+        this.exit     = '0x0009'; //esc
+        this.back     = '0x0032';
+        this.enter    = '0x002B'; //enter
+        this.menu     = '0x8010'; //m
+        this.guide    = '0x800A'; //g
 
         // expose functions
         this.key                    = this.key.bind(this);
