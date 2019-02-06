@@ -25,6 +25,10 @@ module.exports = function(grunt) {
             build: {
                 src: '<%= scripts %>',
                 dest: 'build/js/main.js'
+            },
+            plugins : {
+                src: 'src/js/plugins/*.js',
+                dest: 'build/js/plugins.js'
             }
         },
         connect: {
@@ -43,6 +47,20 @@ module.exports = function(grunt) {
                 src: '**',
                 dest: 'build/img/'
             },
+            testManifest: {
+                src: 'src/js/tests.json',
+                dest: 'build/js/tests.json'
+            },
+            tests : {
+                expand: true,
+                cwd: 'src/js/tests/',
+                src: '**',
+                dest: 'build/js/tests/'
+            },
+            task: {
+                src: 'src/js/task/task.js',
+                dest: 'build/js/task/task.js'
+            },
             css: {
                 expand: true,
                 cwd: 'src/css/',
@@ -53,13 +71,11 @@ module.exports = function(grunt) {
                 src: 'src/index.html',
                 dest: 'build/index.html'
             },
-            tests: {
-                src : '<%= testScripts =>',
-                dest : 'build/js/tests/'
-            },
             lib : {
-                src : 'src/js/lib',
-                dest : 'build/js/lib'
+                expand: true,
+                cwd : 'src/js/lib/',
+                src : '*.js',
+                dest : 'build/js/lib/'
             }
         },
         // removed 'src/js/tests/*.js' for the time being, until we converted that into a web useable format
@@ -75,9 +91,14 @@ module.exports = function(grunt) {
                     'build/js/main.js': ['<%= concat.build.dest %>'],
                 }
             },
+            plugins : {
+                files: {
+                    'build/js/plugins.js': ['<%= concat.plugins.dest %>'],
+                }
+            },
             task: {
                 files: {
-                    'build/js/task/task.js': 'src/js/task/task.js'
+                    'build/js/task/task.js': 'build/js/task/task.js'
                 }
             }
 
