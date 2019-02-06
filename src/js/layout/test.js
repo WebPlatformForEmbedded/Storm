@@ -107,6 +107,7 @@ class Test extends BaseView {
                 <div class="table">
                     <div class="row header">
                         <div class="cell">Step</div>
+                        <div class="cell"></div>
                         <div class="cell">Result</div>
                     </div>`;
 
@@ -123,6 +124,7 @@ class Test extends BaseView {
 
                 html += `<div class="row">
                         <div class="cell">${i+1}. ${_step.description}</div>
+                        <div class="cell">${_step.sleep ? 'Sleep: ' + _step.sleep + 's' : ''}</div>
                         <div id="step_progress_${i}" class="cell">Not Started</div></div>`;
             }
         }
