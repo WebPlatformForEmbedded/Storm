@@ -8,9 +8,10 @@ test = {
     'title'             : 'Charter John Doe UI test',
     'description'       : 'Navigate around in the Charter UI by navigating TV-> Netflix -> TV-> VOD -> guide -> TV -> Guide -> Menu',
     'requiredPlugins'   : ['UX', 'Snapshot'],
-    'maxSameScreenshot' : 5, // amount of times its okay to have the same screenshot
+    'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'timeInBetweenKeys' : 5, // 5s inbetween keys
+    'timeInBetweenKeys' : 2, // 5s inbetween keys
+    'timeout'           : 12600, //s == 3.5 hour
     'prevScreenshot'    : undefined,
     'checkScreenShot'   : (res) => {
         // check if we got an empty response
@@ -64,12 +65,13 @@ test = {
             'test'          : (cb) => {
                 var keyQueue = [this.menu, this.left, this.enter, this.enter];
 
+                self = this;
                 function sendKey() {
                     var k = keyQueue.shift();
                     console.log('Sending: ' + k);
                     key(k, (resp) => {
                         if (keyQueue.length !== 0)
-                            setTimeout(sendKey, 1000);
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
                         else
                             cb(keyQueue);
                     });
@@ -84,10 +86,128 @@ test = {
             'test'          : screenshot,
             'validate'      : this.checkScreenShot,
         },
+        'step5' : {
+            'description'   : 'Exit Netflix',
+            'test'          : (cb) => {
+                function sendBack(_cb) {
+                    key(this.back, _cb)
+                }
+
+                // 3x back
+                sendBack(() => {
+                    // after first back wait 20s
+                    setTimeout(sendBack, 20 * 1000, (resp) => {
+                        setTimeout(sendBack, self.timeInBetweenKeys * 1000, cb);
+                    });
+                });
+            }
+        },
+        'step6' : {
+            'sleep'         : 30,
+            'description'   : 'Check if screen changed',
+            'test'          : screenshot,
+            'validate'      : this.checkScreenShot,
+        },
+        'step7' : {
+            'description'   : 'Enter VOD',
+            'test'          : (cb) => {
+                var keyQueue = [this.menu, this.right, this.right, this.right, this.enter];
+
+                function sendKey() {
+                    var k = keyQueue.shift();
+                    console.log('Sending: ' + k);
+                    key(k, (resp) => {
+                        if (keyQueue.length !== 0)
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
+                        else
+                            cb();
+                    });
+                }
+                sendKey();
+            }
+        },
+        'step8' : {
+            'sleep'         : 30,
+            'description'   : 'Check if screen changed',
+            'test'          : screenshot,
+            'validate'      : this.checkScreenShot,
+        },
+        'step9' : {
+            'description'   : 'Exit VOD',
+            'test'          : (cb) => {
+                var keyQueue = [this.exit, this.exit];
+
+                function sendKey() {
+                    var k = keyQueue.shift();
+                    console.log('Sending: ' + k);
+                    key(k, (resp) => {
+                        if (keyQueue.length !== 0)
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
+                        else
+                            cb();
+                    });
+                }
+                sendKey();
+            }
+        },
+        'step10' : {
+            'sleep'         : 30,
+            'description'   : 'Check if screen changed',
+            'test'          : screenshot,
+            'validate'      : this.checkScreenShot,
+        },
+        'step11' : {
+            'description'   : 'Enter Guide',
+            'test'          : (cb) => {
+                var keyQueue = [this.guide];
+
+                function sendKey() {
+                    var k = keyQueue.shift();
+                    console.log('Sending: ' + k);
+                    key(k, (resp) => {
+                        if (keyQueue.length !== 0)
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
+                        else
+                            cb();
+                    });
+                }
+                sendKey();
+            }
+        },
+        'step12' : {
+            'sleep'         : 30,
+            'description'   : 'Check if screen changed',
+            'test'          : screenshot,
+            'validate'      : this.checkScreenShot,
+        },
+        'step13' : {
+            'description'   : 'Exit Guide',
+            'test'          : (cb) => {
+                var keyQueue = [this.exit];
+
+                function sendKey() {
+                    var k = keyQueue.shift();
+                    console.log('Sending: ' + k);
+                    key(k, (resp) => {
+                        if (keyQueue.length !== 0)
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
+                        else
+                            cb();
+                    });
+                }
+                sendKey();
+            }
+        },
+        'step14' : {
+            'sleep'         : 30,
+            'description'   : 'Check if screen changed',
+            'test'          : screenshot,
+            'validate'      : this.checkScreenShot,
+        },
         'repeatStep' : {
-            'description'   : 'Repeat for 3 hours',
+            'description'   : 'Repeat for 1 hour',
             'goto'          : 'step3',
-            'repeatTime'    : 3 * 60,
+            'repeatTime'    : 1 * 60,
         }
     }
 };
