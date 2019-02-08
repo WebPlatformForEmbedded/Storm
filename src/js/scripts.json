@@ -5,10 +5,11 @@
     "js/core/core.js",
     "js/plugins/base.js",
     "js/plugins/framework.js",
-    "js/plugins/messages.js",
     "js/plugins/remoteinspector.js",
     "js/layout/device.js",
     "js/layout/menu.js",
     "js/layout/test.js",
-    "js/layout/tests.js"
+    "js/layout/tests.js",
+    "js/data/messages.js",
+    "js/data/test.js"
 ]

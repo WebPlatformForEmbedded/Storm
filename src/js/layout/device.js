@@ -1,6 +1,6 @@
 /** The Device page */
 
-class Device extends BaseView {
+class DeviceView extends BaseView {
 	constructor() {
 		super()
 		this.statusMessageTimer;
@@ -108,4 +108,4 @@ class Device extends BaseView {
 }
 
 window.views = window.views || {};
-window.views.Device = Device;
+window.views.DeviceView = DeviceView;

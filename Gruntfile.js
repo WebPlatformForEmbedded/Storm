@@ -101,7 +101,6 @@ module.exports = function(grunt) {
                     'build/js/task/task.js': 'build/js/task/task.js'
                 }
             }
-
         },
         watch: {
             base : {
@@ -134,6 +133,7 @@ module.exports = function(grunt) {
         var jsDir = path.join( cwd, 'src', 'js');
         var coreDir = path.join(jsDir, 'core');
         var pluginDir = path.join( jsDir, 'plugins');
+        var dataDir = path.join( jsDir, 'data');
         var layoutDir = path.join( jsDir, 'layout');
         var scripts = [];
 
@@ -153,6 +153,11 @@ module.exports = function(grunt) {
         shell.cd(layoutDir);
         shell.ls('*.js').forEach( function(p) {
             scripts.push('js/layout/' + p);
+        });
+
+        shell.cd(dataDir);
+        shell.ls('*.js').forEach( function(p) {
+            scripts.push('js/data/' + p);
         });
 
         shell.cd(cwd);

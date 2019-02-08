@@ -7,19 +7,19 @@
 
 class Core {
     constructor() {
-        this.activeTask = '';
-        this.results = {};
-        this.version = null;
+        this.activeTest = '';
         this.deviceid = null;
         this.devicename = null;
         this.dummyMode = false;
+        this.results = {};
         this.tests = [];
+        this.version = null;
         this.worker = null;
+        this.testProgressListeners = [];
 
         // public
         this.activateDevice = this.activateDevice.bind(this);
         this.deleteDevice = this.deleteDevice.bind(this);
-        this.loadTest = this.loadTest.bind(this);
         this.run = this.run.bind(this);
     }
 
@@ -85,48 +85,58 @@ class Core {
      * Run spawns a webworker task.js which will execute the task selected
      */
 
-    run(test, updateProgressCb) {
+    run(test) {
         // setup need image messaging
-        this.needImage = new NeedImage();
-        this.init = new Init();
+        this.activeTest = test;
 
         // setup worker
         this.worker = new Worker('js/task/task.js');
-        this.worker.onmessage = (message) => {
-            //console.log('APP message: ', message.data);
 
-            if (message.data.name === undefined)
-                return;
+        this.needImage = new NeedImage(this.worker);
+        this.init = new Init(this.worker);
+
+        this.worker.onmessage = (message) => {
+            console.log('APP message: ', message.data);
 
             var data = message.data;
 
-            // update view
-            updateProgressCb(data);
+            // update listeners
+            for (var i=0; i<this.testProgressListeners.length; i++)
+                testProgressListeners[i](data);
 
             // additional processing
-            switch (data.name) {
+            switch (data.messageContext) {
                 case 'Init':
                     if (data.state === this.init.states.loaded) {
                         if (window.DEBUG === true)
                             this.init.setDebug();
 
-                        this.init.initialize(this.worker);
+                        this.init.initialize();
                     }
 
                     if (data.state === this.init.states.initReady) {
                         //worker is ready, launch test through loadtest message
-                        this.init.setLoadTest(test, host, this.worker);
+                        this.init.setLoadTest(this.activeTest, host);
                     }
 
                     break;
 
                 case 'NeedImage':
                     this.loadImageData(data.url, (resp) => {
-                        this.needImage.setImageData(resp.imageData.data, this.worker);
+                        this.needImage.setImageData(resp.imageData.data);
                     });
                     break;
 
+
+                // sync datamodel here
                 case 'TestMessage':
+                    if (data.name === undefined)
+                        return;
+
+                    let _testToSync = wtf.tests[ data.name ];
+
+                    this._syncDataObjects(_testToSync, data);
+
                     // clean up if we're done, just make sure were not holding on to heavy image data across tests
                     if (data.completed === true) {
                         delete this.canvas;
@@ -135,8 +145,43 @@ class Core {
                         delete this.needImage.imageData;
                     }
                     break;
+
+                case 'StepMessage':
+                    if (data.name === undefined || data.testName === undefined)
+                        return;
+
+                    let _testThatbelongsToStep = wtf.tests[ data.testName ];
+                    let _stepToSync = _testThatbelongsToStep.steps[ data.name ];
+
+                    _testThatbelongsToStep.currentStep = data.name;
+
+                    this._syncDataObjects(_stepToSync, data);
+                    break;
             }
         };
+    }
+
+    _syncDataObjects(orgObject, newObject) {
+        for (let j=0; j<orgObject.statesToBeSynced.length; j++){
+            let objectName = orgObject.statesToBeSynced[j];
+            let objectToSync = newObject[ objectName ];
+
+            if (objectToSync === undefined)
+                continue;
+
+            orgObject[ objectName ] = objectToSync;
+        }
+    }
+
+    registerForTestProgress(callback) {
+        this.testProgressListeners.push(callback);
+    }
+
+    deregisterForTestProgress(fn) {
+        var index = this.testProgressListeners.indexOf(fn);
+        if (index > -1) {
+           this.testProgressListeners.splice(index, 1);
+        }
     }
 
     loadImageData(url, cb) {
@@ -162,28 +207,6 @@ class Core {
         this.image.onerror = () => {
             cb({ error: 'Could not load image' });
         };
-    }
-
-    loadTest(url, cb) {
-        get(url, (resp) => {
-            if (resp.error) {
-                cb(resp);
-                return;
-            }
-
-            var test;
-            try {
-                // jshint, rightfully so, warns about eval being evil. We're using it conciously.
-                /* jshint ignore:start */
-                test = eval(resp.body);
-                /* jshint ignore:end */
-            } catch(e) {
-                cb({ 'error' : e.message });
-                return;
-            }
-
-            cb({ 'test' :  test });
-        });
     }
 
     // Getters

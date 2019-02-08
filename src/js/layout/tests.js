@@ -1,6 +1,6 @@
 /** The landing page */
 
-class Tests extends BaseView {
+class TestsView extends BaseView {
 	constructor() {
 		super()
 	}
@@ -43,7 +43,7 @@ class Tests extends BaseView {
 						${test.description}
 					</div>
 					<div class="cell">
-						Not Started
+						${test.getState()}
 					</div>
 				</div>`;
 		}
@@ -87,4 +87,4 @@ class Tests extends BaseView {
 }
 
 window.views = window.views || {};
-window.views.Tests = Tests;
+window.views.TestsView = TestsView;

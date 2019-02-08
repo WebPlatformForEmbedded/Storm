@@ -22,6 +22,7 @@
     let port;
     let views           = {};
     let options         = {};
+    let currentView;
 
     /**
     * Main initialization function
@@ -117,15 +118,30 @@
             console.debug('Loading tests manifest');
 
             get('js/tests.json', (resp) => {
-                if (resp.error !== undefined)
+                if (resp.error !== undefined) {
                     console.error('Error loading tests.json from server, no tests are available');
-
-                if (resp.status === 200 && resp.body !== undefined) {
-                    wtf.tests = JSON.parse(resp.body);
-                    console.log(`Loaded ${Object.keys(wtf.tests).length} tests`);
+                    cb();
                 }
 
-                cb();
+                if (resp.status === 200 && resp.body !== undefined) {
+                    let tests = JSON.parse(resp.body);
+                    console.log(`Loaded ${Object.keys(tests).length} tests`);
+
+                    let testList = Object.keys(tests);
+
+                    for (let i=0; i<testList.length; i++) {
+                        let testName = testList[i];
+                        let testData = tests[ testName ];
+
+                        wtf.tests[ testName ] = new Test(testData);
+
+                        console.debug('Successfully loaded ' + testName);
+                    }
+
+                    cb();
+                }
+
+
             });
         },
 
@@ -136,7 +152,7 @@
 
             console.log('Loading views');
 
-            if (window.views === undefined || window.views.Menu === undefined || window.views.Device === undefined) {
+            if (window.views === undefined || window.views.MenuView === undefined || window.views.DeviceView === undefined) {
                 cb(null, 1000);
                 return;
             }
@@ -160,9 +176,9 @@
              */
 
             routes = {
-                'device'           : views.Device,
-                'tests'            : views.Tests,
-                'test'             : views.Test,
+                'device'           : views.DeviceView,
+                'tests'            : views.TestsView,
+                'test'             : views.TestView,
             };
 
             // check if we're running in dummy more, this enable dummy tests that are used to verify the wpetest framework
@@ -248,8 +264,12 @@
     navigate = function(name, options) {
         window.onhashchange = null;
 
+        if (currentView !== undefined)
+            routes[ currentView ].clear();
+
         routes[ name ].render(options);
         window.location.hash = name;
+        currentView = name;
 
         // re-attached parseHash onhashchange
         setTimeout(attachHashChange.bind(this), 200);

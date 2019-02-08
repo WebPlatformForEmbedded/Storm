@@ -1,19 +1,22 @@
 /** The landing page */
 
-class Test extends BaseView {
+class TestView extends BaseView {
     constructor() {
         super()
 
         this.testName = null;
         this.test = null;
-        this.testMessage = new TestMessage();
-        this.stepMessage = new StepMessage();
         this.repeatMessage = new RepeatMessage();
     }
 
     render(_testName) {
+        if (_testName === undefined) {
+            navigate('tests');
+            return;
+        }
+
         this.testName = _testName;
-        this.test = null;
+        wtf.registerForTestProgress(this.updateProgress.bind(this));
 
         // todo, no device onboarded, let user know
         if (host === undefined) {
@@ -25,46 +28,37 @@ class Test extends BaseView {
         let _t = wtf.tests[ this.testName ];
 
         if (_t === undefined) {
+            this.clear();
             navigate('tests');
             return;
         }
 
-        loadTest(_t.file, (resp) => {
-            if (resp.error) {
-                this.renderError(resp.error);
-                return;
-            }
+        if (_t.loaded === false) {
+            _t.load((resp) => {
+                if (resp.error) {
+                    this.renderError(resp.error);
+                    return;
+                }
 
-            if (resp.test === undefined) {
-                this.renderError('Test not found');
-                return;
-            }
+                if (resp.test === undefined) {
+                    this.renderError('Test not found');
+                    return;
+                }
 
-            if (resp.test.extends !== undefined && resp.test.exteds !== '') {
-                // test extends another test, lets load that one too
-                loadTest('js/tests/' + resp.test.extends + '.js', (_resp) => {
-                    if (_resp.error) {
-                        this.renderError(_resp.error);
-                        return;
-                    }
+                this.test = resp.test;
+                this.renderTest();
+            });
+        } else {
+            this.test = _t;
+            this.renderTest(_t);
+        }
 
+    }
 
-                    if (_resp.test) {
-                        // merge tests
-                        for (var attrname in _resp.test.steps)
-                            resp.test.steps[attrname] = _resp.test.steps[attrname];
-
-                        this.renderTest(resp.test);
-                    } else {
-                        this.renderError('Cannot load test that needs to be extended: ', resp.test.extends);
-                    }
-                });
-            } else {
-                this.renderTest(resp.test);
-            }
-
-        });
-
+    clear() {
+        wtf.deregisterForTestProgress(this.updateProgress);
+        this.testName = null;
+        this.test = null;
     }
 
     renderError(error) {
@@ -75,7 +69,7 @@ class Test extends BaseView {
         return;
     }
 
-    renderTest(test) {
+    renderTest() {
         // render title / description
         let html = `
             <div id="screenshot" class="canvas_in_test"></div>
@@ -85,23 +79,23 @@ class Test extends BaseView {
             <div class="grid__col grid__col--3-of-8"></div>
 
             <div class="title grid__col grid__col--2-of-8">Title</div>
-            <div class="text grid__col grid__col--3-of-8">${test.title}</div>
+            <div class="text grid__col grid__col--3-of-8">${this.test.title}</div>
             <div class="grid__col grid__col--3-of-8"></div>
 
             <div class="title grid__col grid__col--2-of-8">Description</div>
-            <div class="text grid__col grid__col--3-of-8">${test.description}</div>
+            <div class="text grid__col grid__col--3-of-8">${this.test.description}</div>
             <div class="grid__col grid__col--3-of-8"></div>
 
             <div class="title grid__col grid__col--2-of-8">Progress</div>
             <div id="progressBarDiv" class="text grid__col grid__col--2-of-8">
-                <progress max="100" value="0" id="progressBar"></progress>
+                <progress max="100" value="${this.test.getPercCompleted()}" id="progressBar"></progress>
             </div>
-            <div id="progress" class="text grid__col grid__col--2-of-8">0%</div>
+            <div id="progress" class="text grid__col grid__col--2-of-8">${this.test.getPercCompleted()}%</div>
 
-            <div id="result" class="text grid__col grid__col--2-of-8">-</div>
+            <div id="result" class="text grid__col grid__col--2-of-8">${this.test.getState()}</div>
 
             <div class="text grid__col grid__col--1-of-8"></div>
-            <div id="error" class="text grid__col grid__col--7-of-8"></div>
+            <div id="error" class="text grid__col grid__col--7-of-8">${this.test.getError()}</div>
 
             <div class="grid__col grid__col--7-of-8">
                 <div class="table">
@@ -111,21 +105,21 @@ class Test extends BaseView {
                         <div class="cell">Result</div>
                     </div>`;
 
-        if (test.steps === undefined) {
+        if (this.test.steps === undefined) {
             html += `<div class="row">
                     <div class="text grid__col grid__col--2-of-8">Test has no steps</div>
                 </div>`;
         } else {
-            var _steps = Object.keys(test.steps);
+            var _steps = Object.keys(this.test.steps);
             this.stepLength = _steps.length;
 
             for (var i=0; i<_steps.length; i++) {
-                var _step = test.steps[ _steps[ i ] ];
+                var _step = this.test.steps[ _steps[ i ] ];
 
                 html += `<div class="row">
                         <div class="cell">${i+1}. ${_step.description}</div>
                         <div class="cell">${_step.sleep ? 'Sleep: ' + _step.sleep + 's' : ''}</div>
-                        <div id="step_progress_${i}" class="cell">Not Started</div></div>`;
+                        <div id="step_progress_${i}" class="cell">${_step.getState()}</div></div>`;
             }
         }
 
@@ -151,49 +145,32 @@ class Test extends BaseView {
     }
 
     startTest() {
-        wtf.run(this.testName, this.updateProgress.bind(this));
+        wtf.run(this.testName);
     }
 
     updateProgress(data) {
-        switch (data.name) {
-            case 'TestMessage':
-                if (data.completed === true) {
-                    if (data.state !== this.testMessage.states.success && data.result !== undefined)
-                        this.errorEl.innerHTML = data.result;
-                }
-                else if (data.state === this.testMessage.states.start)
-                    this.resultEl.innerHTML = 'Started';
-                else if (data.state === this.testMessage.states.success)
-                    this.resultEl.innerHTML = 'Success';
-                else if (data.state === this.testMessage.states.error)
-                    this.resultEl.innerHTML = 'Error';
-                else if (data.state === this.testMessage.states.timedout)
-                    this.resultEl.innerHTML = 'Timed out';
-                else if (data.state === this.testMessage.states.notapplicable)
-                    this.resultEl.innerHTML = 'Not Applicable';
+        this.renderTest();
 
+        /*
+        switch (data.messageContext) {
+            case 'TestMessage':
+
+                this.errorEl.innerHTML = this.test.getError();
+                this.resultEl.innerHTML = this.test.getState();
                 break;
 
             case 'StepMessage':
                 let stepEl = document.getElementById('step_progress_' + data.stepIdx);
+                let step = this.test.steps[ data.name ]
 
-                if (data.state === this.stepMessage.states.init)
-                    stepEl.innerHTML = 'Init';
-                else if (data.state === this.stepMessage.states.start)
-                    stepEl.innerHTML = 'Running';
-                else if (data.state === this.stepMessage.states.response)
-                    stepEl.innerHTML = 'Response';
-                else if (data.state === this.stepMessage.states.success)
-                    stepEl.innerHTML = 'Success';
-                else if (data.state === this.stepMessage.states.failed)
-                    stepEl.innerHTML = 'Failed';
-
+                stepEl.innerHTML = step.getState();
 
                 // only update % if state is > running
-                if (data.state > 1) {
-                    let progressPerct = ( ((data.stepIdx+1) / this.stepLength) * 100).toFixed(0);
-                    this.progressBar.value = progressPerct;
-                    this.progressEl.innerHTML = progressPerct + '%';
+                if (step.state > 1) {
+                    let perctCompleted = this.test.getPercCompleted();
+
+                    this.progressBar.value = perctCompleted;
+                    this.progressEl.innerHTML = perctCompleted + '%';
                 }
 
                 break;
@@ -217,10 +194,11 @@ class Test extends BaseView {
 
                 break;
         }
+        */
 
     }
 
 }
 
 window.views = window.views || {};
-window.views.Test = Test;
+window.views.TestView = TestView;

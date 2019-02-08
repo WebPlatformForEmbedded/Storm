@@ -1,10 +1,10 @@
 /** The landing page */
 
-class Menu extends BaseView {
+class MenuView extends BaseView {
     constructor() {
-    	super()
-    	this.top            = document.getElementById('top');
-        this.mainDiv 		= document.getElementById('main');
+        super()
+        this.top            = document.getElementById('top');
+        this.mainDiv        = document.getElementById('main');
         this.menuItems = ['Device', 'Tests', 'Results'];
 
         var bodyEl = document.getElementsByTagName('body')[0];
@@ -97,4 +97,4 @@ class Menu extends BaseView {
 }
 
 window.views = window.views || {};
-window.views.Menu = Menu;
+window.views.MenuView = MenuView;

@@ -6,9 +6,6 @@
  */
 /*jslint esnext: true*/
 
-const DEFAULT_TIMEOUT = 5 * 60 * 1000;
-const DEFAULT_TASK_TIMEOUT = 60 * 60 * 1000;
-
 var verbose = false;
 var debug   = false;
 var window  = this;
@@ -31,18 +28,11 @@ function globalize(file){
 /*****************************       INIT        ******************************/
 /******************************************************************************/
 
-let bootStep            = 0;
-var curIdx              = -1;
-var maxSteps, steps;
-var processEndRequested = false;
+// messaging
+var _test;
+var _step;
 var repeatStepMessage;
 var repeatMessage;
-var stepMessage;
-var stepList;
-var testId;
-var timer;
-var taskTimer;
-var timedOut            = false;
 
 this.test = test = undefined;
 
@@ -52,22 +42,22 @@ console.log('Beep boop, task.js loaded');
 addEventListener('message', function(message) {
     let data = message.data;
 
-    if (data.name === undefined)
+    if (data.messageContext === undefined)
         return;
 
-    if (data.name === 'Init' && data.state === 1) {
+    if (data.messageContext === 'Init' && data.state === 1) {
             debug = data.debug;
 
         init();
     }
 
-    if (data.name === 'Init' && data.state === 3 && data.test !== '') {
+    if (data.messageContext === 'Init' && data.state === 3 && data.test !== '') {
         this.host = message.data.host;
         initTest(message.data.test);
     }
 
     // returned image data from main thread
-    if (data.name === 'NeedImage' && data.imageData !== '' && this.fetchImageDataCallback !== undefined)
+    if (data.messageContext === 'NeedImage' && data.imageData !== '' && this.fetchImageDataCallback !== undefined)
         this.fetchImageDataCallback(data.imageData);
 
 }, false);
@@ -83,13 +73,14 @@ var bootSequence = {
             // dependencies
             importScripts('../plugins/base.js');
             importScripts('../plugins/framework.js');
-            importScripts('../plugins/messages.js');
+            importScripts('../data/messages.js');
+            importScripts('../data/test.js');
         } else {
             importScripts('../plugins.js');
+            importScripts('../data.js');
         }
 
         // setup our base messages
-        testMessage = new TestMessage();
         needImage   = new NeedImage();
         m_init      = new Init();
 
@@ -120,7 +111,7 @@ var bootSequence = {
 
 function loaded() {
     // fake preinit message, since we dont know if we're going to be in debug or not
-    postMessage({ name: 'Init', state: 0 });
+    postMessage({ messageContext: 'Init', state: 0 });
 }
 
 function init() {
@@ -156,7 +147,10 @@ function init() {
 var testIsNA = false;
 var NotApplicable = function (reason) {
     testIsNA = true;
-    testMessage.notApplicable(reason);
+    if (_test !== undefined)
+        _test.notApplicable(reason);
+    else
+        setTimeout(NotApplicable, 1000, reason);
 }
 
 // global function to fetch image data across web worker and main thread
@@ -189,7 +183,12 @@ function initTest(testName) {
         }
     }
 
-    if (test && test.requiredPlugins !== undefined && test.requiredPlugins.length > 0) {
+    // Basically keep 2 sets, 1 the test as read from the server.
+    // 2 the data model test where we communicate back to the main thread.
+    _test = new Test(test);
+    _test.name = testName;
+
+    if (_test && _test.requiredPlugins !== undefined && _test.requiredPlugins.length > 0) {
         getPlugins(null, (response) => {
             try {
                 var responseObj = JSON.parse(response.body);
@@ -199,10 +198,10 @@ function initTest(testName) {
                     enabledPlugins.push(plugins[i].callsign);
                 }
 
-                for (var j=0; j<test.requiredPlugins.length; j++) {
-                    if (enabledPlugins.indexOf(test.requiredPlugins[j]) === -1) {
-                        NotApplicable(`Build does not support ${test.requiredPlugins[j]}`);
-                    } else if (j === test.requiredPlugins.length-1) {
+                for (var j=0; j<_test.requiredPlugins.length; j++) {
+                    if (enabledPlugins.indexOf(_test.requiredPlugins[j]) === -1) {
+                        NotApplicable(`Build does not support ${_test.requiredPlugins[j]}`);
+                    } else if (j === _test.requiredPlugins.length-1) {
                         startTest();
                     }
                 }
@@ -219,6 +218,16 @@ function initTest(testName) {
 /*****************************    test hander    ******************************/
 /******************************************************************************/
 
+let bootStep            = 0;
+var curIdx              = -1;
+var maxSteps, steps;
+var processEndRequested = false;
+var stepList;
+var testId;
+var timer;
+var taskTimer;
+var timedOut            = false;
+
 function startTest() {
     // make sure we dont start this if the task during load is NA'ed
     if (testIsNA === true) return;
@@ -226,30 +235,27 @@ function startTest() {
     stepList = Object.keys(test.steps);
     maxSteps = stepList.length;
 
-    testMessage.setStepCount(maxSteps-1);
-    testMessage.start();
-
-    // set timer for the entire task, can be overwritten
-    taskTimer = setTimeout(timedout, test.timeout !== undefined ? test.timeout * 1000 : DEFAULT_TASK_TIMEOUT);
+    _test.start();
+    taskTimer = setTimeout(timedout, _test.timeout);
 
     lookForNextStep();
 }
 
 function timedout() {
-    testMessage.timedout();
+    _test.timedout();
     checkAndCleanup( () => {
-        testMessage.complete();
+        _test.complete();
         setTimeout(close, 1000);
     });
 }
 
 function checkAndCleanup(cb) {
-    if (test.cleanup !== undefined) {
-        test.cleanup( (result) => {
-            testMessage.cleanedup(result);
-            testMessage.complete();
+    if (_test.cleanup !== undefined) {
+        _test.cleanup( (result) => {
+            _test.cleanedup(result);
+            _test.complete();
 
-            setTimeout(cb, 1000);
+            s(cb, 1000);
         });
     } else {
         cb();
@@ -266,16 +272,16 @@ function process_end(error) {
     clearTimeout(timer);
 
     if (error !== undefined)
-        testMessage.error(error);
+        _test.error(error);
 
     // check if test has a cleanup function defined, run it if we encountered an error
     if (error !== undefined) {
         checkAndCleanup( () => {
-            testMessage.complete();
+            _test.complete();
             setTimeout(close, 1000);
         });
     } else {
-        testMessage.complete();
+        _test.complete();
         setTimeout(close, 1000);
     }
 }
@@ -287,16 +293,15 @@ function lookForNextStep() {
     var nextIdx = curIdx+1;
     if (nextIdx >= maxSteps) {
         // we've made it!
-        testMessage.success();
+        _test.success();
         process_end();
         return;
     }
 
-    var nextStep = test.steps[ stepList[ nextIdx ] ];
+    var nextStep = _test.steps[ stepList[ nextIdx ] ];
 
     // GOTO Repeat handling
     if (nextStep.goto !== undefined){
-
         repeatMessage = new RepeatMessage(nextIdx, stepList[ nextIdx ], nextStep.goto);
 
         // look up goto step in the list
@@ -306,7 +311,7 @@ function lookForNextStep() {
         if (nextStep.repeat){
             if (nextStep.repeatTotal === undefined) {
                 // first time were running the repeat, lets set some variables
-                repeatStepMessage = new StepMessage(curIdx+1);
+                repeatStepMessage = new Step(curIdx+1);
                 repeatStepMessage.start();
 
                 nextStep.repeatTotal = nextStep.repeat;
@@ -329,7 +334,7 @@ function lookForNextStep() {
         } else if (nextStep.repeatTime){
             if (nextStep.repeatTimeStamp === undefined){
                 //first time, set timestamp
-                repeatStepMessage = new StepMessage(curIdx+1);
+                repeatStepMessage = new Step(curIdx+1);
                 repeatStepMessage.start();
 
                 nextStep.repeatTimeStamp = moment().add(nextStep.repeatTime, 'minutes').format();
@@ -348,10 +353,9 @@ function lookForNextStep() {
                 startStep(gotoStep);
             }
         }
-    // Handle user input steps
+
     } else if (nextStep.user !== undefined){
         askUser(curIdx+1);
-    // default execution
     } else {
         startStep(curIdx+1);
     }
@@ -363,21 +367,20 @@ function lookForNextStep() {
 function startStep(stepIdx) {
     // init
     curIdx = stepIdx;
-    this.currentStep = test.steps[ stepList[ curIdx ] ];
+    this.currentStep = _test.steps[ stepList[ curIdx ] ];
     this.previousStep = undefined;
     if (curIdx > 0) this.previousStep = test.steps[ stepList[ curIdx-1 ] ];
 
-    if (stepMessage !== undefined)
-        delete stepMessage;
+    if (_step !== undefined)
+        delete _step;
 
-    stepMessage = new StepMessage(curIdx);
-    stepMessage.start();
+    _step = new Step(this.currentStep, curIdx, stepList[ curIdx ], _test.name);
+    _step.start();
 
     timedOut = false;
 
     // set timeout
-    var _tm = this.currentStep.timeout !== undefined ? this.currentStep.timeout * 1000 : DEFAULT_TIMEOUT;
-    timer = setTimeout(timedout, _tm, curIdx);
+    timer = setTimeout(timedout, this.currentStep.timeout * 1000, curIdx);
 
     // sleep
     var sleepMs = this.currentStep.sleep !== undefined ? this.currentStep.sleep * 1000 : 1000;
@@ -396,9 +399,7 @@ function startStep(stepIdx) {
 
     function handleResponse (response) {
         // results
-        test.steps[ stepList [ curIdx ] ].response = response;
-
-        stepMessage.setResponse(response);
+        _step.setResponse(response);
         validateStep(curIdx, response);
     }
 
@@ -444,10 +445,10 @@ function validateStep(stepIdx, response) {
 
 
     if (isSuccess === true) {
-        stepMessage.success(msg);
+        _step.success(msg);
         lookForNextStep();
     } else {
-        stepMessage.fail(msg);
+        _step.fail(msg);
         process_end(msg);
     }
 }
@@ -460,26 +461,23 @@ function askUser(stepIdx) {
     curIdx = stepIdx;
     var currentStep = test.steps[ stepList[ curIdx ] ];
 
-    stepMessage = new StepMessage(curIdx);
-    stepMessage.start();
-
-    stepMessage.needUser();
+    _step = new Step(currentStep, curIdx);
+    _step.start();
+    _step.needUser();
 
     // set timeout
-    var _tm = currentStep.timeout !== undefined ? currentStep.timeout * 1000 : DEFAULT_TIMEOUT;
-    timer = setTimeout(timedout, _tm, curIdx);
-
+    timer = setTimeout(timedout, _step.timeout * 1000, curIdx);
 }
 
 function userResponse(message){
     if (message.state() !== message.states.success) {
-        process_end(message.response());
+        _step.fail(message.response);
+        process_end(message.response);
     } else {
+        _step.success(message.response);
         lookForNextStep();
     }
 }
 
-
 //start init
 loaded();
-

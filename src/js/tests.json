@@ -6,6 +6,13 @@
         "title": "Charter John Doe UI test",
         "description": "Navigate around in the Charter UI by navigating TV-> Netflix -> TV-> VOD -> guide -> TV -> Guide -> Menu"
     },
+    "CHARTER-STABILITY-002": {
+        "name": "CHARTER-STABILITY-002",
+        "file": "js/tests/CHARTER-STABILITY-002.js",
+        "operator": "charter",
+        "title": "Charter Channel Change test",
+        "description": "Send channel up until test is over"
+    },
     "DUMMY-ERROR-001": {
         "name": "DUMMY-ERROR-001",
         "file": "js/tests/DUMMY-ERROR-001.js",
