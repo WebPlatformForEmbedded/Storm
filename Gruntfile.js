@@ -29,6 +29,10 @@ module.exports = function(grunt) {
             plugins : {
                 src: 'src/js/plugins/*.js',
                 dest: 'build/js/plugins.js'
+            },
+            data : {
+                src: 'src/js/data/*.js',
+                dest: 'build/js/data.js'
             }
         },
         connect: {
@@ -96,6 +100,11 @@ module.exports = function(grunt) {
                     'build/js/plugins.js': ['<%= concat.plugins.dest %>'],
                 }
             },
+            data : {
+                files: {
+                    'build/js/data.js': ['<%= concat.data.dest %>'],
+                }
+            },
             task: {
                 files: {
                     'build/js/task/task.js': 'build/js/task/task.js'
@@ -109,6 +118,10 @@ module.exports = function(grunt) {
             },
             plugins : {
                 files: ['src/js/plugins/*.js'],
+                tasks: ['compile']
+            },
+            data : {
+                files: ['src/js/data/*.js'],
                 tasks: ['compile']
             },
             layouts : {
@@ -245,6 +258,10 @@ module.exports = function(grunt) {
 
                     if ( key.search(/"operator"/i) !== -1 || key.search(/'operator'/i) !== -1)  {
                         _t.operator = findTextString(value);
+                    }
+
+                    if ( key.search(/"disabled"/i) !== -1 || key.search(/'disabled'/i) !== -1)  {
+                        _t.disabled = findTextString(value);
                     }
                 }
             });
