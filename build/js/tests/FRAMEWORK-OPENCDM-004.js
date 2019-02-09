@@ -3,12 +3,10 @@
  */
  /*jslint esnext: true*/
 
-const fs = require('fs');
-const url = require('url');
-const querystring = require('querystring');
-require('shelljs/global');
+NotApplicable('This test needs to be updated');
 
-module.exports = {
+test = {
+    'disabled'          : 'true',
     'title'             : 'OCDM playback test',
     'description'       : 'Start a playready video while OCDM plugin is disabled',
     'requiredPlugins'   : ['OCDM', 'WebKitBrowser', 'Snapshot'],

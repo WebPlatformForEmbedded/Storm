@@ -3,6 +3,8 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
@@ -67,7 +69,8 @@ var keyMap = {
 var keyMapArray = Object.keys(keyMap);
 var keyMapLength = keyMapArray.length;
 
-module.exports = {
+test = {
+    'disabled'          : 'true',
     'title'             : 'Remote control keys test',
     'description'       : 'sends and verifies key through the remote control plugin',
     'requiredPlugins'   : ['RemoteControl', 'WebKitBrowser'],

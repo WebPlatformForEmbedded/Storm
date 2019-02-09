@@ -3,10 +3,13 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 const fs = require('fs');
 const url = require('url');
 
 test = {
+    'disabled'          : 'true',
     'title'             : 'WPEWebkit stability xmlhttprequest test',
     'description'       : 'Stress loads the system with xmlhttprequests and see if the WPEWebkit process continues to operate nominally',
     'requiredPlugins'   : ['WebKitBrowser'],

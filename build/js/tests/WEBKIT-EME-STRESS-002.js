@@ -3,11 +3,14 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
 
 test = {
+    'disabled'          : 'true',
     'title'             : 'Stress test using eme.html test',
     'description'       : 'Loads eme.html test page and runs stress tests by changing channels',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],

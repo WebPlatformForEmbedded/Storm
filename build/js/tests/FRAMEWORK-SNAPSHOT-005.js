@@ -1,11 +1,8 @@
 /**
  * WPETestFramework test
  */
-/*jslint esnext: true*/
 
-var PNG = require('pngjs').PNG;
-
-module.exports = {
+test = {
     'title'             : 'Framework snapshot test',
     'description'       : 'Test if the snapshot returns a valid PNG',
     'requiredPlugins'   : ['Snapshot'],
@@ -83,27 +80,9 @@ module.exports = {
                 if (resp === undefined || resp.length === 0) {
                     throw new Error('Error while reading snapshot from Framework');
                 } else {
-                    task.screenshot = resp;
                     return true;
                 }
             }
-        },
-        'step10' : {
-            'description'   : 'Validate screenshot',
-            'test'          : (x, cb) => {
-                // read PNG
-                new PNG({ filterType:4 }).parse( task.screenshot, (error, data) => {
-                    if (error)
-                        throw new Error('Parsing of the returned PNG failed. ' + error);
-                }).on('parsed', () => {
-                    cb(true);
-                }).on('error', (error) => {
-                    if (error)
-                        throw new Error('Parsing of the returned PNG failed. ' + error);
-                });
-
-            },
-            'assert'        : true
         },
     },
     'cleanup'       : restartFramework

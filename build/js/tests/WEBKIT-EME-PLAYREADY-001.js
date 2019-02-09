@@ -3,11 +3,14 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
 
 module.exports = {
+    'disabled'          : 'true',
     'title'             : 'loads eme.html tests',
     'description'       : 'runs eme.html test page and runs tests',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],

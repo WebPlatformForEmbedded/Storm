@@ -3,7 +3,10 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 test = {
+    'disabled'          : 'true',
     'title'             : 'Framework DIAL Netflix robustness test',
     'description'       : 'Repeatedly starts and stops Netflix through DIAL',
     'requiredPlugins'   : ['Netflix', 'DIALServer'],

@@ -61,7 +61,6 @@ test = {
                 if (resp === undefined || resp.length === 0) {
                     throw new Error('Error while reading snapshot from Framework');
                 } else {
-                    test.screenshot = resp;
                     return true;
                 }
             }

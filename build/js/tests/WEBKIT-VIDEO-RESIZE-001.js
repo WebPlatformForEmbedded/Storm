@@ -3,6 +3,8 @@
  */
  /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
@@ -11,6 +13,7 @@ const resemble = require('node-resemble-js');
 require('shelljs/global');
 
 test = {
+    'disabled'          : 'true',
     'title'             : 'Video resizing test',
     'description'       : 'Start a test video and resize to different sizes',
     'requiredPlugins'   : ['WebKitBrowser', 'Snapshot'],

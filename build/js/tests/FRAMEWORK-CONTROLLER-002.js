@@ -19,7 +19,7 @@ test = {
             'description'   : 'Select a plugin from plugin list',
             'timeout'       : 10, //seconds
             'test'          : function(cb) {
-                var resp = JSON.parse(test.steps.step1.response.body);
+                var resp = JSON.parse( getResponseByStep('step1').body );
 
                 var pluginsToTry = [ 'DeviceInfo', 'Monitor', 'Tracing' ];
 

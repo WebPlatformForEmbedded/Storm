@@ -4,7 +4,7 @@
 /*jslint esnext: true*/
 
 test = {
-    'title'             : 'YouTube Encrupted Media conformance test',
+    'title'             : 'YouTube Encrypted Media conformance test',
     'description'       : 'Loads the YouTube EME 2016 conformance test and captures the output',
     'requiredPlugins'   : ['WebKitBrowser'],
     'testCount'         : 4,

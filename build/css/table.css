@@ -15,6 +15,11 @@
   display: table-row;
 }
 
+.disabled {
+  color: white;
+  background: gray;
+}
+
 .row.header {
   color: #272727;
   background: #5E6A96;

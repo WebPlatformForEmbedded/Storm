@@ -3,12 +3,10 @@
  */
  /*jslint esnext: true*/
 
-const fs = require('fs');
-const url = require('url');
-const querystring = require('querystring');
-require('shelljs/global');
+NotApplicable('This test needs to be updated');
 
-module.exports = {
+test = {
+    'disabled'          : 'true',
     'title'             : 'OCDM playback test',
     'description'       : 'Start a playready video and validate if video plays',
     'requiredPlugins'   : ['OCDM', 'WebKitBrowser', 'Snapshot'],
@@ -137,7 +135,7 @@ module.exports = {
             'params'        : 'WebKitBrowser',
             'validate'      : checkResumedOrActivated,
         },
-        
+
         'step9' : {
             'description'   : 'Load the app on WebKit',
             'test'          : function (x, cb) {
@@ -153,7 +151,7 @@ module.exports = {
             'validate'      : (resp) => {
                 if (resp === `http://${test.server}:${test.port}/app`)
                     return true;
-                
+
                 throw new Error('URL did not load on WebKit');
             }
         },

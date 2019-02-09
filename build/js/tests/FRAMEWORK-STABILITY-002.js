@@ -3,11 +3,10 @@
  */
 /*jslint esnext: true*/
 
-const fs = require('fs');
-const url = require('url');
-const querystring = require('querystring');
+NotApplicable('This test needs to be updated');
 
-module.exports = {
+test = {
+    'disabled'      : 'true',
     'title'         : 'Framework stability key test',
     'description'   : 'Stress loads the system with keys and see if the Framework process continues to operate nominally',
     'port'          : undefined,

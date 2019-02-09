@@ -19,7 +19,7 @@ test = {
             'description'   : 'Check if response is a JSON response',
             'timeout'       : 180, //seconds
             'test'          : function(cb) {
-                var x = JSON.parse(test.steps.step1.response.body);
+                var x = JSON.parse( getResponseByStep('step1').body );
 
                 for (var i=0; i<x.plugins.length; i++) {
                     var module = x.plugins[i].callsign;

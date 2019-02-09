@@ -3,6 +3,8 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 var html = '<html><head><title>Hello! This is a set url test</title></head>';
 html += '<body><p style="position: absolute; left: 150px; top: 150px">Framework Set URL test</p><script>';
 html += 'console.log("Page loaded succesfully");\n';
@@ -21,6 +23,7 @@ function ServeApp2(request, response) {
 }
 
 test = {
+    'disabled'      : 'true',
     'title'         : 'Framework stability set URL test',
     'description'   : 'Stress loads the system by setting the URL in a loop and see if the Framework process continues to operate nominally',
     'ip'            : undefined,

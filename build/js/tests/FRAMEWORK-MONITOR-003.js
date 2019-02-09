@@ -40,7 +40,7 @@ test = {
             'params'        : 'Monitor',
             'validate'      : (resp) => {
                 var monitor = JSON.parse(resp.body);
-                
+
                 console.log(monitor[1].name);
                 if (monitor[1].measurement === undefined)
                 	throw new Error('Monitor measurement data is not present for YouTube');

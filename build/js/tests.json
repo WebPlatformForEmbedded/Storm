@@ -6,6 +6,20 @@
         "title": "Charter John Doe UI test",
         "description": "Navigate around in the Charter UI by navigating TV-> Netflix -> TV-> VOD -> guide -> TV -> Guide -> Menu"
     },
+    "CHARTER-STABILITY-002": {
+        "name": "CHARTER-STABILITY-002",
+        "file": "js/tests/CHARTER-STABILITY-002.js",
+        "operator": "charter",
+        "title": "Charter Channel Change test",
+        "description": "Send channel up until test is over"
+    },
+    "DUMMY-DISABLED-001": {
+        "name": "DUMMY-DISABLED-001",
+        "file": "js/tests/DUMMY-DISABLED-001.js",
+        "disabled": "true",
+        "title": "Disabled Test",
+        "description": "This is a disabled dummy test"
+    },
     "DUMMY-ERROR-001": {
         "name": "DUMMY-ERROR-001",
         "file": "js/tests/DUMMY-ERROR-001.js",
@@ -195,6 +209,7 @@
     "FRAMEWORK-DIAL-001": {
         "name": "FRAMEWORK-DIAL-001",
         "file": "js/tests/FRAMEWORK-DIAL-001.js",
+        "disabled": "true",
         "title": "Framework DIAL test 01",
         "description": "Tests if the host is discoverable on DIAL and returns a list of applications"
     },
@@ -243,12 +258,14 @@
     "FRAMEWORK-OPENCDM-003": {
         "name": "FRAMEWORK-OPENCDM-003",
         "file": "js/tests/FRAMEWORK-OPENCDM-003.js",
+        "disabled": "true",
         "title": "OCDM playback test",
         "description": "Start a playready video and validate if video plays"
     },
     "FRAMEWORK-OPENCDM-004": {
         "name": "FRAMEWORK-OPENCDM-004",
         "file": "js/tests/FRAMEWORK-OPENCDM-004.js",
+        "disabled": "true",
         "title": "OCDM playback test",
         "description": "Start a playready video while OCDM plugin is disabled"
     },
@@ -279,6 +296,7 @@
     "FRAMEWORK-REMOTE-001": {
         "name": "FRAMEWORK-REMOTE-001",
         "file": "js/tests/FRAMEWORK-REMOTE-001.js",
+        "disabled": "true",
         "title": "Remote control keys test",
         "description": "sends and verifies key through the remote control plugin"
     },
@@ -321,18 +339,21 @@
     "FRAMEWORK-STABILITY-002": {
         "name": "FRAMEWORK-STABILITY-002",
         "file": "js/tests/FRAMEWORK-STABILITY-002.js",
+        "disabled": "true",
         "title": "Framework stability key test",
         "description": "Stress loads the system with keys and see if the Framework process continues to operate nominally"
     },
     "FRAMEWORK-STABILITY-003": {
         "name": "FRAMEWORK-STABILITY-003",
         "file": "js/tests/FRAMEWORK-STABILITY-003.js",
+        "disabled": "true",
         "title": "Framework stability set URL test",
         "description": "Stress loads the system by setting the URL in a loop and see if the Framework process continues to operate nominally"
     },
     "FRAMEWORK-STARTUP-001": {
         "name": "FRAMEWORK-STARTUP-001",
         "file": "js/tests/FRAMEWORK-STARTUP-001.js",
+        "disabled": "true",
         "title": "Framework startup robustness test",
         "description": "Starts and stops Framework repeatedly and checks if everything is started correctly"
     },
@@ -363,18 +384,21 @@
     "NETFLIX-DIAL-001": {
         "name": "NETFLIX-DIAL-001",
         "file": "js/tests/NETFLIX-DIAL-001.js",
+        "disabled": "true",
         "title": "Framework DIAL Netflix test",
         "description": "Tests the DIAL server for the Netflix application"
     },
     "NETFLIX-DIAL-002": {
         "name": "NETFLIX-DIAL-002",
         "file": "js/tests/NETFLIX-DIAL-002.js",
+        "disabled": "true",
         "title": "Framework DIAL Netflix robustness test",
         "description": "Tests the DIAL server for the Netflix application, robustness of the DIAL implementation"
     },
     "NETFLIX-DIAL-003": {
         "name": "NETFLIX-DIAL-003",
         "file": "js/tests/NETFLIX-DIAL-003.js",
+        "disabled": "true",
         "title": "Framework DIAL Netflix robustness test",
         "description": "Repeatedly starts and stops Netflix through DIAL"
     },
@@ -447,30 +471,35 @@
     "WEBKIT-EME-PLAYREADY-001": {
         "name": "WEBKIT-EME-PLAYREADY-001",
         "file": "js/tests/WEBKIT-EME-PLAYREADY-001.js",
+        "disabled": "true",
         "title": "loads eme.html tests",
         "description": "runs eme.html test page and runs tests"
     },
     "WEBKIT-EME-STRESS-001": {
         "name": "WEBKIT-EME-STRESS-001",
         "file": "js/tests/WEBKIT-EME-STRESS-001.js",
+        "disabled": "true",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by playing a video for 3 hours"
     },
     "WEBKIT-EME-STRESS-002": {
         "name": "WEBKIT-EME-STRESS-002",
         "file": "js/tests/WEBKIT-EME-STRESS-002.js",
+        "disabled": "true",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by changing channels"
     },
     "WEBKIT-EME-STRESS-003": {
         "name": "WEBKIT-EME-STRESS-003",
         "file": "js/tests/WEBKIT-EME-STRESS-003.js",
+        "disabled": "true",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by playing a video for 3 hours"
     },
     "WEBKIT-EME-STRESS-004": {
         "name": "WEBKIT-EME-STRESS-004",
         "file": "js/tests/WEBKIT-EME-STRESS-004.js",
+        "disabled": "true",
         "title": "Stress test using eme.html test",
         "description": "Loads eme.html test page and runs stress tests by changing channels"
     },
@@ -555,12 +584,14 @@
     "WEBKIT-PERFORMANCE-012": {
         "name": "WEBKIT-PERFORMANCE-012",
         "file": "js/tests/WEBKIT-PERFORMANCE-012.js",
+        "disabled": "true",
         "title": "WPEWebkit performance test using perf.html",
         "description": "Loads perf.html test page and runs fake guide"
     },
     "WEBKIT-PERFORMANCE-013": {
         "name": "WEBKIT-PERFORMANCE-013",
         "file": "js/tests/WEBKIT-PERFORMANCE-013.js",
+        "disabled": "true",
         "title": "WPEWebkit performance test using performance.html",
         "description": "Loads performance.html test page and calculates FPS"
     },
@@ -579,18 +610,21 @@
     "WEBKIT-STRESS-001": {
         "name": "WEBKIT-STRESS-001",
         "file": "js/tests/WEBKIT-STRESS-001.js",
+        "disabled": "true",
         "title": "WPEWebkit stability xmlhttprequest test",
         "description": "Stress loads the system with xmlhttprequests and see if the WPEWebkit process continues to operate nominally"
     },
     "WEBKIT-STRESS-002": {
         "name": "WEBKIT-STRESS-002",
         "file": "js/tests/WEBKIT-STRESS-002.js",
+        "disabled": "true",
         "title": "WPEWebkit stability images test",
         "description": "Stress loads the system with images and see if the WPEWebkit process continues to operate nominally"
     },
     "WEBKIT-STRESS-003": {
         "name": "WEBKIT-STRESS-003",
         "file": "js/tests/WEBKIT-STRESS-003.js",
+        "disabled": "true",
         "title": "WPEWebkit stability redirect test",
         "description": "Stress loads the system with redirects and see if the WPEWebkit process continues to operate nominally"
     },
@@ -603,6 +637,7 @@
     "WEBKIT-VIDEO-RESIZE-001": {
         "name": "WEBKIT-VIDEO-RESIZE-001",
         "file": "js/tests/WEBKIT-VIDEO-RESIZE-001.js",
+        "disabled": "true",
         "title": "Video resizing test",
         "description": "Start a test video and resize to different sizes"
     },
@@ -621,25 +656,28 @@
     "YOUTUBE-DIAL-001": {
         "name": "YOUTUBE-DIAL-001",
         "file": "js/tests/YOUTUBE-DIAL-001.js",
+        "disabled": "true",
         "title": "Framework DIAL YouTube test",
         "description": "Tests the DIAL server for the YouTube application"
     },
     "YOUTUBE-DIAL-002": {
         "name": "YOUTUBE-DIAL-002",
         "file": "js/tests/YOUTUBE-DIAL-002.js",
+        "disabled": "true",
         "title": "Framework DIAL YouTube robustness test",
         "description": "Tests the DIAL server for the YouTube application, robustness of the DIAL implementation"
     },
     "YOUTUBE-DIAL-003": {
         "name": "YOUTUBE-DIAL-003",
         "file": "js/tests/YOUTUBE-DIAL-003.js",
+        "disabled": "true",
         "title": "Framework DIAL YouTube robustness test",
         "description": "Repeatedly starts and stops YouTube through DIAL"
     },
     "YOUTUBE-EME-001": {
         "name": "YOUTUBE-EME-001",
         "file": "js/tests/YOUTUBE-EME-001.js",
-        "title": "YouTube Encrupted Media conformance test",
+        "title": "YouTube Encrypted Media conformance test",
         "description": "Loads the YouTube EME 2016 conformance test and captures the output"
     },
     "YOUTUBE-EME-002": {
