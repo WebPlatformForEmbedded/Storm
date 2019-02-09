@@ -236,7 +236,7 @@ function startTest() {
     maxSteps = stepList.length;
 
     _test.start();
-    taskTimer = setTimeout(timedout, _test.timeout);
+    taskTimer = setTimeout(timedout, (_test.timeout * 1000) );
 
     lookForNextStep();
 }
@@ -375,12 +375,13 @@ function startStep(stepIdx) {
         delete _step;
 
     _step = new Step(this.currentStep, curIdx, stepList[ curIdx ], _test.name);
+    _test.steps[ stepList[ curIdx ] ] = _step;
     _step.start();
 
     timedOut = false;
 
     // set timeout
-    timer = setTimeout(timedout, this.currentStep.timeout * 1000, curIdx);
+    timer = setTimeout(timedout, _step.timeout * 1000, curIdx);
 
     // sleep
     var sleepMs = this.currentStep.sleep !== undefined ? this.currentStep.sleep * 1000 : 1000;
@@ -477,6 +478,11 @@ function userResponse(message){
         _step.success(message.response);
         lookForNextStep();
     }
+}
+
+// Test utility
+getResponseByStep = function(step) {
+    return _test.steps[ step ].getResponse();
 }
 
 //start init

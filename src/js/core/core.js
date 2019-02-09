@@ -20,6 +20,7 @@ class Core {
         // public
         this.activateDevice = this.activateDevice.bind(this);
         this.deleteDevice = this.deleteDevice.bind(this);
+        this.getScreenshotCanvas = this.getScreenshotCanvas.bind(this);
         this.run = this.run.bind(this);
     }
 
@@ -100,10 +101,6 @@ class Core {
 
             var data = message.data;
 
-            // update listeners
-            for (var i=0; i<this.testProgressListeners.length; i++)
-                testProgressListeners[i](data);
-
             // additional processing
             switch (data.messageContext) {
                 case 'Init':
@@ -158,6 +155,11 @@ class Core {
                     this._syncDataObjects(_stepToSync, data);
                     break;
             }
+
+            // update listeners
+            for (var i=0; i<this.testProgressListeners.length; i++)
+                testProgressListeners[i](data);
+
         };
     }
 
@@ -191,11 +193,6 @@ class Core {
         this.image.src = url;
         this.image.crossOrigin = 'anonymous';
 
-        let screenshot = document.getElementById('screenshot');
-        if (screenshot !== undefined)
-            screenshot.innerHTML = '';
-            screenshot.appendChild(this.canvas);
-
         this.image.onload = () => {
             this.canvas.width = '300';
             this.canvas.height = '150';
@@ -207,6 +204,10 @@ class Core {
         this.image.onerror = () => {
             cb({ error: 'Could not load image' });
         };
+    }
+
+    getScreenshotCanvas() {
+        return this.canvas;
     }
 
     // Getters

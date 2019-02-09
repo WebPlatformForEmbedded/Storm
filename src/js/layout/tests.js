@@ -35,7 +35,7 @@ class TestsView extends BaseView {
 			if (this.checkIfTestCanBeRendered(test) === false)
 				continue;
 
-			tableStr += `<div id="${test.name}_row" class="row">
+			tableStr += `<div id="${test.name}_row" class="row ${test.disabled === true ? 'disabled' : ''}">
 					<div class="cell">
 						${test.name}
 					</div>
@@ -66,6 +66,9 @@ class TestsView extends BaseView {
 	checkIfTestCanBeRendered(test) {
 		// if its a dummy test and dummy is not enabled, skip
 		if (wtf.dummyMode !== true && test.name.slice(0,5) === 'DUMMY')
+			return false;
+
+		if (wtf.showDisabled === false && test.disabled === true)
 			return false;
 
 		// if its an operator specific test, yet we're not in operator specific mode, skip

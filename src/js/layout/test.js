@@ -95,9 +95,16 @@ class TestView extends BaseView {
             <div id="result" class="text grid__col grid__col--2-of-8">${this.test.getState()}</div>
 
             <div class="text grid__col grid__col--1-of-8"></div>
-            <div id="error" class="text grid__col grid__col--7-of-8">${this.test.getError()}</div>
+            <div id="error" class="text grid__col grid__col--7-of-8">${this.test.getError()}</div>`;
 
-            <div class="grid__col grid__col--7-of-8">
+            if (this.test.state === this.test.states.init) {
+                html += `<div class="title grid__col grid__col--6-of-8"></div>
+                <div class="text grid__col grid__col--2-of-8">
+                    <button id="start_button" type="button">Run</button>
+                </div>`;
+            }
+
+            html+= `<div class="grid__col grid__col--7-of-8">
                 <div class="table">
                     <div class="row header">
                         <div class="cell">Step</div>
@@ -118,30 +125,32 @@ class TestView extends BaseView {
 
                 html += `<div class="row">
                         <div class="cell">${i+1}. ${_step.description}</div>
-                        <div class="cell">${_step.sleep ? 'Sleep: ' + _step.sleep + 's' : ''}</div>
+                        <div class="cell">${_step.sleep !== undefined ? 'Sleep: ' + _step.sleep + 's' : ''}</div>
                         <div id="step_progress_${i}" class="cell">${_step.getState()}</div></div>`;
             }
         }
 
+        html += `</div></div>`;
 
-
-
-        html += `</div></div>
-
-            <div class="title grid__col grid__col--6-of-8"></div>
-            <div class="text grid__col grid__col--2-of-8">
-                <button id="start_button" type="button">Run</button>
-            </div>`;
-
+        if (this.test.state === this.test.states.init) {
+            html+= `
+                <div class="title grid__col grid__col--6-of-8"></div>
+                <div class="text grid__col grid__col--2-of-8">
+                    <button id="start_button" type="button">Run</button>
+                </div>`;
+        }
 
         this.mainDiv.innerHTML = html;
 
-        this.progressEl         = document.getElementById('progress');
-        this.progressBar        = document.getElementById('progressBar');
-        this.resultEl           = document.getElementById('result');
-        this.errorEl            = document.getElementById('error');
-        let start_button        = document.getElementById('start_button');
-        start_button.onclick    = this.startTest.bind(this);
+        if (this.test.state === this.test.states.init) {
+            let start_button        = document.getElementById('start_button');
+            start_button.onclick    = this.startTest.bind(this);
+        }
+
+        let screenShotDiv = document.getElementById('screenshot');
+        let canvasFromCore = wtf.getScreenshotCanvas();
+        if (canvasFromCore !== undefined)
+            screenShotDiv.appendChild(canvasFromCore);
     }
 
     startTest() {
@@ -150,52 +159,6 @@ class TestView extends BaseView {
 
     updateProgress(data) {
         this.renderTest();
-
-        /*
-        switch (data.messageContext) {
-            case 'TestMessage':
-
-                this.errorEl.innerHTML = this.test.getError();
-                this.resultEl.innerHTML = this.test.getState();
-                break;
-
-            case 'StepMessage':
-                let stepEl = document.getElementById('step_progress_' + data.stepIdx);
-                let step = this.test.steps[ data.name ]
-
-                stepEl.innerHTML = step.getState();
-
-                // only update % if state is > running
-                if (step.state > 1) {
-                    let perctCompleted = this.test.getPercCompleted();
-
-                    this.progressBar.value = perctCompleted;
-                    this.progressEl.innerHTML = perctCompleted + '%';
-                }
-
-                break;
-
-            case 'RepeatMessage':
-                let repeatStepEl = document.getElementById('step_progress_' + data.stepIdx);
-
-                console.log(data);
-
-                if (data.repeatType === this.repeatMessage.repeatTypes.count) {
-                    let repeatProgress = (( (data.repeatByCount.total - data.repeatByCount.remaining) / data.repeatByCount.total) * 100).toFixed(0);
-                    repeatStepEl.innerHTML = `Running. <br><progress max="100" value="${repeatProgress}"></progress> ${repeatProgress}%`;
-                    this.resultEl.innerHTML = `Repeating. <br><progress max="100" value="${repeatProgress}"></progress> ${repeatProgress}%`;
-                }
-
-                if (data.repeatType === this.repeatMessage.repeatTypes.time) {
-                    let timeRemaining = moment(data.repeatByTime.until).toNow(true);
-                    repeatStepEl.innerHTML = `Running. <br><br>Repeats: ${data.repeatByTime.timesRepeated} and ${timeRemaining} remaining.`;
-                    this.resultEl.innerHTML = `Repeating. <br>${data.repeatByTime.timesRepeated} and ${timeRemaining} remaining.`;
-                }
-
-                break;
-        }
-        */
-
     }
 
 }

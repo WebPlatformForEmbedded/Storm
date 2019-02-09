@@ -10,6 +10,7 @@ class Test extends Message {
 
         // from manifest
         this.description = jsonData.description;
+        this.disabled = (jsonData.disabled == 'true');
         this.file = jsonData.file;
         this.name = jsonData.name
         this.operator = jsonData.operator;
@@ -19,7 +20,7 @@ class Test extends Message {
         this.cleanup = jsonData.cleanup;
         this.extends = jsonData.extends;
         this.requiredPlugins = jsonData.requiredPlugins ? jsonData.requiredPlugins : [];
-        this.timeout = jsonData.timeout ? jsonData.timeout : 60 * 60 * 1000;
+        this.timeout = jsonData.timeout ? jsonData.timeout : 60 * 60;
         this.steps = jsonData.steps ? jsonData.steps : {};
 
         // known keys are needed to be able to add unknowns keys to the parent object. See parseDataFromFile fn
@@ -47,7 +48,7 @@ class Test extends Message {
         this.state = this.states.init;
 
         // these are the states to be synced between worker and main thread
-        this.statesToBeSynced = ['name', 'state', 'result', 'cleanup', 'cleanupResult', 'completed'];
+        this.statesToBeSynced = ['name', 'state', 'result', 'cleanedup', 'cleanupResult', 'completed'];
     }
 
     // Loads the test from the server and adds it in our data model
@@ -70,6 +71,7 @@ class Test extends Message {
             }
 
             this.cleanup = test.cleanup;
+            this.disabled = test.disabled ? test.disabled : 'false';
             this.extends = test.extends;
             this.requiredPlugins = test.requiredPlugins ? test.requiredPlugins : [];
             this.timeout = test.timeout ? test.timeout : 60 * 60 * 1000;
@@ -194,7 +196,7 @@ class Test extends Message {
 
     getError() {
         let response = '';
-        if (this.state === this.states.error || this.state === this.states.timedout)
+        if (this.state === this.states.error || this.state === this.states.timedout || this.state === this.states.notapplicable)
             response = this.result;
 
         return response;
@@ -256,10 +258,10 @@ class Step extends Message {
         this.assert = step.assert;
         this.description = step.description;
         this.params = step.params;
+        this.sleep = step.sleep;
         this.test = step.test;
         this.timeout = step.timeout ? step.timeout : 5 * 60 * 1000;
         this.validate = step.validate;
-        this.expects = step.expects;
 
 
         // internal
@@ -310,6 +312,8 @@ class Step extends Message {
         this.response  = resp;
         this.sync();
     }
+
+    getResponse() {     return this.response; }
 
     success(r) {
         this.state     = this.states.success;

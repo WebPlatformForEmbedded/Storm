@@ -89,16 +89,18 @@ class NeedImage extends Message {
         this.messageContext = 'NeedImage';
         this.url = '';
         this.imageData = '';
+
+        this.statesToBeSynced = ['url', 'imageData'];
     }
 
     setURL(url) {
         this.url = url;
-        this.send();
+        this.sync();
     }
 
-    setImageData(data, worker) {
+    setImageData(data) {
         this.imageData = data;
-        this.send(worker);
+        this.sync();
     }
 }
 

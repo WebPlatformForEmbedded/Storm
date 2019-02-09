@@ -187,6 +187,14 @@
                 wtf.dummyMode = true;
             }
 
+            if (options.disabled !== undefined ) {
+                console.debug('Showing disabled tests');
+                wtf.showDisabled = (options.disabled === 'true');
+            } else {
+                wtf.showDisabled = true;
+            }
+
+
             if (options.operator !== undefined) {
                 console.debug('Operator: ', options.operator);
                 wtf.operator = options.operator;
