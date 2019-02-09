@@ -3,7 +3,10 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 test = {
+    'disabled'      : 'true',
     'title'         : 'Framework startup robustness test',
     'description'   : 'Starts and stops Framework repeatedly and checks if everything is started correctly',
     'steps'         : {

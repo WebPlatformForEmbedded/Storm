@@ -2,10 +2,14 @@
  * WPETestFramework test
  */
 /*jslint esnext: true*/
+
+NotApplicable('This test needs to be updated');
+
 const fs = require('fs');
 require('shelljs/global');
 
 test = {
+    'disabled'          : 'true',
 	'title'             : 'WPEWebkit performance test using perf.html',
     'description'       : 'Loads perf.html test page and runs fake guide',
     'requiredPlugins'   : ['WebKitBrowser'],

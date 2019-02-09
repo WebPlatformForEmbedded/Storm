@@ -3,7 +3,10 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 test = {
+    'disabled'          : 'true',
 	'title'             : 'WPEWebkit performance test using performance.html',
     'description'       : 'Loads performance.html test page and calculates FPS',
     'requiredPlugins'   : ['WebKitBrowser'],

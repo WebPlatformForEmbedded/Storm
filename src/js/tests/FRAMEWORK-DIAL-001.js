@@ -3,7 +3,10 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated for webbased DIAL support');
+
 test = {
+    'disabled'          : 'true',
     'title'             : 'Framework DIAL test 01',
     'description'       : 'Tests if the host is discoverable on DIAL and returns a list of applications',
     'requiredPlugins'   : ['DIALServer'],

@@ -6,21 +6,17 @@
 test = {
     'title'         : 'Framework Controller API test',
     'description'   : 'Iterate over a list of Framework APIs, both valid and not valid and see if Framework continues to run',
-    'controllerResp': undefined,
     'urls'          : [],
     'steps'         : {
         'init1' : {
             'description'   : 'Get list of modules from Framework',
             'test'          : getPlugin,
-            'params'        : 'Controller',
-            'validate'      : (resp) => {
-                test.controllerResp = JSON.parse(resp.body);
-                return true;
-            }
+            'params'        : 'Controller'
         },
         'init2' : {
             'description'   : 'Parse list of modules and setup URLs to test',
             'test'          : (x, cb) => {
+                var resp = JSON.parse( getResponseByStep('init1').body );
                 var modules = [];
 
                 // default urls
@@ -29,49 +25,49 @@ test = {
                 //test.urls.push( { method: 'GET', path: '/Service/Controller/UI', res: 200 } );
 
                 // plugin based urls
-                for (var i=0; i < test.controllerResp.plugins.length; i++) {
-                    var module = test.controllerResp.plugins[i].callsign;
+                for (var i=0; i < resp.plugins.length; i++) {
+                    var _module = resp.plugins[i].callsign;
 
-                    if (module === 'Controller')
+                    if (_module === 'Controller')
                         continue;
 
-                    modules.push(module);
+                    modules.push(_module);
 
                     // keep state the same as we left it when we're done
-                    if (test.controllerResp.plugins[i].state.toLowerCase() === 'activated' || test.controllerResp.plugins[i].state.toLowerCase() === 'resumed') {
-                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Deactivate/' + module, res: 200 } );
-                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Activate/' + module, res: 200 } );
+                    if (test.controllerResp.plugins[i].state.toLowerCase() === 'activated' || resp.plugins[i].state.toLowerCase() === 'resumed') {
+                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Deactivate/' + _module, res: 200 } );
+                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Activate/' + _module, res: 200 } );
 
-                        if (module === 'Commander')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 400 } );
-                        else if (module === 'DIALServer')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 501 } );
-                        else if (module === 'WebProxy')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
-                        else if (module === 'WebServer')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
+                        if (_module === 'Commander')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 400 } );
+                        else if (_module === 'DIALServer')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 501 } );
+                        else if (_module === 'WebProxy')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 503 } );
+                        else if (_module === 'WebServer')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 503 } );
                         else
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 200 } );
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 200 } );
                     } else {
-                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Activate/' + module, res: 200 } );
+                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Activate/' + _module, res: 200 } );
 
-                        if (module === 'Commander')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 400 } );
-                        else if (module === 'DIALServer')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 501 } );
-                        else if (module === 'WebProxy')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
-                        else if (module === 'WebServer')
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 503 } );
+                        if (_module === 'Commander')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 400 } );
+                        else if (_module === 'DIALServer')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 501 } );
+                        else if (_module === 'WebProxy')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 503 } );
+                        else if (_module === 'WebServer')
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 503 } );
                         else
-                            test.urls.push( { method: 'GET', path: '/Service/' + module, res: 200 } );
+                            test.urls.push( { method: 'GET', path: '/Service/' + _module, res: 200 } );
 
-                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Deactivate/' + module, res: 200 } );
+                        test.urls.push( { method: 'PUT', path: '/Service/Controller/Deactivate/' + _module, res: 200 } );
                     }
                 }
 
                 // screenshot
-                if (modules.indexOf('Snapshot') !== -1)
+                if (_modules.indexOf('Snapshot') !== -1)
                     test.urls.push( { method: 'GET', path: '/Service/Snapshot/Capture', res: 202 } );
 
                 // invalid urls
@@ -133,7 +129,7 @@ test = {
             'test'          : getPlugin,
             'params'        : 'Controller',
             'validate'      : (resp) => {
-                test.controllerResp = JSON.parse(resp.body);
+                var _resp = JSON.parse(resp.body);
                 return true;
             }
         },

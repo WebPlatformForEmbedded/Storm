@@ -40,11 +40,10 @@ test = {
             'params'        : 'Monitor',
             'validate'      : (resp) => {
                 var monitor = JSON.parse(resp.body);
-                
+
                 for (var i=0; i<monitor.length; i++) {
                     if (monitor[i].name === 'WebKitBrowser' || monitor[i].name === 'YouTube')
                         return true;
-                
                     throw new Error('Monitor data is not present for WebKitBrowser and YouTube');
                 }
             }

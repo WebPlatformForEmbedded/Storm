@@ -8,32 +8,24 @@ test = {
     'description'   : 'Tests basic functionality of the controller module',
     'steps'         : {
         'step1' : {
-            'description'   : 'Get /Service/Controller',
+            'description'   : 'Get /Service/Controller and validate response',
             'timeout'       : 180, //seconds
             'test'          : getPlugin,
             'params'        : 'Controller',
-            'validate'      : httpResponseBody,
+            'validate'      : (response) => {
+                if (response.body === undefined)
+                    return false;
+
+                var responseObject = JSON.parse(response.body);
+                return true;
+            },
         },
         'step2' : {
-            'description'   : 'Check if response is a JSON response',
-            'timeout'       : 180, //seconds
-            'test'          : function(cb) {
-                var y = JSON.parse(test.steps.step1.response.body);
-
-                if (typeof y === 'object'){
-                    test.steps.step2.result = y;
-                    cb(true);
-                } else {
-                    cb(false);
-                }
-            },
-            'assert'        : true
-        },
-        'step3' : {
             'description'   : 'Check for mandatory elements in response',
             'timeout'       : 180, //seconds
             'test'          : function(cb){
-                var obj = test.steps.step2.result;
+                var obj = JSON.parse( getResponseByStep('step1').body );
+
                 if (obj.plugins !== undefined && obj.plugins.length > 0) {
                     if (obj.server !== undefined && obj.channel !== undefined) {
                         cb(true);
@@ -52,7 +44,8 @@ test = {
             'description'   : 'Check for mandatory elements in plugins list',
             'timeout'       : 10,
             'test'          : function(cb) {
-                var obj = test.steps.step2.result;
+                var obj = JSON.parse( getResponseByStep('step1').body );
+
                 if (obj.plugins === undefined) cb(false);
 
                 for (var i=0; i < obj.plugins.length; i++) {

@@ -65,12 +65,14 @@ class Base {
         //console.log(method + ' ' + URL + (body!==null ? '\n' + body : ''));
 
         // iterate over the headers provided and set them individually. Unfortunately node accepted an object, xmlhttp request individual sets
+        /*
         if (options.headers) {
             var headerList = Object.keys(options.headers);
             for (var i=0; i<headerList.length; i++) {
                 xmlHttp.setRequestHeader(headerList[i], options.headers[ headerList[i] ]);
             }
         }
+        */
 
         xmlHttp.open(method, url, true);
         if (cb) {

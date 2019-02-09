@@ -3,7 +3,10 @@
  */
 /*jslint esnext: true*/
 
+NotApplicable('This test needs to be updated');
+
 test = {
+    'disabled'          : 'true',
     'title'             : 'Framework DIAL YouTube robustness test',
     'description'       : 'Tests the DIAL server for the YouTube application, robustness of the DIAL implementation',
     'requiredPlugins'   : ['YouTube', 'DIALServer'],

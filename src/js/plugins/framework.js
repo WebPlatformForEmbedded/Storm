@@ -420,42 +420,63 @@ class Framework extends Base {
 
     /** start Framework in background mode - FIXME needs to be revised in the webbased version. */
     startFramework(cb) {
+        /*
         this.exec({ cmd : 'nohup WPEFramework -b &', cbWhenStarted : true }, (err) => {
             if (err)
                 throw new Error(err);
             else
                 setTimeout(cb, 5000, true);
         });
+        */
+
+        // not implemented
+        cb({});
     }
 
     /** stop Framework - FIXME needs to be revised in the webbased version. */
     stopFramework(x, cb) {
-        this.stopProcess('WPEFramework', cb);
+        //this.stopProcess('WPEFramework', cb);
+
+        // not implemented
+        cb({});
     }
 
     /** kill (SIGTERM) Framework - FIXME needs to be revised in the webbased version. */
     killFramework(x, cb) {
-        this.killProcess('WPEFramework', cb);
+        //this.killProcess('WPEFramework', cb);
+
+        // not implemented
+        cb({});
     }
 
     /** kill Framework and its WPEProcess subprocesses - FIXME needs to be revised in the webbased version. */
     killallFramework(x, cb) {
+        /*
         this.killProcess('WPEFramework', (resp) => {
             if (resp === true)
                 killProcess('WPEProcess', cb);
             else
                 cb(false);
         });
+        */
+
+        // not implemented
+        cb({});
     }
 
     /** restart the Framework - FIXME needs to be revised in the webbased version. */
     restartFramework(x, cb) {
+        /*
         this.killallFramework(x, (resp) => {
             if (resp === true)
                 setTimeout(startFramework, 5000, x, cb);
             else
                 throw new Error('Error while restarting Framework');
         });
+        */
+
+        // not implemented
+        cb({});
     }
 
     /** request new provisioning details to the provisioning plugin

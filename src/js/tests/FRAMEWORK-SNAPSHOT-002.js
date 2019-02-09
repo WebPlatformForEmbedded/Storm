@@ -6,7 +6,7 @@
 test = {
     'title'             : 'Framework snapshot test with multiple start/stops',
     'description'       : 'Tests if the Framework snapshot module works',
-    'requiredPlugins'   : ['Snapshot'],
+    'requiredPlugins'   : ['Snapshot', 'WebKitBrowser'],
     'screenshot'        : undefined,
     'steps'         : {
         'init2' : {

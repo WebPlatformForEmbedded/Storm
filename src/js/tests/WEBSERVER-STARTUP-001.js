@@ -55,7 +55,7 @@ test = {
             'description'   : 'Repeat',
             'goto'          : 'step1',
             'repeat'        : '30'
-        }        
+        }
     },
     'cleanup'       : restartFramework
 };

@@ -40,11 +40,11 @@ test = {
             'params'        : 'Monitor',
             'validate'      : (resp) => {
                 var monitor = JSON.parse(resp.body);
-                
+
                 console.log(monitor[0].name);
                 if (monitor[0].measurement === undefined)
                     throw new Error('Monitor measurement data is not present for WebKitBrowser');
-                return true;                   
+                return true;
             }
         }
     },

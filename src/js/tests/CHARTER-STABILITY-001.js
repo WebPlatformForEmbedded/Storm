@@ -16,10 +16,7 @@ test = {
     'checkScreenShot'   : (res) => {
         // check if we got an empty response
         if (res !== undefined && res.length > 0) {
-            if ( (test.previousSceenshot === undefined) ||
-                 (test.previousSceenshot !== undefined && test.previousSceenshot.equals(res) === false)
-               ) {
-
+            if (test.previousSceenshot === undefined || test.previousSceenshot !== res) {
                 // screen updated, save it and reset stuck counter
                 test.previousSceenshot = res;
                 test.curSameScreenshot = 0;
@@ -84,7 +81,9 @@ test = {
             'sleep'         : 30,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
-            'validate'      : this.checkScreenShot,
+            'validate'      : (res) => {
+                return test.checkScreenShot(res);
+            }
         },
         'step5' : {
             'description'   : 'Exit Netflix',
@@ -106,7 +105,9 @@ test = {
             'sleep'         : 30,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
-            'validate'      : this.checkScreenShot,
+            'validate'      : (res) => {
+                return test.checkScreenShot(res);
+            }
         },
         'step7' : {
             'description'   : 'Enter VOD',
@@ -130,7 +131,9 @@ test = {
             'sleep'         : 30,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
-            'validate'      : this.checkScreenShot,
+            'validate'      : (res) => {
+                return test.checkScreenShot(res);
+            }
         },
         'step9' : {
             'description'   : 'Exit VOD',
@@ -154,7 +157,9 @@ test = {
             'sleep'         : 30,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
-            'validate'      : this.checkScreenShot,
+            'validate'      : (res) => {
+                return test.checkScreenShot(res);
+            }
         },
         'step11' : {
             'description'   : 'Enter Guide',
@@ -178,7 +183,9 @@ test = {
             'sleep'         : 30,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
-            'validate'      : this.checkScreenShot,
+            'validate'      : (res) => {
+                return test.checkScreenShot(res);
+            }
         },
         'step13' : {
             'description'   : 'Exit Guide',
@@ -202,7 +209,9 @@ test = {
             'sleep'         : 30,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
-            'validate'      : this.checkScreenShot,
+            'validate'      : (res) => {
+                return test.checkScreenShot(res);
+            }
         },
         'repeatStep' : {
             'description'   : 'Repeat for 1 hour',
