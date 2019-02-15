@@ -5,18 +5,27 @@
 
 test = {
     'operator'          : 'charter',
-    'title'             : 'Charter Channel Change test',
-    'description'       : 'Send channel up until test is over',
+    'title'             : 'Charter Thumbnail Robert',
+    'description'       : 'Perform a bunch of actions to get the thumbnails to fail',
     'requiredPlugins'   : ['UX', 'Snapshot'],
-    'maxSameScreenshot' : 1, // amount of times its okay to have the same screenshot
+    'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'timeInBetweenKeys' : 4, // 5s inbetween keys
+    'timeInBetweenKeys' : 5, // 5s inbetween keys
     'timeout'           : 12600, //s == 3.5 hour
     'prevScreenshot'    : undefined,
     'sendCharterKey'    : (key, cb) => {
         var charterKeys = {
+            'ok'            : '0xE011',
+            'up'            : '0x9034',
+            'down'          : '0x8035',
+            'left'          : '0x7036',
+            'right'         : '0x6037',
+            'exit'          : '0xD012',
+            'backspace'     : '0xa051',
+            'channeldown'   : '0x400C',            
             'channelup'     : '0x500B',
-            'channeldown'   : '0x400C'
+            'guide'         : '0xd030',
+            'menu'          : '0x6019',
         }
 
         function _keyPress(key, cb) {
@@ -108,10 +117,66 @@ test = {
             }
         },
         'step4' : {
+            'sleep'         : 5,
+            'description'   : 'Change channel with repeat',
+            'test'          : (cb) => {
+                function _keyPress(key, cb) {
+                    var data = JSON.stringify({ 'code' : key });
+                    var opts = {
+                        url     : `http://${host}:80/Service/RemoteControl/IR/Press`,
+                        body    : data,
+                        method  : 'PUT',
+                    };
+                    http(opts, cb);
+                }
+
+                function _keyRelease(key, cb) {
+                    var data = JSON.stringify({ 'code' : key });
+                    var opts = {
+                        url     : `http://${host}:80/Service/RemoteControl/IR/Release`,
+                        body    : data,
+                        method  : 'PUT',
+                    };
+                    http(opts, cb);
+                }
+
+                _keyPress('0x500B', () => {
+                    setTimeout(_keyRelease, 7 * 1000, '0x500B', cb)
+                });
+            }
+        },
+        'step5' : {
+            'sleep'         : 5,
+            'description'   : 'Go to search',
+            'test'          : (cb) => {
+                var keyQueue = ['menu', 'up', 'ok', 'ok', 'right', 'ok', 'down', 'down', 'ok'];
+
+                self = this;
+                function sendKey() {
+                    var k = keyQueue.shift();
+                    console.log('Sending: ' + k);
+                    test.sendCharterKey(k, (resp) => {
+                        if (keyQueue.length !== 0)
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
+                        else
+                            cb(keyQueue);
+                    });
+                }
+
+                sendKey();
+            }
+        },
+        'step6' : {
             'sleep'         : 10,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
             'validate'      : this.checkScreenShot,
+        },        
+        'step7' : {
+            'description'   : 'Exit search',
+            'test'          : (cb) => {
+                test.sendCharterKey('exit', cb)
+            }
         },
         'repeatStep' : {
             'description'   : 'Repeat for 1 hour',

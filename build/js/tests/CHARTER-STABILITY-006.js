@@ -5,18 +5,28 @@
 
 test = {
     'operator'          : 'charter',
-    'title'             : 'Charter Channel Change test',
-    'description'       : 'Send channel up until test is over',
+    'title'             : 'Charter Johnny Random',
+    'description'       : 'Johnny is random. So keys will be sent.',
     'requiredPlugins'   : ['UX', 'Snapshot'],
-    'maxSameScreenshot' : 1, // amount of times its okay to have the same screenshot
+    'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'timeInBetweenKeys' : 4, // 5s inbetween keys
+    'timeInBetweenKeys' : 2, // 5s inbetween keys
+    'maxRandomKeys'     : 10,
     'timeout'           : 12600, //s == 3.5 hour
     'prevScreenshot'    : undefined,
     'sendCharterKey'    : (key, cb) => {
         var charterKeys = {
+            'ok'            : '0xE011',
+            'up'            : '0x9034',
+            'down'          : '0x8035',
+            'left'          : '0x7036',
+            'right'         : '0x6037',
+            'exit'          : '0xD012',
+            'backspace'     : '0xa051',
+            'channeldown'   : '0x400C',            
             'channelup'     : '0x500B',
-            'channeldown'   : '0x400C'
+            'guide'         : '0xd030',
+            'menu'          : '0x6019',
         }
 
         function _keyPress(key, cb) {
@@ -88,19 +98,27 @@ test = {
             }
         },
         'step3' : {
-            'description'   : 'Change channel',
+            'description'   : 'Send random keys',
             'test'          : (cb) => {
-                var keyQueue = ['channelup', 'channelup', 'channelup', 'channelup', 'channelup', 'channelup', 'channelup'];
+                var keys = ['up', 'down', 'left', 'right', 'ok', 'exit', 'channelup', 'channeldown', 'guide', 'menu', 'up', 'down', 'left', 'right', 'ok'];
+                var keyQueue = [];
+                var copyOfKeyQueue = [];
 
-                self = this;
+                for (var i=0; i<test.maxRandomKeys; i++){
+                    var idx = Math.floor(Math.random() * (keys.length));
+                    //console.log('Selecting key ' + idx);
+                    keyQueue.push( keys[idx] );
+                    copyOfKeyQueue.push( keys[idx] );
+                }
+
                 function sendKey() {
                     var k = keyQueue.shift();
                     console.log('Sending: ' + k);
                     test.sendCharterKey(k, (resp) => {
                         if (keyQueue.length !== 0)
-                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
+                            setTimeout(sendKey, 1000);
                         else
-                            cb(keyQueue);
+                            cb(copyOfKeyQueue);
                     });
                 }
 
@@ -112,7 +130,7 @@ test = {
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
             'validate'      : this.checkScreenShot,
-        },
+        },      
         'repeatStep' : {
             'description'   : 'Repeat for 1 hour',
             'goto'          : 'step3',

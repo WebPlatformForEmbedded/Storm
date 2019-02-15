@@ -13,6 +13,41 @@
         "title": "Charter Channel Change test",
         "description": "Send channel up until test is over"
     },
+    "CHARTER-STABILITY-003": {
+        "name": "CHARTER-STABILITY-003",
+        "file": "js/tests/CHARTER-STABILITY-003.js",
+        "operator": "charter",
+        "title": "Charter Search Test",
+        "description": "Keep searching in the UI and check if screen updates"
+    },
+    "CHARTER-STABILITY-004": {
+        "name": "CHARTER-STABILITY-004",
+        "file": "js/tests/CHARTER-STABILITY-004.js",
+        "operator": "charter",
+        "title": "Charter Thumbnail Robert",
+        "description": "Perform a bunch of actions to get the thumbnails to fail"
+    },
+    "CHARTER-STABILITY-005": {
+        "name": "CHARTER-STABILITY-005",
+        "file": "js/tests/CHARTER-STABILITY-005.js",
+        "operator": "charter",
+        "title": "Charter Robert #2 test",
+        "description": "More compresensive test to see if we can reproduce the thumbnail failure"
+    },
+    "CHARTER-STABILITY-006": {
+        "name": "CHARTER-STABILITY-006",
+        "file": "js/tests/CHARTER-STABILITY-006.js",
+        "operator": "charter",
+        "title": "Charter Johnny Random",
+        "description": "Johnny is random. So keys will be sent."
+    },
+    "CHARTER-STABILITY-007": {
+        "name": "CHARTER-STABILITY-007",
+        "file": "js/tests/CHARTER-STABILITY-007.js",
+        "operator": "charter",
+        "title": "Charter Lazy Lucy",
+        "description": "Lazy lucy just watches TV, without changing anything."
+    },
     "DUMMY-DISABLED-001": {
         "name": "DUMMY-DISABLED-001",
         "file": "js/tests/DUMMY-DISABLED-001.js",
