@@ -100,7 +100,7 @@ class TestView extends BaseView {
             if (this.test.state === this.test.states.init) {
                 html += `<div class="title grid__col grid__col--6-of-8"></div>
                 <div class="text grid__col grid__col--2-of-8">
-                    <button id="start_button" type="button">Run</button>
+                    <button id="start_button1" type="button">Run</button>
                 </div>`;
             }
 
@@ -136,15 +136,17 @@ class TestView extends BaseView {
             html+= `
                 <div class="title grid__col grid__col--6-of-8"></div>
                 <div class="text grid__col grid__col--2-of-8">
-                    <button id="start_button" type="button">Run</button>
+                    <button id="start_button2" type="button">Run</button>
                 </div>`;
         }
 
         this.mainDiv.innerHTML = html;
 
         if (this.test.state === this.test.states.init) {
-            let start_button        = document.getElementById('start_button');
-            start_button.onclick    = this.startTest.bind(this);
+            let start_button1        = document.getElementById('start_button1');
+            let start_button2        = document.getElementById('start_button2');
+            start_button1.onclick    = this.startTest.bind(this);
+            start_button2.onclick    = this.startTest.bind(this);
         }
 
         let screenShotDiv = document.getElementById('screenshot');
