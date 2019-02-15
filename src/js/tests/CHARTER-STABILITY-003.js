@@ -5,18 +5,27 @@
 
 test = {
     'operator'          : 'charter',
-    'title'             : 'Charter Channel Change test',
-    'description'       : 'Send channel up until test is over',
+    'title'             : 'Charter Search Test',
+    'description'       : 'Keep searching in the UI and check if screen updates',
     'requiredPlugins'   : ['UX', 'Snapshot'],
-    'maxSameScreenshot' : 1, // amount of times its okay to have the same screenshot
+    'maxSameScreenshot' : 3, // amount of times its okay to have the same screenshot
     'curSameScreenshot' : 0, // counter
-    'timeInBetweenKeys' : 4, // 5s inbetween keys
+    'timeInBetweenKeys' : 2, // 5s inbetween keys
     'timeout'           : 12600, //s == 3.5 hour
     'prevScreenshot'    : undefined,
     'sendCharterKey'    : (key, cb) => {
         var charterKeys = {
+            'ok'            : '0xE011',
+            'up'            : '0x9034',
+            'down'          : '0x8035',
+            'left'          : '0x7036',
+            'right'         : '0x6037',
+            'exit'          : '0xD012',
+            'backspace'     : '0xa051',
+            'channeldown'   : '0x400C',            
             'channelup'     : '0x500B',
-            'channeldown'   : '0x400C'
+            'guide'         : '0xd030',
+            'menu'          : '0x6019',
         }
 
         function _keyPress(key, cb) {
@@ -88,9 +97,9 @@ test = {
             }
         },
         'step3' : {
-            'description'   : 'Change channel',
+            'description'   : 'Go to search',
             'test'          : (cb) => {
-                var keyQueue = ['channelup', 'channelup', 'channelup', 'channelup', 'channelup', 'channelup', 'channelup'];
+                var keyQueue = ['menu', 'up', 'ok', 'ok', 'right', 'ok', 'down', 'down', 'ok'];
 
                 self = this;
                 function sendKey() {
@@ -108,11 +117,23 @@ test = {
             }
         },
         'step4' : {
+            'sleep'         : 30,
+            'description'   : 'Check if screen changed',
+            'test'          : screenshot,
+            'validate'      : this.checkScreenShot,
+        },        
+        'step5' : {
+            'description'   : 'Exit search',
+            'test'          : (cb) => {
+                test.sendCharterKey('exit', cb)
+            }
+        },
+        'step6' : {
             'sleep'         : 10,
             'description'   : 'Check if screen changed',
             'test'          : screenshot,
             'validate'      : this.checkScreenShot,
-        },
+        },        
         'repeatStep' : {
             'description'   : 'Repeat for 1 hour',
             'goto'          : 'step3',
