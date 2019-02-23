@@ -31,8 +31,7 @@ function globalize(file){
 // messaging
 var _test;
 var _step;
-var repeatStepMessage;
-var repeatMessage;
+var _repeatStep;
 
 this.test = test = undefined;
 
@@ -302,29 +301,27 @@ function lookForNextStep() {
 
     // GOTO Repeat handling
     if (nextStep.goto !== undefined){
-        repeatMessage = new RepeatMessage(nextIdx, stepList[ nextIdx ], nextStep.goto);
-
         // look up goto step in the list
         var gotoStep = stepList.indexOf(nextStep.goto);
 
         // count based repeat
         if (nextStep.repeat){
             if (nextStep.repeatTotal === undefined) {
-                // first time were running the repeat, lets set some variables
-                repeatStepMessage = new Step(curIdx+1);
-                repeatStepMessage.start();
-
+                // first time, set repeat values
+                _test.setRepeat(true);
                 nextStep.repeatTotal = nextStep.repeat;
+
+                _repeatStep = new Step(nextStep, nextIdx, stepList[ nextIdx ], _test.name);
+                _repeatStep.start();
             }
 
-            repeatMessage.repeatCount(nextStep.repeat, nextStep.repeatTotal);
-
+            _test.setRepeatRemainging({ repeatTotal: nextStep.repeatTotal, repeatRemainingCount: nextStep.repeat });
             nextStep.repeat -= 1;
 
             // were done
             if (nextStep.repeat <= 0) {
-                repeatMessage.done();
-                repeatStepMessage.success();
+                _test.setRepeat(false);
+                _repeatStep.success();
                 curIdx+=1;
                 lookForNextStep();
             } else {
@@ -334,22 +331,26 @@ function lookForNextStep() {
         } else if (nextStep.repeatTime){
             if (nextStep.repeatTimeStamp === undefined){
                 //first time, set timestamp
-                repeatStepMessage = new Step(curIdx+1);
-                repeatStepMessage.start();
-
                 nextStep.repeatTimeStamp = moment().add(nextStep.repeatTime, 'minutes').format();
                 nextStep.repeatTimes = 0;
+
+                //new
+                _test.setRepeat(true);
+                _test.setRepeatRemainging({ repeatRemainingTime: nextStep.repeatTimeStamp });
+
+                _repeatStep = new Step(nextStep, nextIdx, stepList[ nextIdx ], _test.name);
+                _repeatStep.start();
             }
 
             nextStep.repeatTimes++;
 
             if (moment().isAfter(nextStep.repeatTimeStamp)){
-                repeatMessage.done();
-                repeatStepMessage.success();
+                _test.setRepeat(false);
+                _repeatStep.success();
+
                 curIdx+=1;
                 lookForNextStep();
             } else {
-                repeatMessage.timedRepeat(nextStep.repeatTimeStamp, nextStep.repeatTimes);
                 startStep(gotoStep);
             }
         }

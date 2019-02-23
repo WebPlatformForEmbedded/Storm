@@ -35,6 +35,12 @@ class Test extends Message {
         this.cleanupResult = '';
         this.completed = false;
 
+        this.repeating = false;
+        this.repeatRemainingTime = -1;
+        this.repeatRemainingCount = -1;
+        this.repeatStepIdx = null;
+        this.repeatTotal = null;
+
         // available states
         this.states = {
             'init'          : -1,
@@ -43,12 +49,13 @@ class Test extends Message {
             'error'         : 2,
             'success'       : 3,
             'notapplicable' : 4,
+            'repeat'        : 5,
         };
 
         this.state = this.states.init;
 
         // these are the states to be synced between worker and main thread
-        this.statesToBeSynced = ['name', 'state', 'result', 'cleanedup', 'cleanupResult', 'completed'];
+        this.statesToBeSynced = ['name', 'state', 'result', 'cleanedup', 'cleanupResult', 'completed', 'repeating', 'repeatRemainingTime', 'repeatRemainingCount', 'repeatTotal'];
     }
 
     // Loads the test from the server and adds it in our data model
@@ -174,6 +181,10 @@ class Test extends Message {
             case this.states.notapplicable:
                 response = 'Not Applicable';
                 break;
+
+            case this.states.repeat:
+                response = 'Repeating';
+                break;
         }
 
         return response;
@@ -185,7 +196,11 @@ class Test extends Message {
             // find current step
             let stepList = Object.keys(this.steps);
             let currentStepIdx = stepList.indexOf(this.currentStep);
-            response = ( ((currentStepIdx+1) / stepList.length) * 100).toFixed(0);
+
+            if (this.repeating === true && this.repeatRemainingCount !== -1)
+                response = ( (1 - (this.repeatRemainingCount / this.repeatTotal) ) * 100).toFixed(0);
+            else
+                response = ( ((currentStepIdx+1) / stepList.length) * 100).toFixed(0);
         }
         return response;
     }
@@ -200,6 +215,34 @@ class Test extends Message {
             response = this.result;
 
         return response;
+    }
+
+    isRepeating() {
+        return this.repeating;
+    }
+
+    getRepeatTimeRemaining() {
+        return moment(this.repeatRemainingTime).toNow(true);
+    }
+
+    getRepeatRemaining() {
+        let resp;
+        if (this.repeatRemainingCount !== -1)
+            resp = this.repeatRemainingCount + ' times';
+        else if (this.repeatRemainingTime !== -1)
+            resp = '';
+
+        return resp;
+    }
+
+    getRepeatType() {
+        let resp;
+        if (this.repeatRemainingCount !== -1)
+            resp = 'Count';
+        else if (this.repeatRemainingTime !== -1)
+            resp = 'Time';
+
+        return resp;
     }
 
     /*
@@ -242,6 +285,34 @@ class Test extends Message {
     cleanedup(e) {
         this.cleanedup = true;
         this.cleanupResult = e;
+        this.sync();
+    }
+
+    setRepeat(repeating) {
+        this.repeating = repeating;
+
+        if (repeating == true) {
+            this.state = this.states.repeat;
+
+            let stepList = Object.keys(this.steps);
+            let currentStepIdx = stepList.indexOf(this.currentStep);
+            this.repeatStepIdx = this.currentStepIdx;
+        } else {
+            this.state = this.states.start;
+            this.repeatStepIdx = null;
+        }
+
+        this.sync();
+    }
+
+    setRepeatRemainging(repeatObj) {
+        if (repeatObj.repeatRemainingCount) {
+            this.repeatRemainingCount = repeatObj.repeatRemainingCount;
+            this.repeatTotal = repeatObj.repeatTotal;
+        } else if (repeatObj.repeatRemainingTime) {
+            this.repeatRemainingTime = repeatObj.repeatRemainingTime;
+        }
+
         this.sync();
     }
 }

@@ -6,7 +6,6 @@ class TestView extends BaseView {
 
         this.testName = null;
         this.test = null;
-        this.repeatMessage = new RepeatMessage();
     }
 
     render(_testName) {
@@ -86,18 +85,25 @@ class TestView extends BaseView {
             <div class="text grid__col grid__col--3-of-8">${this.test.description}</div>
             <div class="grid__col grid__col--3-of-8"></div>
 
-            <div class="title grid__col grid__col--2-of-8">Progress</div>
-            <div id="progressBarDiv" class="text grid__col grid__col--2-of-8">
-                <progress max="100" value="${this.test.getPercCompleted()}" id="progressBar"></progress>
-            </div>
-            <div id="progress" class="text grid__col grid__col--2-of-8">${this.test.getPercCompleted()}%</div>
+            <div class="title grid__col grid__col--2-of-8">Progress</div>`;
 
-            <div id="result" class="text grid__col grid__col--2-of-8">${this.test.getState()}</div>
+            if (this.test.isRepeating() && this.test.getRepeatType() === 'Time') {
+                html += `<div class="text grid__col grid__col--4-of-8">${this.test.getRepeatTimeRemaining()} remaining</div>`;
+            } else {
+                html += `
+                <div id="progressBarDiv" class="text grid__col grid__col--2-of-8">
+                    <progress max="100" value="${this.test.getPercCompleted()}" id="progressBar"></progress>
+                </div>
+                <div id="progress" class="text grid__col grid__col--2-of-8">${this.test.getPercCompleted()}%</div>`;
+            }
+
+            html += `
+            <div id="result" class="text grid__col grid__col--2-of-8">${this.test.isRepeating() ? this.test.getState() + ' ' + this.test.getRepeatRemaining() : this.test.getState()}</div>
 
             <div class="text grid__col grid__col--1-of-8"></div>
             <div id="error" class="text grid__col grid__col--7-of-8">${this.test.getError()}</div>`;
 
-            if (this.test.state === this.test.states.init) {
+            if (this.test.state !== this.test.states.start && this.test.state !== this.test.states.repeat) {
                 html += `<div class="title grid__col grid__col--6-of-8"></div>
                 <div class="text grid__col grid__col--2-of-8">
                     <button id="start_button1" type="button">Run</button>
@@ -112,6 +118,10 @@ class TestView extends BaseView {
                         <div class="cell">Result</div>
                     </div>`;
 
+
+        /*
+         * Steps
+         */
         if (this.test.steps === undefined) {
             html += `<div class="row">
                     <div class="text grid__col grid__col--2-of-8">Test has no steps</div>
@@ -123,7 +133,7 @@ class TestView extends BaseView {
             for (var i=0; i<_steps.length; i++) {
                 var _step = this.test.steps[ _steps[ i ] ];
 
-                html += `<div class="row">
+                html += `<div class="row ${ _step.getState() === 'Running' ? 'running' : ''}">
                         <div class="cell">${i+1}. ${_step.description}</div>
                         <div class="cell">${_step.sleep !== undefined ? 'Sleep: ' + _step.sleep + 's' : ''}</div>
                         <div id="step_progress_${i}" class="cell">${_step.getState()}</div></div>`;
@@ -132,7 +142,10 @@ class TestView extends BaseView {
 
         html += `</div></div>`;
 
-        if (this.test.state === this.test.states.init) {
+        /*
+         * Buttons
+         */
+        if (this.test.state !== this.test.states.start && this.test.state !== this.test.states.repeat) {
             html+= `
                 <div class="title grid__col grid__col--6-of-8"></div>
                 <div class="text grid__col grid__col--2-of-8">
@@ -142,7 +155,7 @@ class TestView extends BaseView {
 
         this.mainDiv.innerHTML = html;
 
-        if (this.test.state === this.test.states.init) {
+        if (this.test.state !== this.test.states.start && this.test.state !== this.test.states.repeat) {
             let start_button1        = document.getElementById('start_button1');
             let start_button2        = document.getElementById('start_button2');
             start_button1.onclick    = this.startTest.bind(this);
