@@ -20,6 +20,11 @@
   background: gray;
 }
 
+.running {
+  color: white;
+  background: #8FBC8F;
+}
+
 .row.header {
   color: #272727;
   background: #5E6A96;

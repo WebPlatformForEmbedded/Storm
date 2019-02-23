@@ -48,6 +48,13 @@
         "title": "Charter Lazy Lucy",
         "description": "Lazy lucy just watches TV, without changing anything."
     },
+    "CWC-STABILITY-001": {
+        "name": "CWC-STABILITY-001",
+        "file": "js/tests/CWC-STABILITY-001.js",
+        "operator": "cwc",
+        "title": "CWC Johnny Random",
+        "description": "Heres Johnny! Random keys will be sent."
+    },
     "DUMMY-DISABLED-001": {
         "name": "DUMMY-DISABLED-001",
         "file": "js/tests/DUMMY-DISABLED-001.js",
