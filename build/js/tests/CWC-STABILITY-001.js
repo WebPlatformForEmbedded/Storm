@@ -79,6 +79,7 @@ test = {
             'assert'        : 'resumed'
         },
         'step2' : {
+            'sleep'         : 10,
             'description'   : 'Send random keys',
             'test'          : (cb) => {
                 var customKeys = {
@@ -109,7 +110,7 @@ test = {
                     console.log('Sending: ' + k);
                     test.sendCustomKey(k, (resp) => {
                         if (keyQueue.length !== 0)
-                            setTimeout(sendKey, 1000);
+                            setTimeout(sendKey, test.timeInBetweenKeys * 1000);
                         else
                             cb(copyOfKeyQueue);
                     });
