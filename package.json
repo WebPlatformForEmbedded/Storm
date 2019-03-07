@@ -1,0 +1,22 @@
+{
+  "name": "wpetestframework",
+  "version": "2.0.0",
+  "description": "WpeTestFramework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebPlatformForEmbedded/WPETestFramework.git"
+  },
+  "author": "Michiel van der Geest <hello@michielvandergeest.com>",
+  "bugs": {
+    "url": "https://github.com/WebPlatformForEmbedded/WPETestFramework/issues"
+  },
+  "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "contra": "^1.9.4"
+  }
+}
