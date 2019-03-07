@@ -4,7 +4,10 @@
   "description": "WpeTestFramework",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/browserify ./src/index.js -o ./build/bundle.js && cp ./src/index.html ./build/index.html ",
+    "node": "node index",
+    "browser": "npm run build && ./node_modules/.bin/http-server ./build -o"
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,8 @@
   "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "contra": "^1.9.4"
+    "browserify": "^16.2.3",
+    "contra": "^1.9.4",
+    "http-server": "^0.11.1"
   }
 }

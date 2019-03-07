@@ -19,13 +19,13 @@ module.exports = {
         {
             description: 'An async http test from helper library',
             test: helpers.tests.getUrl,
-            params: 'http://www.metrological.com',
+            params: 'https://api.github.com/',
             validate: helpers.validators.httpSuccess
         },
         {
             description: 'An async http test from helper library',
             test: helpers.tests.getUrl,
-            params: 'http://www.metrological.com/dgjahsgdhjashjd',
+            params: 'https://api.github.com/404',
             validate: helpers.validators.httpNotFound
         }
     ]
