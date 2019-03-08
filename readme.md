@@ -13,7 +13,7 @@ This code is explicitely **Work in Progress**! It's a first version that is _not
 
 Specifically missing at this point (but in the works):
 
-- [ ] Support for setting a `timeout` for a test / step
+- [x] Support for setting a `timeout` for a test / step
 - [ ] Ability to run the test runner in a `web worker` (and not on the main thread), but report results back to the main process
 - [ ] Various helper test methods
 - [ ] Various helper validation methods
