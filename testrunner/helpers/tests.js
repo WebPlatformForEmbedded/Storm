@@ -5,14 +5,19 @@ module.exports = {
         return x
     },
     getUrl(url) {
-        return axios.get(url).catch(err => {
-            return err.response
+        return axios({
+            url: url,
+            timeout: this.timeout * 1000,
+        }).catch(err => {
+            return err.response ? err.response :
+                (err.code || err)
         })
     },
     stopPlugin(plugin) {
         const url = 'http://' + config.ip + '/Service/Controller/Deactivate/' + plugin
         return axios({
             url: url,
+            timeout: this.timeout * 1000,
             method: 'PUT',
         })
         .catch(err => {
@@ -25,6 +30,7 @@ module.exports = {
         const url = 'http://' + config.ip + '/Service/Controller/Activate/' + plugin
         return axios({
             url: url,
+            timeout: this.timeout * 1000,
             method: 'PUT',
         })
         .catch(err => {
@@ -37,6 +43,7 @@ module.exports = {
         const url = 'http://' + config.ip + '/Service/' + plugin + '/Resume'
         return axios({
             url: url,
+            timeout: this.timeout * 1000,
             method: 'POST',
         }).catch(err => {
             return err.response ?
@@ -48,6 +55,7 @@ module.exports = {
         const url = 'http://' + config.ip + '/Service/' + plugin + '/Suspend'
         return axios({
             url: url,
+            timeout: this.timeout * 1000,
             method: 'POST',
         }).catch(err => {
             return err.response ?
@@ -59,6 +67,7 @@ module.exports = {
         const url = 'http://' + config.ip + '/Service/' + plugin + '/URL'
         return axios({
             url: url,
+            timeout: this.timeout * 1000,
             method: 'POST',
             data: {
                 url: target
@@ -73,6 +82,7 @@ module.exports = {
         const url = 'http://' + config.ip + '/Service/DeviceInfo'
         return axios({
             url: url,
+            timeout: this.timeout * 1000,
             method: 'GET',
         }).then(({data}) => {
             // switch for Master and Stable (stable is camelcase, master is lower case)

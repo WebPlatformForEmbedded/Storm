@@ -29,7 +29,7 @@ module.exports = (step, reporter) => {
 
                     reporter.log('Executing ' + step.description)
 
-                    const result = step.test.apply(null, (step.params instanceof Array) ? step.params : [step.params])
+                    const result = step.test.apply(step, (step.params instanceof Array) ? step.params : [step.params])
 
                     // asynchronous test function
                     if(result.then && typeof result.then === 'function') {

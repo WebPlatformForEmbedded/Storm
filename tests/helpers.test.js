@@ -17,13 +17,13 @@ module.exports = {
             validate: helpers.validators.dummy
         },
         {
-            description: 'An async http test from helper library',
+            description: 'An async http test from helper library (200 request)',
             test: helpers.tests.getUrl,
             params: 'https://api.github.com/',
             validate: helpers.validators.httpSuccess
         },
         {
-            description: 'An async http test from helper library',
+            description: 'An async http test from helper library (404 request)',
             test: helpers.tests.getUrl,
             params: 'https://api.github.com/404',
             validate: helpers.validators.httpNotFound
