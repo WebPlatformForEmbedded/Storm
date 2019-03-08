@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/browserify ./src/index.js -o ./build/bundle.js && cp ./src/index.html ./build/index.html ",
+    "build": "./node_modules/.bin/browserify ./src/index.js -o ./build/bundle.js && ./node_modules/.bin/browserify ./src/webworker.js -o ./build/webworker.js && cp ./src/index.html ./build/index.html ",
     "localserver": "node ./localserver.js",
     "cli": "concurrently \"npm run localserver\" \"node index\"",
     "browser": "concurrently \"npm run localserver\" \"npm run build\" \"./node_modules/.bin/http-server ./build -o\""

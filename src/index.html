@@ -1,7 +1,16 @@
 <html>
     <body>
         <h1>Test runner in the browser</h1>
+        <h2>1) Main thread</h2>
+        <p>Runs the tests on the main thread in the browser (i.e. shares the UI thread, potentially blocking it while running)</p>
+        <p>Reports back in html to the browser</p>
         <button onclick="start()">Start</button>
+        <div id="output" style="width: 60%; height: 200px; border: solid 1px; padding: 12px; overflow: auto;"></div>
+        <hr />
+        <h2>2) Webworker thread</h2>
+        <p>Runs the tests on a separate webworker thread (not blocking the UI)</p>
+        <p>Reports back on the browser console (for now) .. so open up the devtools</p>
+        <button onclick="startInWebworker()">Start</button>
         <script src="./bundle.js"></script>
     </body>
 </html>

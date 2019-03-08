@@ -24,8 +24,8 @@ app.listen(port, () => {
 
 // Make sure the server doesn't run forever
 // again, this would be a typical 'teardown' of a test
-setTimeout(() => {
-    app.close(() => {
-        console.log('Closed local server on port ' + port)
-    })
-}, 60 * 1000)
+// setTimeout(() => {
+//     app.close(() => {
+//         console.log('Closed local server on port ' + port)
+//     })
+// }, 60 * 1000)
