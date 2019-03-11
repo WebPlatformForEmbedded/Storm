@@ -1,9 +1,12 @@
 const test = require('./test')
 const reporters = require('./reporters')
 
-module.exports = (testCase, reporterType) => {
+module.exports = (testCase, reporter) => {
     
-    const reporter = reporters[reporterType]
+    // if reporter not an object, map passed string to default reporter
+    if(typeof reporter === 'string') {
+        reporter = reporters[reporter]
+    }
 
     return new Promise((resolve, reject) => {
         test(testCase, reporter)
