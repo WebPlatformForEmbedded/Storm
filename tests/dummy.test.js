@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     title: 'Dummy test',
     description: 'Some basic dummy tests',
     steps: [

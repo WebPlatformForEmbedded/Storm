@@ -1,8 +1,8 @@
-const helpers = require('../testrunner/helpers')
+import helpers from '../testrunner/helpers'
 
 const port = 1313
 
-module.exports = {
+export default {
     title: 'Timeout',
     description: 'Testing timeouts in http requests',
     steps: [

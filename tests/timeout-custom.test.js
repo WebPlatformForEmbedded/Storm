@@ -1,4 +1,4 @@
-const helpers = require('../testrunner/helpers')
+import helpers from '../testrunner/helpers'
 
 const customTimeoutTest = function(wait) {
     return new Promise((resolve, reject) => {
@@ -19,7 +19,7 @@ const customTimeoutTest = function(wait) {
     })
 }
 
-module.exports = {
+export default {
     title: 'Timeout',
     description: 'Testing timeouts in custom methods',
     steps: [

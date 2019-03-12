@@ -1,4 +1,4 @@
-module.exports = (step, reporter) => {
+export default (step, reporter) => {
     
     // todo: more / better validations of step
     if('description' in step === false) {

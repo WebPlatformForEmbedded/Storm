@@ -1,7 +1,7 @@
-const contra = require('contra')
-const Step = require('./step')
+import contra from 'contra'
+import Step from './step'
 
-module.exports = (test, reporter) => {
+export default (test, reporter) => {
 
     return {
         exec() {

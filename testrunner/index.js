@@ -1,7 +1,7 @@
-const test = require('./test')
-const reporters = require('./reporters')
+import test from './test'
+import reporters from './reporters'
 
-module.exports = (testCase, reporter) => {
+export default (testCase, reporter) => {
     
     // if reporter not an object, map passed string to default reporter
     if(typeof reporter === 'string') {

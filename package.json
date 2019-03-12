@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/browserify ./src/index.js -o ./build/bundle.js && ./node_modules/.bin/browserify ./src/webworker.js -o ./build/webworker.js && cp ./src/index.html ./build/index.html ",
+    "build": "webpack && cp ./src/index.html ./build/index.html ",
     "localserver": "node ./localserver.js",
     "cli": "concurrently \"npm run localserver\" \"node index\"",
     "browser": "concurrently \"npm run localserver\" \"npm run build\" \"./node_modules/.bin/http-server ./build -o\""
@@ -21,9 +21,11 @@
   "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "browserify": "^16.2.3",
     "concurrently": "^4.1.0",
     "contra": "^1.9.4",
-    "http-server": "^0.11.1"
+    "esm": "^3.2.15",
+    "http-server": "^0.11.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
   }
 }

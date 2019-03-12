@@ -1,6 +1,6 @@
-const helpers = require('../testrunner/helpers')
+import helpers from '../testrunner/helpers'
 
-module.exports = {
+export default {
     title: 'YouTube test',
     description: 'Basic YouTube test',
     steps: [

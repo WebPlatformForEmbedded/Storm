@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     dummy(x) {
         return x === x
     },

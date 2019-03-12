@@ -1,5 +1,5 @@
-const runner = require('./runner')
-const config = require('../config')
+import runner from './runner'
+import config from '../config'
 
 // config globally available so we can access the ip (not super happy with this, btw)
 global.config = config

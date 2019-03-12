@@ -1,7 +1,7 @@
-const tests = require('./tests')
-const validators = require('./validators')
+import tests from './tests'
+import validators from './validators'
 
-module.exports = {
+export default {
     tests,
     validators,
 }

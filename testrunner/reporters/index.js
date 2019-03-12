@@ -1,7 +1,7 @@
-consoleReporter = require('./console')
-browserReporter = require('./browser')
+import consoleReporter from './console'
+import browserReporter from './browser'
 
-module.exports = {
+export default {
     console: consoleReporter,
     browser: browserReporter,
 }

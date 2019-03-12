@@ -1,4 +1,4 @@
-module.exports = (worker) => {
+export default (worker) => {
 
     return {
         log(msg) {
