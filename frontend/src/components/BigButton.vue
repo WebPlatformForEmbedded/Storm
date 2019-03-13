@@ -16,9 +16,6 @@ export default {
       if(this.callback) {
         this.callback.apply()
       }
-      else {
-        console.log('No callback defined')
-      }
     }
   }
 }
