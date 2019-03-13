@@ -28,3 +28,4 @@ To try out this prototype:
 3. Copy `config.example.js` to `config.js` and adjust the values to match your local environment (specifically `ip`, which refers to the IP-address of the Set-Top Box you want to run the tests against)
 4. Run `npm run cli` (or `yarn cli`) to execute the test runner in CLI mode
 5. Run `npm run browser` (or `yarn browser`) to fire up a local server and execute the test runner from a browser window
+6. Run `npm run frontend` (or `yarn frontend`) to fire run the tests in the browser in a prettier, framework based frontend
