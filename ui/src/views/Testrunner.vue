@@ -1,19 +1,20 @@
 <template>
   <div>
-    <h1>Browser Test</h1>
+    <h1>Test runner</h1>
+    <p>Run the dummy test (only browser based for now).</p>
     <BigButton :callback="start">Start</BigButton>
     <Output :messages="messages" />
-    
   </div>
 </template>
 
 <script>
-import BigButton from './BigButton.vue'
-import Output from './Output.vue'
+import BigButton from '@/components/BigButton.vue'
+import Output from '@/components/Output.vue'
+import Runner from '../../../testrunner'
+import Tests from '../../../tests'
 
 export default {
-  name: 'BrowserTest',
-  props: ['tests', 'runner'],
+  name: 'testrunner',
   components: {
     BigButton,
     Output
@@ -23,10 +24,14 @@ export default {
       messages: []
     }
   },
+  computed: {
+    tests: () => Tests,
+    runner: () => Runner,
+  },
   methods: {
       start() {
         this.messages = []
-        this.runner(this.tests, this.reporter(this.messages))
+        this.runner(this.tests[0], this.reporter(this.messages))
       },
       reporter(messages) {
         

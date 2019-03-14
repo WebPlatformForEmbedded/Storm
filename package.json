@@ -1,15 +1,13 @@
 {
   "name": "wpetestframework",
   "version": "2.0.0",
-  "description": "WpeTestFramework",
   "main": "index.js",
   "scripts": {
+    "start": "npm run ui:build && npm run ui:serve",
+    "ui:build": "cd ui && npm run build",
+    "ui:serve": "http-server ./ui/dist -p 2020 -o",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack && cp ./src/index.html ./build/index.html ",
-    "localserver": "node ./localserver.js",
-    "cli": "concurrently \"npm run localserver\" \"node index\"",
-    "browser": "concurrently \"npm run localserver\" \"npm run build\" \"./node_modules/.bin/http-server ./build -o\"",
-    "frontend": "concurrently \"npm run localserver\" \"cd ./frontend && npm run build\"  & ./node_modules/.bin/http-server ./frontend/dist -o"
+    "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install"
   },
   "repository": {
     "type": "git",
@@ -21,12 +19,6 @@
   },
   "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
   "dependencies": {
-    "axios": "^0.18.0",
-    "concurrently": "^4.1.0",
-    "contra": "^1.9.4",
-    "esm": "^3.2.15",
-    "http-server": "^0.11.1",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "http-server": "^0.11.1"
   }
 }
