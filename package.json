@@ -7,7 +7,8 @@
     "ui:build": "cd ui && npm run build",
     "ui:serve": "http-server ./ui/dist -p 2020 -o",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install"
+    "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install",
+    "cli:run": "node ./cli"
   },
   "repository": {
     "type": "git",
