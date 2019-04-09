@@ -1,5 +1,5 @@
 <template>  
-  <button @click="click">Start</button>
+  <button @click="click" class="outline-none focus:outline-none">Start</button>
 </template>
 
 <script>

@@ -18,17 +18,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .output {
     background: #eee;
     border-radius: 10px;
     color: #333;
     height: 200px;
-    width: 90%;
+    width: 100%;
     border: solid 2px #ccc;
     font-size: 14px;
     text-align: left;
-    margin: 20px 5%;
     overflow: auto;
     padding: 8px 24px;
     box-sizing: border-box;
@@ -40,6 +39,7 @@ ul {
 }
 ul li {
   padding: 0;
+  padding-bottom: 6px;
   margin: 0;
 }
 

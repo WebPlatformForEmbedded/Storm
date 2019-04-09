@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>Test runner</h1>
-    <p>Run the dummy test (only browser based for now).</p>
-    <BigButton :callback="start">Start</BigButton>
+    <h1 class="text-xl mb-8">Test runner</h1>
+    <p class="text-sm">Run the dummy test (only browser based for now).</p>
+    <BigButton :callback="start" class="my-8">Start</BigButton>
     <Output :messages="messages" />
   </div>
 </template>
