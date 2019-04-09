@@ -7,10 +7,15 @@
       <nav class="bg-white h-full z-10 w-48 pt-6 pr-4 overflow-auto">
         <ul class="list-reset">
           <li
-            v-for="navItem in navItems" class="hover:bg-light-blue rounded-r-full mb-3 flex"
+            v-for="navItem in navItems"
             :key="navItem.path"
+            class="full mb-3 flex "
           >
-            <router-link :to="navItem.path" class="p-3 text-black text-sm w-full no-underline">
+            <router-link
+              :to="navItem.path"
+              class="hover:bg-light-blue text-black rounded-r-full p-3 text-sm w-full no-underline"
+              active-class="bg-light-blue text-dark-blue font-bold"
+            >
               {{navItem.label}}
             </router-link>
           </li>
@@ -27,11 +32,14 @@
 export default {
   data: () => ({
     navItems: [{
-      path: '/',
+      path: '/dashboard',
       label: 'Dashboard'
     },{
-      path: '/testrunner',
+      path: '/testrunner/',
       label: 'Test runner'
+    },{
+      path: '/results/',
+      label: 'Test results'
     }]
   })
 }
