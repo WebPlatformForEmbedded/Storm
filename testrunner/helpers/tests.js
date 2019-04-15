@@ -14,7 +14,7 @@ export default {
         })
     },
     stopPlugin(plugin) {
-        const url = 'http://' + config.ip + '/Service/Controller/Deactivate/' + plugin
+        const url = 'http://' + this.device.ip + '/Service/Controller/Deactivate/' + plugin
         return axios({
             url: url,
             timeout: this.timeout * 1000,
@@ -27,7 +27,7 @@ export default {
         });
     },
     startPlugin(plugin) {
-        const url = 'http://' + config.ip + '/Service/Controller/Activate/' + plugin
+        const url = 'http://' + this.device.ip + '/Service/Controller/Activate/' + plugin
         return axios({
             url: url,
             timeout: this.timeout * 1000,
@@ -40,7 +40,7 @@ export default {
         })
     },
     resumePlugin(plugin) {
-        const url = 'http://' + config.ip + '/Service/' + plugin + '/Resume'
+        const url = 'http://' + this.device.ip + '/Service/' + plugin + '/Resume'
         return axios({
             url: url,
             timeout: this.timeout * 1000,
@@ -52,7 +52,7 @@ export default {
         });
     },
     suspendPlugin() {
-        const url = 'http://' + config.ip + '/Service/' + plugin + '/Suspend'
+        const url = 'http://' + this.device.ip + '/Service/' + plugin + '/Suspend'
         return axios({
             url: url,
             timeout: this.timeout * 1000,
@@ -64,7 +64,7 @@ export default {
         });
     },
     setPluginUrl(plugin, target) {
-        const url = 'http://' + config.ip + '/Service/' + plugin + '/URL'
+        const url = 'http://' + this.device.ip + '/Service/' + plugin + '/URL'
         return axios({
             url: url,
             timeout: this.timeout * 1000,
@@ -79,7 +79,7 @@ export default {
         });
     },
     getCpuLoad() {
-        const url = 'http://' + config.ip + '/Service/DeviceInfo'
+        const url = 'http://' + this.device.ip + '/Service/DeviceInfo'
         return axios({
             url: url,
             timeout: this.timeout * 1000,

@@ -1,7 +1,7 @@
 import contra from 'contra'
 import Step from './step'
 
-export default (test, reporter) => {
+export default (test, reporter, device) => {
 
     return {
         exec() {
@@ -10,6 +10,9 @@ export default (test, reporter) => {
 
             return new Promise((resolve, reject) => {
                 contra.each.series(test.steps, (step, key, next) => {
+
+                    // make device info available in the step as this.device
+                    step.device = device
 
                     try {
                         Step(step, reporter).exec().then(pass => {

@@ -1,63 +1,75 @@
 <template>
   <div>
     <h1 class="text-xl mb-8">Test runner</h1>
-    <p class="text-sm">Run the dummy test (only browser based for now).</p>
-    <BigButton :callback="start" class="my-8">Start</BigButton>
-    <Output :messages="messages" />
+
+    <div class="w-full border-b border-light-grey flex pb-4 mb-4">
+      <div class="flex-shrink mr-16">
+        <span class="rounded-full h-12 w-12 flex items-center justify-center bg-white border border-light-grey text-dark-blue text-xl font-bold">
+          1
+        </span>
+      </div>
+      <div class="w-3/5 flex-auto">
+        <h2 class="text-lg text-dark-blue mb-8">Device</h2>
+        <DeviceChooser />
+      </div>
+    </div>
+    
+
+    <div class="w-full border-b border-light-grey flex pb-4 mb-4" v-if="device">
+      <div class="flex-shrink mr-16">
+        <span class="rounded-full h-12 w-12 flex items-center justify-center bg-white border border-light-grey text-dark-blue text-xl font-bold">
+          2
+        </span>
+      </div>
+      <div class="w-3/5 flex-auto">
+        <h2 class="text-lg text-dark-blue mb-8">Tests</h2>
+        <TestChooser />
+      </div>
+    </div>
+
+    <div class="w-full border-b border-light-grey flex pb-4 mb-4" v-if="device && tests.length">
+      <div class="flex-shrink mr-16">
+        <span class="rounded-full h-12 w-12 flex items-center justify-center bg-white border border-light-grey text-dark-blue text-xl font-bold">
+          3
+        </span>
+      </div>
+      <div class="w-3/5 flex-auto">
+        <h2 class="text-lg text-dark-blue mb-8">Run tests</h2>
+        <TestRunner />
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import BigButton from '@/components/BigButton.vue'
-import Output from '@/components/Output.vue'
-import Runner from '../../../testrunner'
-import Tests from '../../../tests'
+import DeviceChooser from '@/components/DeviceChooser.vue'
+import TestChooser from '@/components/TestChooser.vue'
+import TestRunner from '@/components/TestRunner.vue'
+
 
 export default {
   name: 'testrunner',
   components: {
-    BigButton,
-    Output
+    DeviceChooser,
+    TestChooser,
+    TestRunner,
   },
   data() {
     return {
-      messages: []
+      ip: null,
     }
   },
   computed: {
-    tests: () => Tests,
-    runner: () => Runner,
-  },
-  methods: {
-      start() {
-        this.messages = []
-        this.runner(this.tests[0], this.reporter(this.messages))
-      },
-      reporter(messages) {
-        
-        return {
-          log(msg) {
-            messages.push('➡️  ' + msg)
-          },
-          pass(description) {
-            messages.push('✅  Step `' + description + '` passed')
-          },
-          fail(description, err) {
-            messages.push('❌  Step  `' + description + '` failed', err)
-          },
-          success() {
-            messages.push('👍  Success')
-          },
-          error() {
-            messages.push('😭  Error')
-          },
-        }
-          
-      }
+    device() {
+      return this.$store.state.device
+    },
+    tests() {
+      return this.$store.state.tests
+    }
   }
 }
 </script>
 
 <style>
-
 </style>

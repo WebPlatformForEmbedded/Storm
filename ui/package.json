@@ -8,6 +8,8 @@
   },
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "dependencies": {
+    "axios": "^0.18.0",
+    "contra": "^1.9.4",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

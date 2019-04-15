@@ -37,10 +37,12 @@ export default {
     },{
       path: '/testrunner/',
       label: 'Test runner'
-    },{
-      path: '/results/',
-      label: 'Test results'
-    }]
+    }
+    // ,{
+    //   path: '/results/',
+    //   label: 'Test results'
+    // }
+    ]
   })
 }
 </script>
