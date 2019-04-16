@@ -25,7 +25,7 @@
       <div class="w-3/5"><span class="text-sm text-grey-dark">use # for fake local device</span></div>
     </div>
     
-    <div class="flex w-4/5 mt-8 text-sm" v-if="device">
+    <div class="flex w-4/5 mt-8 text-sm" v-if="device.deviceid">
         <div class="w-1/5 flex items-center"></div>
         <div class="w-3/5">
             <div class="w-full flex mb-2">
@@ -42,6 +42,14 @@
                 </div>
                 <div class="w-2/3 flex">
                   {{device.version}}
+                </div> 
+            </div>
+            <div class="w-full flex mb-2">
+                <div class="w-1/3">
+                  <label class="text-grey-darker">IP address</label>
+                </div>
+                <div class="w-2/3 flex">
+                  {{device.ip}}
                 </div> 
             </div>
             <div class="w-full flex justify-center mt-8">
@@ -64,6 +72,9 @@ export default {
     device: null,
     error: null,
   }),
+  created() {
+    this.device = {...this.selectedDevice}
+  },
   computed: {
     selectedDevice() {
       return this.$store.state.device
@@ -72,7 +83,7 @@ export default {
       if(!this.selectedDevice) return true
       else if(!this.device) return true
       else {
-        this.selectedDevice.deviceid !== this.device.deviceid
+        return this.selectedDevice.deviceid !== this.device.deviceid
       }
     }
   },
@@ -93,13 +104,14 @@ export default {
         }).then(({data}) => {
           // normalize for Master and Stable (stable is camelcase, master is lower case)
           this.device = data.SystemInfo || data.systeminfo
+          this.device.ip = this.ip
         }).catch(err => {
             this.error = 'No device found at this IP address'
         })
       }   
     },
     choose() {
-      this.$store.commit('SET_DEVICE', {ip: this.ip,...this.device})
+      this.$store.commit('SET_DEVICE', this.device)
     }
   }
 }
