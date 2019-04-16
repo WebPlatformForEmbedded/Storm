@@ -20,51 +20,73 @@ export default {
   },
   data: () =>({
     messages: [],
+    webworker: null,
+    next: null,
   }),
   computed: {
     runner: () => Runner,
     tests() {
       return this.$store.state.tests
+    },
+    device() {
+      return this.$store.state.device
     }
   },
+  mounted() {
+    this.initiateWebworker()
+  },
   methods: {
+    initiateWebworker() {
+      this.webworker = new Worker('/webworker.js?' + Math.random())
+      this.webworker.addEventListener('message', this.listener);
+    },
     start() {
       this.messages = []
 
-       Contra.each.series(this.tests, (test, next) => {
-        
-            this.runner(test, this.reporter(this.messages), {ip: '192.168.15.20'}).then(() => {
-                setTimeout(next, 2000)
-            }).catch(err => {
-                console.error(err)
-                next(err)
-            })
-
-        }, () => {
-            this.messages.unshift('🎉  All tests done')
+      Contra.each.series(this.tests, (test, next) => {
+        this.next = next
+        this.webworker.postMessage({
+          action: 'start',
+          testName: test.title,
+          device: {ip: this.device.ip}
         })
+      }, () => {
+          this.messages.unshift('🎉  All tests done')
+      })
   
     },
-    reporter(messages) {
-      
-      return {
-        log(msg) {
-          messages.unshift('➡️  ' + msg)
-        },
-        pass(description) {
-          messages.unshift('✅  Step `' + description + '` passed')
-        },
-        fail(description, err) {
-          messages.unshift('❌  Step  `' + description + '` failed', err)
-        },
-        success() {
-          messages.unshift('👍  Success')
-        },
-        error() {
-          messages.unshift('😭  Error')
-        },
-      }
+    listener(event) {
+      switch(event.data.type) {
         
+        case 'message':
+          this.messages.unshift(['➡️', event.data.payload && event.data.payload.message].join('   '))
+        break
+
+        case 'pass':
+          this.messages.unshift(['✅', event.data.payload && event.data.payload.message].join('   '))
+        break
+
+        case 'fail':
+          this.messages.unshift(['❌', event.data.payload && event.data.payload.message].join('   '))
+        break
+
+        case 'success':
+          this.messages.unshift(['👍', event.data.payload && event.data.payload.message].join('   '))
+          this.nextTest()
+        break        
+        
+        case 'error':
+          this.messages.unshift(['😭', event.data.payload && event.data.payload.message].join('   '))
+          this.nextTest()
+        break
+      }
+    },
+    nextTest() {
+      if(this.next && typeof this.next === 'function') {
+        setTimeout(() => {
+          this.next()
+        }, 2000)
+      }
     }
   }
 }

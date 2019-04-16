@@ -18,7 +18,11 @@
           class="ml-2 bg-blue hover:bg-dark-blue text-white font-bold py-2 px-4 rounded focus:outline-none"
           @click="getDeviceByIp"
         >Search</button>
-      </div>
+      </div> 
+    </div>
+    <div class="flex w-4/5 mt-2">
+      <div class="w-1/5"></div>
+      <div class="w-3/5"><span class="text-sm text-grey-dark">use # for fake local device</span></div>
     </div>
     
     <div class="flex w-4/5 mt-8 text-sm" v-if="device">
@@ -26,26 +30,26 @@
         <div class="w-3/5">
             <div class="w-full flex mb-2">
                 <div class="w-1/3">
-                    <label class="text-grey-darker">Device ID</label>
+                  <label class="text-grey-darker">Device ID</label>
                 </div>
                 <div class="w-2/3">
-                    {{device.systeminfo.deviceid}}
+                  {{device.deviceid}}
                 </div>
             </div>
             <div class="w-full flex mb-2">
                 <div class="w-1/3">
-                    <label class="text-grey-darker">Version</label>
+                  <label class="text-grey-darker">Version</label>
                 </div>
                 <div class="w-2/3 flex">
-                    {{device.systeminfo.version}}
+                  {{device.version}}
                 </div> 
             </div>
             <div class="w-full flex justify-center mt-8">
                 <button 
-                    v-if="differentDevice"
-                    class="ml-2 bg-blue hover:bg-dark-blue text-white font-bold py-2 px-4 rounded focus:outline-none"
-                    @click="choose"
-                    >Select device</button>
+                  v-if="differentDevice"
+                  class="ml-2 bg-blue hover:bg-dark-blue text-white font-bold py-2 px-4 rounded focus:outline-none"
+                  @click="choose"
+                  >Select device</button>
             </div>
         </div>
     </div>
@@ -65,37 +69,37 @@ export default {
       return this.$store.state.device
     },
     differentDevice() {
-        if(!this.selectedDevice) return true
-        else if(!this.device) return true
-        else {
-            this.selectedDevice.systeminfo.deviceid !== this.device.systeminfo.deviceid
-        }
+      if(!this.selectedDevice) return true
+      else if(!this.device) return true
+      else {
+        this.selectedDevice.deviceid !== this.device.deviceid
+      }
     }
   },
   methods: {
     getDeviceByIp() {
-        if(this.ip === '#') {
-            this.device = {
-                systeminfo: {
-                    deviceid: 'fake device',
-                    version: '1.0.0'
-                }
-            }
+      if(this.ip === '#') {
+        this.device = {
+          deviceid: 'Fake local device',
+          version: '1.0.0',
+          ip: '127.0.0.1',
         }
-        else {
-            this.$http({
-                url: 'http://' + this.ip + '/Service/DeviceInfo',
-                timeout: 2000,
-                method: 'GET',
-            }).then(({data}) => {
-                this.device = data
-            }).catch(err => {
-                this.error = 'No device found at this IP address'
-            })
-        }   
+      }
+      else {
+        this.$http({
+            url: 'http://' + this.ip + '/Service/DeviceInfo',
+            timeout: 2000,
+            method: 'GET',
+        }).then(({data}) => {
+          // normalize for Master and Stable (stable is camelcase, master is lower case)
+          this.device = data.SystemInfo || data.systeminfo
+        }).catch(err => {
+            this.error = 'No device found at this IP address'
+        })
+      }   
     },
     choose() {
-      this.$store.commit('SET_DEVICE', this.device)
+      this.$store.commit('SET_DEVICE', {ip: this.ip,...this.device})
     }
   }
 }
