@@ -22,7 +22,7 @@
     </div>
     <div class="flex w-4/5 mt-2">
       <div class="w-1/5"></div>
-      <div class="w-3/5"><span class="text-sm text-grey-dark">use # for fake local device</span></div>
+      <div class="w-3/5"><span class="text-sm text-grey-dark">(use # for fake local device)</span></div>
     </div>
     
     <div class="flex w-4/5 mt-8 text-sm" v-if="device.deviceid">
@@ -74,6 +74,7 @@ export default {
   }),
   created() {
     this.device = {...this.selectedDevice}
+    this.ip = this.device.ip || null
   },
   computed: {
     selectedDevice() {
