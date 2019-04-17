@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       device: null,
-      tests: []
+      tests: [],
+      messages: [],
   },
   mutations: {
     SET_DEVICE(state, payload) {
@@ -15,6 +16,12 @@ export default new Vuex.Store({
     SET_TESTS(state, payload) {
       state.tests = payload
     },
+    CLEAR_MESSAGES(state) {
+      state.messages = []
+    },
+    ADD_MESSAGE(state, payload) {
+      state.messages.unshift(payload.message)
+    }
   },
   actions: {
 

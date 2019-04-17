@@ -19,7 +19,6 @@ export default {
     Output,
   },
   data: () =>({
-    messages: [],
     webworker: null,
     next: null,
   }),
@@ -30,6 +29,9 @@ export default {
     },
     device() {
       return this.$store.state.device
+    },
+    messages() {
+      return this.$store.state.messages
     }
   },
   mounted() {
@@ -41,7 +43,7 @@ export default {
       this.webworker.addEventListener('message', this.listener);
     },
     start() {
-      this.messages = []
+      this.$store.commit('CLEAR_MESSAGES')
 
       Contra.each.series(this.tests, (test, next) => {
         this.next = next
@@ -51,7 +53,7 @@ export default {
           device: {ip: this.device.ip}
         })
       }, () => {
-          this.messages.unshift('🎉  All tests done')
+          this.$store.commit('ADD_MESSAGE', {message: '🎉  All tests done'})
       })
   
     },
@@ -59,24 +61,24 @@ export default {
       switch(event.data.type) {
         
         case 'message':
-          this.messages.unshift(['➡️', event.data.payload && event.data.payload.message].join('   '))
+          this.$store.commit('ADD_MESSAGE', {message: ['➡️', event.data.payload && event.data.payload.message].join('   ')})
         break
 
         case 'pass':
-          this.messages.unshift(['✅', event.data.payload && event.data.payload.message].join('   '))
+          this.$store.commit('ADD_MESSAGE', {message: ['✅', event.data.payload && event.data.payload.message].join('   ')})
         break
 
         case 'fail':
-          this.messages.unshift(['❌', event.data.payload && event.data.payload.message].join('   '))
+          this.$store.commit('ADD_MESSAGE', {message: ['❌', event.data.payload && event.data.payload.message].join('   ')})
         break
 
         case 'success':
-          this.messages.unshift(['👍', event.data.payload && event.data.payload.message].join('   '))
+          this.$store.commit('ADD_MESSAGE', {message: ['👍', event.data.payload && event.data.payload.message].join('   ')})
           this.nextTest()
         break        
         
         case 'error':
-          this.messages.unshift(['😭', event.data.payload && event.data.payload.message].join('   '))
+          this.$store.commit('ADD_MESSAGE', {message: ['😭', event.data.payload && event.data.payload.message].join('   ')})
           this.nextTest()
         break
       }
