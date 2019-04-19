@@ -26,6 +26,7 @@
 
 <script>
 import Tests from '../../../tests'
+import TestDetails from '@/components/TestDetails.vue'
 
 export default {
   name: 'TestChooser',
@@ -55,7 +56,11 @@ export default {
     },
     openTestDetailsModal(test) {
       this.$store.commit('OPEN_MODAL', {
-        title: 'Test details - <em> ' + test.title + ' </em>',
+        title: 'Test details',
+        component: TestDetails,
+        context: {
+          test
+        }
       })
     }
   }

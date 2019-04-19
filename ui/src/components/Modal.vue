@@ -5,10 +5,10 @@
     @click="closeModal"
    >
     <div @click.stop="" class="relative bg-white w-full max-w-md m-auto flex-col flex rounded shadow-md min-h-half-screen">
-      <h1 v-if="title" v-html="title" class="mb-4 px-4 py-3 text-lg text-dark-blue bg-offwhite rounded-t" />
-      <div class="py-4 px-8 mb-16 overflow-auto max-h-80-screen">
+      <h1 v-if="title" v-html="title" class="mb-4 px-4 py-3 text-lg text-black bg-offwhite rounded-t" />
+      <div class="py-4 px-8 mb-16 overflow-auto max-h-70-screen">
         <div v-if="content" v-html="content" class="text-sm leading-normal" />
-        <div :is="component" v-if="component" />
+        <div :is="component" v-if="component" v-bind="context" />
       </div>
       <div class="border-t p-3 flex justify-end bg-offwhite rounded-b pr-8 absolute pin-b w-full">
         <button 
