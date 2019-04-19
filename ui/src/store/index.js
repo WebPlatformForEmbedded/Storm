@@ -8,6 +8,13 @@ export default new Vuex.Store({
       device: null,
       tests: [],
       messages: [],
+      modal: {
+        active: false,
+        component: null,
+        content: null,
+        title: null,
+        context: null,
+      }
   },
   mutations: {
     SET_DEVICE(state, payload) {
@@ -21,6 +28,30 @@ export default new Vuex.Store({
     },
     ADD_MESSAGE(state, payload) {
       state.messages.unshift(payload.message)
+    },
+    OPEN_MODAL(state, payload) {
+      state.modal.active = true
+      if(payload.component) {
+        state.modal.component = payload.component
+      }
+      if(payload.content) {
+        state.modal.content = payload.content
+      }
+      if(payload.title) {
+        state.modal.title = payload.title
+      }
+      if(payload.context) {
+        state.modal.context = payload.context
+      }
+    },
+    CLOSE_MODAL(state, payload) {
+      state.modal = {
+        active: false,
+        component: null,
+        content: null,
+        title: null,
+        context: null
+      }
     }
   },
   actions: {

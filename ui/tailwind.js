@@ -128,6 +128,7 @@ let colors = {
   'pink-lighter': '#ffbbca',
   'pink-lightest': '#ffebef',
 
+  'transparent-black': 'rgba(0, 0, 0, 0.45)',
   'dark-grey': '#707374',
   'light-grey': '#e0e0e0',
   'offwhite': '#fafafa',
@@ -575,6 +576,7 @@ module.exports = {
 
   minWidth: {
     '0': '0',
+    '4': '4rem',
     'full': '100%',
   },
 
@@ -598,6 +600,7 @@ module.exports = {
     '0': '0',
     'full': '100%',
     'screen': '100vh',
+    'half-screen': '50vh',
   },
 
 
@@ -649,6 +652,7 @@ module.exports = {
   maxHeight: {
     'full': '100%',
     'screen': '100vh',
+    '80-screen': '80vh',
   },
 
 
