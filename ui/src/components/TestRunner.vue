@@ -53,34 +53,15 @@ export default {
           device: {ip: this.device.ip}
         })
       }, () => {
-          this.$store.commit('ADD_MESSAGE', {message: '🎉  All tests done'})
+          this.$store.commit('ADD_MESSAGE', {type: 'done', payload: {message: 'All tests done'}})
       })
   
     },
     listener(event) {
-      switch(event.data.type) {
-        
-        case 'message':
-          this.$store.commit('ADD_MESSAGE', {message: ['➡️', event.data.payload && event.data.payload.message].join('   ')})
-        break
-
-        case 'pass':
-          this.$store.commit('ADD_MESSAGE', {message: ['✅', event.data.payload && event.data.payload.message].join('   ')})
-        break
-
-        case 'fail':
-          this.$store.commit('ADD_MESSAGE', {message: ['❌', event.data.payload && event.data.payload.message].join('   ')})
-        break
-
-        case 'success':
-          this.$store.commit('ADD_MESSAGE', {message: ['👍', event.data.payload && event.data.payload.message].join('   ')})
-          this.nextTest()
-        break        
-        
-        case 'error':
-          this.$store.commit('ADD_MESSAGE', {message: ['😭', event.data.payload && event.data.payload.message].join('   ')})
-          this.nextTest()
-        break
+      this.$store.commit('ADD_MESSAGE', event.data)
+      // call next test depending on type of event
+      if(['success', 'error'].indexOf(event.data.type) > -1) {
+        this.nextTest()
       }
     },
     nextTest() {

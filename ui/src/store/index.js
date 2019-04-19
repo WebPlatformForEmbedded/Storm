@@ -27,7 +27,7 @@ export default new Vuex.Store({
       state.messages = []
     },
     ADD_MESSAGE(state, payload) {
-      state.messages.unshift(payload.message)
+      state.messages.unshift(payload)
     },
     OPEN_MODAL(state, payload) {
       state.modal.active = true
