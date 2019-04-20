@@ -1,6 +1,22 @@
 export default (worker) => {
 
     return {
+        init(message) {
+            worker.postMessage({
+                type: 'init',
+                payload: {
+                    message: message,
+                }
+            })
+        },
+        step(message) {
+            worker.postMessage({
+                type: 'step',
+                payload: {
+                    message: message,
+                }
+            })
+        },
         log(message) {
             worker.postMessage({
                 type: 'message',
@@ -44,5 +60,3 @@ export default (worker) => {
         },
     }
 }
-
-

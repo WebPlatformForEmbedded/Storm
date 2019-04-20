@@ -26,6 +26,8 @@ export default {
   methods: {
     emoticon(type) {
       const map = {
+        'init': '🚀',
+        'step': '🦶',
         'message': '➡️',
         'pass': '✅',
         'fail': '❌',

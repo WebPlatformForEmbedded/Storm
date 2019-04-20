@@ -1,4 +1,10 @@
 export default {
+    init(name) {
+        console.log('🚀  Starting test `' + name + '`')
+    },
+    step(description) {
+        console.log('🚀  Starting step `' + description + '`')
+    },
     log(msg) {
         console.log('➡️  ' + msg)
     },

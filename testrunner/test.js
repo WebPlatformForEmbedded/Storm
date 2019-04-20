@@ -6,10 +6,12 @@ export default (test, reporter, device) => {
     return {
         exec() {
             
-            reporter.log('Executing ' + test.description)
-
+            reporter.init(test.title)
+ 
             return new Promise((resolve, reject) => {
                 contra.each.series(test.steps, (step, key, next) => {
+
+                    reporter.step(step.description)
 
                     // make device info available in the step as this.device
                     step.device = device

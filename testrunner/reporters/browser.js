@@ -1,4 +1,10 @@
 export default {
+    init(name) {
+        write('🚀  Starting test `' + name + '`')
+    },
+    step(description) {
+        write('🚀  Starting step `' + description + '`')
+    },
     log(msg) {
         write('➡️  ' + msg)
     },
