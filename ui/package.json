@@ -5,7 +5,8 @@
     "serve": "npm run build:webworker && vue-cli-service serve",
     "build": "npm run build:webworker && vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:webworker": "webpack ./src/webworker/index.js -o public/webworker.js"
+    "build:webworker": "webpack ./src/webworker/index.js -o public/webworker.js",
+    "format": "eslint 'src/**/*.{js,vue}' --fix"
   },
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "dependencies": {
@@ -22,7 +23,10 @@
     "@vue/cli-service": "^3.5.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-vue": "^5.0.0",
+    "prettier": "^1.17.0",
     "tailwindcss": "^0.7.4",
     "vue-template-compiler": "^2.5.21"
   }
