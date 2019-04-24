@@ -1,24 +1,25 @@
-<template>  
+<template>
   <div>
-    <div class="w-full border-b border-light-grey mb-4 pb-2 flex" v-for="(test, index) in tests" :key="'test' + index">
-        <div class="w-3/5">
-          <h2 class="text-base text-black w-full mb-2">{{test.title}}</h2>
-          <p class="text-sm text-dark-grey mb-2">{{test.description}}</p>
-          <p class="text-sm text-dark-grey mb-2">
-            <span
-              class="cursor-pointer underline"
-              @click="openTestDetailsModal(test)"
-            >
-              <span class="font-bold">{{test.steps.length}}</span> steps
-            </span>
-          </p>
-        </div>
-        <div class="w-2/5 text-right">
-          <button 
-            class="ml-2 bg-blue hover:bg-dark-blue text-white text-xs font-bold p-2 rounded focus:outline-none"
-            @click="selectOrUnselectTest(test)"
-            v-text="selected(test) ? 'Unselect' : 'Select'"
-          />
+    <div
+      v-for="(test, index) in tests"
+      :key="'test' + index"
+      class="w-full border-b border-light-grey mb-4 pb-2 flex"
+    >
+      <div class="w-3/5">
+        <h2 class="text-base text-black w-full mb-2">{{ test.title }}</h2>
+        <p class="text-sm text-dark-grey mb-2">{{ test.description }}</p>
+        <p class="text-sm text-dark-grey mb-2">
+          <span class="cursor-pointer underline" @click="openTestDetailsModal(test)">
+            <span class="font-bold">{{ test.steps.length }}</span> steps
+          </span>
+        </p>
+      </div>
+      <div class="w-2/5 text-right">
+        <button
+          class="ml-2 bg-blue hover:bg-dark-blue text-white text-xs font-bold p-2 rounded focus:outline-none"
+          @click="selectOrUnselectTest(test)"
+          v-text="selected(test) ? 'Unselect' : 'Select'"
+        />
       </div>
     </div>
   </div>
@@ -34,7 +35,7 @@ export default {
     tests: () => Tests,
     selectedTests() {
       return this.$store.state.tests
-    }
+    },
   },
   methods: {
     selected(test) {
@@ -44,11 +45,10 @@ export default {
     selectOrUnselectTest(test) {
       const tests = this.selectedTests
 
-      if(this.selected(test)) {
+      if (this.selected(test)) {
         const index = tests.indexOf(test)
         tests.splice(index, 1)
-      } 
-      else {
+      } else {
         tests.push(test)
       }
 
@@ -59,13 +59,12 @@ export default {
         title: 'Test details',
         component: TestDetails,
         context: {
-          test
-        }
+          test,
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

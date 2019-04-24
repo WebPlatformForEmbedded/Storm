@@ -16,12 +16,12 @@ export default new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard
+      component: Dashboard,
     },
     {
       path: '/testrunner',
       name: 'testrunner',
-      component: Testrunner
+      component: Testrunner,
     },
-  ]
+  ],
 })

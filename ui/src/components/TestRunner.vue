@@ -1,10 +1,12 @@
-<template>  
+<template>
   <div>
-      <button
-          class="mb-8 bg-blue hover:bg-dark-blue text-white font-bold py-2 px-4 rounded focus:outline-none"
-          @click="start"
-        >Start</button>
-        <Output :messages="messages" v-if="messages.length" />
+    <button
+      class="mb-8 bg-blue hover:bg-dark-blue text-white font-bold py-2 px-4 rounded focus:outline-none"
+      @click="start"
+    >
+      Start
+    </button>
+    <Output v-if="messages.length" :messages="messages" />
   </div>
 </template>
 
@@ -18,7 +20,7 @@ export default {
   components: {
     Output,
   },
-  data: () =>({
+  data: () => ({
     webworker: null,
     next: null,
   }),
@@ -32,7 +34,7 @@ export default {
     },
     messages() {
       return this.$store.state.messages
-    }
+    },
   },
   mounted() {
     this.initiateWebworker()
@@ -40,40 +42,45 @@ export default {
   methods: {
     initiateWebworker() {
       this.webworker = new Worker('/webworker.js?' + Math.random())
-      this.webworker.addEventListener('message', this.listener);
+      this.webworker.addEventListener('message', this.listener)
     },
     start() {
       this.$store.commit('CLEAR_MESSAGES')
 
-      Contra.each.series(this.tests, (test, next) => {
-        this.next = next
-        this.webworker.postMessage({
-          action: 'start',
-          testName: test.title,
-          device: {ip: this.device.ip}
-        })
-      }, () => {
-          this.$store.commit('ADD_MESSAGE', {type: 'done', payload: {message: 'All tests done'}})
-      })
-  
+      Contra.each.series(
+        this.tests,
+        (test, next) => {
+          this.next = next
+          this.webworker.postMessage({
+            action: 'start',
+            testName: test.title,
+            device: { ip: this.device.ip },
+          })
+        },
+        () => {
+          this.$store.commit('ADD_MESSAGE', {
+            type: 'done',
+            payload: { message: 'All tests done' },
+          })
+        }
+      )
     },
     listener(event) {
       this.$store.commit('ADD_MESSAGE', event.data)
       // call next test depending on type of event
-      if(['success', 'error'].indexOf(event.data.type) > -1) {
+      if (['success', 'error'].indexOf(event.data.type) > -1) {
         this.nextTest()
       }
     },
     nextTest() {
-      if(this.next && typeof this.next === 'function') {
+      if (this.next && typeof this.next === 'function') {
         setTimeout(() => {
           this.next()
         }, 2000)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

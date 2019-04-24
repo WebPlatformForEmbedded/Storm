@@ -5,16 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-      device: null,
-      tests: [],
-      messages: [],
-      modal: {
-        active: false,
-        component: null,
-        content: null,
-        title: null,
-        context: null,
-      }
+    device: null,
+    tests: [],
+    messages: [],
+    modal: {
+      active: false,
+      component: null,
+      content: null,
+      title: null,
+      context: null,
+    },
   },
   mutations: {
     SET_DEVICE(state, payload) {
@@ -31,16 +31,16 @@ export default new Vuex.Store({
     },
     OPEN_MODAL(state, payload) {
       state.modal.active = true
-      if(payload.component) {
+      if (payload.component) {
         state.modal.component = payload.component
       }
-      if(payload.content) {
+      if (payload.content) {
         state.modal.content = payload.content
       }
-      if(payload.title) {
+      if (payload.title) {
         state.modal.title = payload.title
       }
-      if(payload.context) {
+      if (payload.context) {
         state.modal.context = payload.context
       }
     },
@@ -50,11 +50,9 @@ export default new Vuex.Store({
         component: null,
         content: null,
         title: null,
-        context: null
+        context: null,
       }
-    }
+    },
   },
-  actions: {
-
-  }
+  actions: {},
 })
