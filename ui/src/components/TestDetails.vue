@@ -3,7 +3,7 @@
     <h4 class="text-lg text-dark-blue mb-4">{{ test.title }}</h4>
     <p class="text-dark-grey italic">{{ test.description }}</p>
     <ul class="list-reset mt-8">
-      <li v-for="(step, index) in test.steps" class="py-2 border-b text-base">
+      <li v-for="(step, index) in test.steps" :key="'step' + index" class="py-2 border-b text-base">
         <div class="flex w-full pl-2">
           <div class="w-12">
             <span
