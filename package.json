@@ -8,7 +8,9 @@
     "ui:serve": "http-server ./ui/dist -p 2020 -o",
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install",
-    "cli:run": "node ./cli"
+    "cli:run": "node ./cli",
+    "lint": "eslint '**/*.{js,vue}'",
+    "lint:fix": "eslint '**/*.{js,vue}' --fix"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,13 @@
   "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
   "dependencies": {
     "http-server": "^0.11.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-vue": "^5.2.2",
+    "prettier": "^1.17.0"
   }
 }
