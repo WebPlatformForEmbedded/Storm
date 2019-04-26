@@ -1,23 +1,23 @@
 export default {
-  init(name) {
-    console.log('🚀  Starting test `' + name + '`')
+  init(test) {
+    console.log('🚀  Starting test `' + test.title + '`')
   },
-  step(description) {
-    console.log('🚀  Starting step `' + description + '`')
+  step(test, step) {
+    console.log('🚀  Starting step `' + step.description + '`')
   },
   log(msg) {
     console.log('➡️  ' + msg)
   },
-  pass(description) {
-    console.log('✅  Step `' + description + '` passed')
+  pass(test, step) {
+    console.log('✅  Step `' + step.description + '` passed')
   },
-  fail(description, err) {
-    console.log('❌  Step  `' + description + '` failed', err)
+  fail(test, step, err) {
+    console.log('❌  Step  `' + step.description + '` failed', err)
   },
-  success() {
+  success(test) {
     console.log('👍  Success')
   },
-  error() {
-    console.log('😭  Error')
+  error(test, err) {
+    console.log('😭  Error', err)
   },
 }

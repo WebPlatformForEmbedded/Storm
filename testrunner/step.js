@@ -39,7 +39,7 @@ export default (step, reporter) => {
                 if (step.validate(res) === true) {
                   return resolve(res)
                 } else {
-                  return reject(res)
+                  return reject(new Error('Validation failed'))
                 }
               })
               .catch(err => {
@@ -51,7 +51,7 @@ export default (step, reporter) => {
             if (step.validate(result) === true) {
               return resolve(result)
             } else {
-              return reject()
+              return reject(new Error('Validation failed'))
             }
           }
         }, step.sleep * 1000 || 500)

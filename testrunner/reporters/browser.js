@@ -1,24 +1,24 @@
 export default {
-  init(name) {
-    write('🚀  Starting test `' + name + '`')
+  init(test) {
+    write('🚀  Starting test `' + test.title + '`')
   },
-  step(description) {
-    write('🚀  Starting step `' + description + '`')
+  step(test, step) {
+    write('🚀  Starting step `' + step.description + '`')
   },
   log(msg) {
     write('➡️  ' + msg)
   },
-  pass(description) {
-    write('✅  Step `' + description + '` passed')
+  pass(test, step) {
+    write('✅  Step `' + step.description + '` passed')
   },
-  fail(description, err) {
-    write('❌  Step  `' + description + '` failed', err)
+  fail(test, step, err) {
+    write('❌  Step  `' + step.description + '` failed', err)
   },
-  success() {
+  success(test) {
     write('👍  Success')
   },
-  error() {
-    write('😭  Error')
+  error(test, err) {
+    write('😭  Error', err)
   },
 }
 
