@@ -27,5 +27,12 @@ export default {
       params: 1,
       assert: 1,
     },
+    {
+      description: 'A failing test',
+      sleep: 2,
+      test: x => x,
+      params: 1,
+      assert: 2,
+    },
   ],
 }
