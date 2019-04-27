@@ -1,18 +1,23 @@
+import sanitizer from './sanitizer'
+
 export default worker => {
   return {
-    init(message) {
+    init(test) {
       worker.postMessage({
         type: 'init',
         payload: {
-          message: message,
+          message: 'Initiating test - ' + test.title,
+          test: sanitizer(test),
         },
       })
     },
-    step(message) {
+    step(test, step) {
       worker.postMessage({
         type: 'step',
         payload: {
-          message: message,
+          message: step.description,
+          test: sanitizer(test),
+          step: sanitizer(step),
         },
       })
     },
@@ -24,36 +29,43 @@ export default worker => {
         },
       })
     },
-    pass(description) {
+    pass(test, step) {
       worker.postMessage({
         type: 'pass',
         payload: {
-          message: 'Step `' + description + '` passed',
+          message: 'Step `' + step.description + '` passed',
+          test: sanitizer(test),
+          step: sanitizer(step),
         },
       })
     },
-    fail(description, err) {
+    fail(test, step, error) {
       worker.postMessage({
         type: 'fail',
         payload: {
-          message: 'Step  `' + description,
-          error: err,
+          message: 'Step  `' + step.description,
+          test: sanitizer(test),
+          step: sanitizer(step),
+          error: sanitizer(error),
         },
       })
     },
-    success() {
+    success(test) {
       worker.postMessage({
         type: 'success',
         payload: {
           message: 'Success',
+          test: sanitizer(test),
         },
       })
     },
-    error() {
+    error(test, error) {
       worker.postMessage({
         type: 'error',
         payload: {
           message: 'Error',
+          test: sanitizer(test),
+          error: sanitizer(error),
         },
       })
     },
