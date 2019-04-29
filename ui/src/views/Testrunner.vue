@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="max-w-xl">
     <h1 class="text-xl mb-8">Test runner</h1>
 
     <div class="w-full border-b border-light-grey flex pb-4 mb-4">
