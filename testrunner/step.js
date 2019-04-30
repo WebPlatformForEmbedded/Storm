@@ -21,6 +21,9 @@ export default (step, reporter) => {
     exec() {
       return new Promise((resolve, reject) => {
         if ('sleep' in step) {
+          if (typeof step.sleep === 'function') {
+            step.sleep = step.sleep()
+          }
           reporter.log('Sleeping for ' + step.sleep + ' seconds')
         }
 
@@ -54,7 +57,7 @@ export default (step, reporter) => {
               return reject(new Error('Validation failed'))
             }
           }
-        }, step.sleep * 1000 || 500)
+        }, Number(step.sleep) * 1000 || 500)
       })
     },
   }
