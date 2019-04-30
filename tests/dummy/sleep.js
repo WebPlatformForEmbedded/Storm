@@ -39,7 +39,7 @@ export default {
     },
     {
       description:
-        'A test sleep value with a function (that returns a number) should be executed with a delay (at the next minute change)',
+        'A test with a sleep value with a function (that returns a number) should be executed with a delay (at the next minute change)',
       test: x => x,
       sleep: () => {
         const date = new Date()
@@ -51,7 +51,7 @@ export default {
     },
     {
       description:
-        'A test sleep value with a function (that does not return a number) should be executed immediately',
+        'A test with a sleep value with a function (that does not return a number) should be executed immediately',
       test: x => x,
       sleep: () => {
         return 'lorem ipsum'
@@ -61,7 +61,7 @@ export default {
     },
     {
       description:
-        'A test sleep value with a function (that returns a number as a string) should be executed with delay',
+        'A test with a sleep value with a function (that returns a number as a string) should be executed with delay',
       test: x => x,
       sleep: () => {
         return '4'
