@@ -6,13 +6,19 @@
     >
       Start
     </button>
+
+    <div class="flex flex-wrap w-full">
+      <div class="w-full">
+        <SuiteProgress :tests="tests" :messages="messages" />
+      </div>
+    </div>
     <div class="flex flex-wrap w-full">
       <div class="w-1/2">
         <Output v-if="messages.length" :messages="messages" />
       </div>
       <div class="w-1/2 pl-8">
         <TestProgress
-          v-for="test in reversedTests"
+          v-for="test in tests"
           :key="'test' + test.title"
           :test="test"
           :messages="messages"
@@ -23,16 +29,19 @@
 </template>
 
 <script>
+import Contra from 'contra'
+
 import Runner from '../../../testrunner'
 import Output from '@/components/Output.vue'
 import TestProgress from '@/components/TestProgress'
-import Contra from 'contra'
+import SuiteProgress from '@/components/SuiteProgress'
 
 export default {
   name: 'TestRunner',
   components: {
     Output,
     TestProgress,
+    SuiteProgress,
   },
   data: () => ({
     webworker: null,
@@ -48,9 +57,6 @@ export default {
     },
     messages() {
       return this.$store.state.messages
-    },
-    reversedTests() {
-      return this.tests ? [...this.tests].reverse() : []
     },
   },
   mounted() {
