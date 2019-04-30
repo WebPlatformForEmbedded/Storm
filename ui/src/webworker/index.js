@@ -10,6 +10,8 @@ self.addEventListener('message', e => {
 
     if (test) {
       Runner(test, reporter(self), e.data.device)
+        .then(() => {})
+        .catch(() => {})
     } else {
       console.log('no test found')
     }

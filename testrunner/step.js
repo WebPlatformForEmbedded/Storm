@@ -30,10 +30,16 @@ export default (step, reporter) => {
         setTimeout(() => {
           reporter.log('Executing ' + step.description)
 
-          const result = step.test.apply(
-            step,
-            step.params instanceof Array ? step.params : [step.params]
-          )
+          let result
+
+          try {
+            result = step.test.apply(
+              step,
+              step.params instanceof Array ? step.params : [step.params]
+            )
+          } catch (e) {
+            return reject(e)
+          }
 
           // asynchronous test function
           if (result.then && typeof result.then === 'function') {
