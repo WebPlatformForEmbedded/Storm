@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="w-full flex mb-8 relative">
+      <h2 class="text-lg text-dark-blue mb-8">Tests</h2>
+      <button
+        class="absolute pin-t pin-r ml-2 bg-blue hover:bg-dark-blue text-white text-xs font-bold p-2 rounded focus:outline-none"
+        @click="toggleAll()"
+        v-text="selectedTests.length ? 'Unselect all' : 'Select all'"
+      />
+    </div>
     <div
       v-for="(test, index) in tests"
       :key="'test' + index"
@@ -62,6 +70,13 @@ export default {
           test,
         },
       })
+    },
+    toggleAll() {
+      if (this.selectedTests.length) {
+        this.$store.commit('SET_TESTS', [])
+      } else {
+        this.$store.commit('SET_TESTS', this.tests)
+      }
     },
   },
 }

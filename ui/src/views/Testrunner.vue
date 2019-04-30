@@ -11,7 +11,6 @@
         </span>
       </div>
       <div class="w-3/5 flex-auto">
-        <h2 class="text-lg text-dark-blue mb-8">Device</h2>
         <DeviceChooser />
       </div>
     </div>
@@ -25,7 +24,6 @@
         </span>
       </div>
       <div class="w-3/5 flex-auto">
-        <h2 class="text-lg text-dark-blue mb-8">Tests</h2>
         <TestChooser />
       </div>
     </div>
@@ -39,7 +37,6 @@
         </span>
       </div>
       <div class="w-3/5 flex-auto">
-        <h2 class="text-lg text-dark-blue mb-8">Run tests</h2>
         <TestRunner />
       </div>
     </div>

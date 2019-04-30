@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 class="text-lg text-dark-blue mb-8">Device</h2>
     <div class="flex w-4/5">
       <div class="w-1/5 flex items-center">
         <label class="text-grey-darker">IP address</label>

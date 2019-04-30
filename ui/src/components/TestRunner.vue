@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2 class="text-lg text-dark-blue mb-8">Run tests</h2>
+
     <button
       class="mb-8 bg-blue hover:bg-dark-blue text-white font-bold py-2 px-4 rounded focus:outline-none"
       @click="start"
