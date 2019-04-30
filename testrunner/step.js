@@ -17,6 +17,18 @@ export default (step, reporter) => {
     }
   }
 
+  const validate = (step, result, resolve, reject) => {
+    try {
+      if (step.validate(result) === true) {
+        return resolve(result)
+      } else {
+        return reject(new Error('Validation failed'))
+      }
+    } catch (e) {
+      reject(e)
+    }
+  }
+
   return {
     exec() {
       return new Promise((resolve, reject) => {
@@ -45,11 +57,7 @@ export default (step, reporter) => {
           if (result.then && typeof result.then === 'function') {
             result
               .then(res => {
-                if (step.validate(res) === true) {
-                  return resolve(res)
-                } else {
-                  return reject(new Error('Validation failed'))
-                }
+                validate(step, res, resolve, reject)
               })
               .catch(err => {
                 return reject(err)
@@ -57,11 +65,7 @@ export default (step, reporter) => {
           }
           // synchronous test function
           else {
-            if (step.validate(result) === true) {
-              return resolve(result)
-            } else {
-              return reject(new Error('Validation failed'))
-            }
+            validate(step, result, resolve, reject)
           }
         }, Number(step.sleep) * 1000 || 500)
       })
