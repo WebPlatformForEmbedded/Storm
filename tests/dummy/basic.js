@@ -2,7 +2,7 @@ export default {
   id: 1,
   title: 'Dummy - Basic functionality',
   description:
-    'Testing synchonous and asynchronous tests with assert and custom validation methods',
+    'Testing synchronous and asynchronous tests with assert and custom validation methods',
   steps: [
     {
       description: 'A synchronous test with assert',
