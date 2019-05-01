@@ -13,26 +13,35 @@ export default (test, reporter, device) => {
         executeAsPromise(test.setup).then(() => {
           contra.each.series(
             test.steps,
-            (step, key, next) => {
+            (step, next) => {
               reporter.step(test, step)
 
               // make device info available in the step as this.device
               step.device = device
 
-              try {
-                Step(step, reporter)
-                  .exec()
-                  .then(() => {
-                    reporter.pass(test, step)
-                    next()
-                  })
-                  .catch(err => {
-                    reporter.fail(test, step, err)
-                    next(err)
-                  })
-              } catch (e) {
-                next(e)
-              }
+              // repeat steps (defaults to only once)
+              contra.each.series(
+                Array(step.repeat || 1).fill(step),
+                (repeatStep, index, repeat) => {
+                  try {
+                    return Step(repeatStep, reporter)
+                      .exec()
+                      .then(() => {
+                        reporter.pass(test, step)
+                        repeat()
+                      })
+                      .catch(err => {
+                        reporter.fail(test, step, err)
+                        repeat(err)
+                      })
+                  } catch (e) {
+                    next(e)
+                  }
+                },
+                err => {
+                  next(err)
+                }
+              )
             },
             err => {
               // first report the result
