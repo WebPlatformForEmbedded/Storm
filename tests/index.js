@@ -8,6 +8,9 @@ export default [
   require('./dummy/error-1.js').default,
   require('./dummy/error-2.js').default,
   require('./dummy/timeout.js').default,
+  require('./dummy/setup-teardown-1.js').default,
+  require('./dummy/setup-teardown-2.js').default,
+  require('./dummy/setup-teardown-3.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,

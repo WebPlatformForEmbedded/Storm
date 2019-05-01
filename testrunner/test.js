@@ -7,6 +7,10 @@ export default (test, reporter, device) => {
       reporter.init(test)
 
       return new Promise((resolve, reject) => {
+        // run setup function if it exists
+        if (test.setup && typeof test.setup === 'function') {
+          test.setup()
+        }
         contra.each.series(
           test.steps,
           (step, key, next) => {
@@ -37,6 +41,10 @@ export default (test, reporter, device) => {
             } else {
               reporter.success(test)
               resolve()
+            }
+            // run teardown if it exists
+            if (test.teardown && typeof test.teardown === 'function') {
+              test.teardown()
             }
           }
         )
