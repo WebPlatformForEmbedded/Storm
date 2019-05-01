@@ -12,6 +12,7 @@ export default [
   require('./dummy/setup-teardown-1.js').default,
   require('./dummy/setup-teardown-2.js').default,
   require('./dummy/setup-teardown-3.js').default,
+  require('./dummy/setup-teardown-4.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,
