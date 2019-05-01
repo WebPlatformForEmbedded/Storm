@@ -35,18 +35,13 @@ export default (test, reporter, device) => {
               }
             },
             err => {
-              if (err) {
-                reporter.error(test, err)
-                reject(err)
-              } else {
-                reporter.success(test)
-                resolve()
-              }
-              // run teardown if it exists
-              // not to self: think about place of this code and how case of async teardown should be handled
-              if (test.teardown && typeof test.teardown === 'function') {
-                test.teardown()
-              }
+              // first report the result
+              err ? reporter.error(test, err) : reporter.success(test)
+              // then execute the teardown
+              executeAsPromise(test.teardown).then(() => {
+                // and finally resolve or reject
+                err ? reject(err) : resolve()
+              })
             }
           )
         })

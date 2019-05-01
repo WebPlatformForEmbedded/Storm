@@ -6,7 +6,7 @@ export default {
     return new Promise(resolve =>
       setTimeout(() => {
         console.log(
-          'I am an asynchronous Setup method. I should finish running before the steps start.'
+          'I am an asynchronous Setup method. I should finish running before the steps start. I take 3 seconds to finish.'
         )
         resolve()
       }, 3000)
@@ -15,7 +15,9 @@ export default {
   teardown: () => {
     return new Promise(resolve =>
       setTimeout(() => {
-        console.log('I am an asynchronous Teardown method. I should run after the steps.')
+        console.log(
+          'I am an asynchronous Teardown method. I should run after the steps and I take 3 seconds to finish.'
+        )
         resolve()
       }, 3000)
     )
