@@ -4,6 +4,7 @@ export default [
   require('./dummy/failing-2.js').default,
   require('./dummy/failing-3.js').default,
   require('./dummy/failing-4.js').default,
+  require('./dummy/failing-5.js').default,
   require('./dummy/sleep.js').default,
   require('./dummy/error-1.js').default,
   require('./dummy/error-2.js').default,
