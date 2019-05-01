@@ -1,4 +1,4 @@
-export default (step, reporter) => {
+export default (step, reporter, index) => {
   // todo: more / better validations of step
   if ('description' in step === false) {
     throw Error('No description supplied for step')
@@ -40,7 +40,7 @@ export default (step, reporter) => {
         }
 
         setTimeout(() => {
-          reporter.log('Executing ' + step.description)
+          reporter.log((index > 0 ? 'Repeating ' : 'Executing ') + step.description)
 
           let result
 

@@ -24,7 +24,7 @@ export default (test, reporter, device) => {
                 Array(step.repeat || 1).fill(step),
                 (repeatStep, index, repeat) => {
                   try {
-                    return Step(repeatStep, reporter)
+                    return Step(repeatStep, reporter, index)
                       .exec()
                       .then(() => {
                         reporter.pass(test, step)
