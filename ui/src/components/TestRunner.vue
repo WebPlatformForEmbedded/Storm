@@ -93,7 +93,7 @@ export default {
     listener(event) {
       this.$store.commit('ADD_MESSAGE', event.data)
       // call next test depending on type of event
-      if (['success', 'error'].indexOf(event.data.type) > -1) {
+      if (event.data.type === 'finished') {
         this.nextTest()
       }
     },

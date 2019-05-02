@@ -3,12 +3,22 @@
     <h4 class="text-lg text-dark-blue mb-4">{{ test.title }}</h4>
     <p class="text-dark-grey italic">{{ test.description }}</p>
     <div class="w-full h-3 bg-light-grey border border-grey rounded-lg mt-4 mb-2">
+      <!-- <pre>{{ lastMessage }}</pre> -->
       <div
         :style="{ width: progress + '%', transition: 'all .3s ease' }"
         :class="{
-          'bg-blue': progress < 100 && lastMessage && lastMessage.type !== 'error',
-          'bg-green': progress >= 100 && lastMessage && lastMessage.type === 'success',
-          'bg-red': lastMessage && lastMessage.type === 'error',
+          'bg-blue': progress < 100 && lastMessage && lastMessage.type !== 'finished',
+          'bg-green':
+            progress >= 100 &&
+            lastMessage &&
+            lastMessage.type === 'finished' &&
+            lastMessage.payload &&
+            !lastMessage.payload.error,
+          'bg-red':
+            lastMessage &&
+            lastMessage.type === 'finished' &&
+            lastMessage.payload &&
+            lastMessage.payload.error,
         }"
         class="h-full rounded-lg text-sm"
       >

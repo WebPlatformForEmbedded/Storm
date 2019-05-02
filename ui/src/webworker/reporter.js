@@ -69,5 +69,15 @@ export default worker => {
         },
       })
     },
+    finished(test, error) {
+      worker.postMessage({
+        type: 'finished',
+        payload: {
+          message: 'Finished',
+          test: sanitizer(test),
+          error: sanitizer(error),
+        },
+      })
+    },
   }
 }
