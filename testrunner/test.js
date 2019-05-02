@@ -3,57 +3,114 @@ import Step from './step'
 import executeAsPromise from './lib/executeAsPromise'
 
 export default (test, reporter, device) => {
+  const runSetup = method => {
+    if (method && typeof method === 'function') {
+      reporter.log('Running Test Setup')
+    }
+    return executeAsPromise(method)
+  }
+
+  const runTeardown = method => {
+    if (method && typeof method === 'function') {
+      reporter.log('Running Test Teardown')
+    }
+    return executeAsPromise(method)
+  }
+
+  const runSteps = steps => {
+    return new Promise((resolve, reject) => {
+      contra.each.series(
+        steps,
+        (step, next) => {
+          reporter.step(test, step)
+
+          // make device info available in the step as this.device
+          step.device = device
+
+          // repeat steps (defaults to only once)
+          contra.each.series(
+            Array(step.repeat || 1).fill(step),
+            (repeatStep, index, repeat) => {
+              runStep(repeatStep, index)
+                .then(() => {
+                  repeat()
+                })
+                .catch(err => next(err))
+            },
+            err => {
+              next(err)
+            }
+          )
+        },
+        err => {
+          err ? reject(err) : resolve()
+        }
+      )
+    })
+  }
+
+  const runStep = (step, index) => {
+    return new Promise((resolve, reject) => {
+      try {
+        return Step(step, reporter, index)
+          .exec()
+          .then(() => {
+            reporter.pass(test, step)
+            resolve()
+          })
+          .catch(err => {
+            reporter.fail(test, step, err)
+            reject(err)
+          })
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
   return {
     exec() {
       reporter.init(test)
 
       return new Promise((resolve, reject) => {
-        // note to self: this is becoming a bit difficult to understand
-        // at a glance, should refactor / restructure!
-        executeAsPromise(test.setup).then(() => {
-          contra.each.series(
-            test.steps,
-            (step, next) => {
-              reporter.step(test, step)
-
-              // make device info available in the step as this.device
-              step.device = device
-
-              // repeat steps (defaults to only once)
-              contra.each.series(
-                Array(step.repeat || 1).fill(step),
-                (repeatStep, index, repeat) => {
-                  try {
-                    return Step(repeatStep, reporter, index)
-                      .exec()
-                      .then(() => {
-                        reporter.pass(test, step)
-                        repeat()
-                      })
-                      .catch(err => {
-                        reporter.fail(test, step, err)
-                        repeat(err)
-                      })
-                  } catch (e) {
-                    next(e)
-                  }
-                },
-                err => {
-                  next(err)
-                }
-              )
+        contra.series(
+          [
+            // first run setup of test
+            next => {
+              runSetup(test.setup)
+                .then(next)
+                .catch(e => {
+                  next(e)
+                })
             },
-            err => {
-              // first report the result
-              err ? reporter.error(test, err) : reporter.success(test)
-              // then execute the teardown
-              executeAsPromise(test.teardown).then(() => {
-                // and finally resolve or reject
-                err ? reject(err) : resolve()
-              })
+            // run the steps
+            next => {
+              runSteps(test.steps)
+                .then(next)
+                .catch(e => {
+                  next(e)
+                })
+            },
+            // after steps run teardown
+            next => {
+              runTeardown(test.tearDown)
+                .then(next)
+                .catch(e => {
+                  next(e)
+                })
+            },
+          ],
+          // done!
+          (err, results) => {
+            if (err) {
+              reporter.error(test, err)
+              reject(err)
+            } else {
+              reporter.success(test)
+              resolve(results)
             }
-          )
-        })
+          }
+        )
       })
     },
   }
