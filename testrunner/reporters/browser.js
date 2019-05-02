@@ -20,6 +20,9 @@ export default {
   error(test, err) {
     write('😭  Error', err)
   },
+  finished(test) {
+    write('🏁  Test finished running')
+  },
 }
 
 const write = str => {

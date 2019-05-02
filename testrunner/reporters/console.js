@@ -20,4 +20,7 @@ export default {
   error(test, err) {
     console.log('😭  Error', err)
   },
+  finished(test) {
+    console.log('🏁  Test finished running')
+  },
 }

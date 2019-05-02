@@ -3,6 +3,57 @@ import Step from './step'
 import executeAsPromise from './lib/executeAsPromise'
 
 export default (test, reporter, device) => {
+  const runTest = (test, index) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(
+        () => {
+          reporter.init(test)
+
+          contra.series(
+            [
+              // first run setup of test
+              next => {
+                runSetup(test.setup)
+                  .then(next)
+                  .catch(e => {
+                    next(e)
+                  })
+              },
+              // run the steps
+              next => {
+                runSteps(test.steps)
+                  .then(next)
+                  .catch(e => {
+                    next(e)
+                  })
+              },
+              // after steps run teardown
+              next => {
+                runTeardown(test.tearDown)
+                  .then(next)
+                  .catch(e => {
+                    next(e)
+                  })
+              },
+            ],
+            // done!
+            (err, results) => {
+              if (err) {
+                reporter.error(test, err)
+                reject(err)
+              } else {
+                reporter.success(test)
+                resolve()
+              }
+            }
+          )
+        },
+        // wait for 2 seconds between repeating a test (but not on the first run!)
+        Math.min(1, index) * 2000
+      )
+    })
+  }
+
   const runSetup = method => {
     if (method && typeof method === 'function') {
       reporter.log('Running Test Setup')
@@ -70,45 +121,19 @@ export default (test, reporter, device) => {
 
   return {
     exec() {
-      reporter.init(test)
-
       return new Promise((resolve, reject) => {
-        contra.series(
-          [
-            // first run setup of test
-            next => {
-              runSetup(test.setup)
-                .then(next)
-                .catch(e => {
-                  next(e)
-                })
-            },
-            // run the steps
-            next => {
-              runSteps(test.steps)
-                .then(next)
-                .catch(e => {
-                  next(e)
-                })
-            },
-            // after steps run teardown
-            next => {
-              runTeardown(test.tearDown)
-                .then(next)
-                .catch(e => {
-                  next(e)
-                })
-            },
-          ],
-          // done!
-          (err, results) => {
-            if (err) {
-              reporter.error(test, err)
-              reject(err)
-            } else {
-              reporter.success(test)
-              resolve(results)
-            }
+        contra.each.series(
+          Array(test.repeat || 1).fill(test),
+          (repeatTest, index, repeat) => {
+            runTest(repeatTest, index)
+              .then(repeat)
+              .catch(e => {
+                repeat(e)
+              })
+          },
+          err => {
+            reporter.finished(test, err)
+            err ? reject(err) : resolve()
           }
         )
       })
