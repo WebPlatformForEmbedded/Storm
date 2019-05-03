@@ -95,6 +95,11 @@ export default (test, reporter, device) => {
           // make device info available in the step as this.device
           step.device = device
 
+          // Note: putting this logic here, means that calculated times to repeat this step
+          // will be the same for each test repetition (and not re evaluated each time) ...
+          if (step.repeat && typeof step.repeat === 'function') {
+            step.repeat = step.repeat()
+          }
           // repeat steps (defaults to only once)
           contra.each.series(
             Array(nrRepetitions(step.repeat)).fill(step),
@@ -146,6 +151,9 @@ export default (test, reporter, device) => {
   return {
     exec() {
       return new Promise((resolve, reject) => {
+        if (test.repeat && typeof test.repeat === 'function') {
+          test.repeat = test.repeat()
+        }
         contra.each.series(
           Array(nrRepetitions(test.repeat)).fill(test),
           (repeatTest, index, repeat) => {
