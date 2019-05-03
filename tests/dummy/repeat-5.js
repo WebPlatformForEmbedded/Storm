@@ -17,7 +17,7 @@ export default {
   },
   steps: [
     {
-      description: 'Just a basic test step that should run 3 times',
+      description: 'Just a basic test step that should run a random amount of times',
       test: x => x,
       params: 1,
       assert: 1,
