@@ -29,7 +29,7 @@ export default (test, reporter, device) => {
               },
               // after steps run teardown
               next => {
-                runTeardown(test.tearDown)
+                runTeardown(test.teardown)
                   .then(next)
                   .catch(e => {
                     next(e)
