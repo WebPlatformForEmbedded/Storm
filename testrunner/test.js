@@ -68,7 +68,7 @@ export default (test, reporter, device) => {
     if (!test.repeat) {
       return true
     }
-    return index == test.repeat - 1
+    return index == nrRepetitions(test.repeat) - 1
   }
 
   const runSetup = method => {
@@ -97,7 +97,7 @@ export default (test, reporter, device) => {
 
           // repeat steps (defaults to only once)
           contra.each.series(
-            Array(step.repeat || 1).fill(step),
+            Array(nrRepetitions(step.repeat)).fill(step),
             (repeatStep, index, repeat) => {
               runStep(repeatStep, index)
                 .then(() => {
@@ -136,11 +136,18 @@ export default (test, reporter, device) => {
     })
   }
 
+  const nrRepetitions = repeat => {
+    if (typeof repeat === 'object' && repeat.times) {
+      return repeat.times || 1
+    }
+    return repeat || 1
+  }
+
   return {
     exec() {
       return new Promise((resolve, reject) => {
         contra.each.series(
-          Array(test.repeat || 1).fill(test),
+          Array(nrRepetitions(test.repeat)).fill(test),
           (repeatTest, index, repeat) => {
             runTest(repeatTest, index)
               .then(repeat)
