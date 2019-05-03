@@ -13,11 +13,13 @@ export default (test, reporter, device) => {
             [
               // first run setup of test
               next => {
-                runSetup(test.setup)
-                  .then(next)
-                  .catch(e => {
-                    next(e)
-                  })
+                shouldRunSetup(index)
+                  ? runSetup(test.setup)
+                      .then(next)
+                      .catch(e => {
+                        next(e)
+                      })
+                  : next()
               },
               // run the steps
               next => {
@@ -29,11 +31,13 @@ export default (test, reporter, device) => {
               },
               // after steps run teardown
               next => {
-                runTeardown(test.teardown)
-                  .then(next)
-                  .catch(e => {
-                    next(e)
-                  })
+                shouldRunTeardown(test, index)
+                  ? runTeardown(test.teardown)
+                      .then(next)
+                      .catch(e => {
+                        next(e)
+                      })
+                  : next()
               },
             ],
             // done!
@@ -52,6 +56,19 @@ export default (test, reporter, device) => {
         Math.min(1, index) * 2000
       )
     })
+  }
+
+  const shouldRunSetup = index => {
+    // only run on the first repeat
+    return index <= 0
+  }
+
+  const shouldRunTeardown = (test, index) => {
+    // only run on the last repeat
+    if (!test.repeat) {
+      return true
+    }
+    return index == test.repeat - 1
   }
 
   const runSetup = method => {
