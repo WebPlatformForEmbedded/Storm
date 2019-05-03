@@ -13,7 +13,7 @@ export default (test, reporter, device) => {
             [
               // first run setup of test
               next => {
-                shouldRunSetup(index)
+                shouldRunSetup(test.repeat, index)
                   ? runSetup(test.setup)
                       .then(next)
                       .catch(e => {
@@ -31,7 +31,7 @@ export default (test, reporter, device) => {
               },
               // after steps run teardown
               next => {
-                shouldRunTeardown(test, index)
+                shouldRunTeardown(test.repeat, index)
                   ? runTeardown(test.teardown)
                       .then(next)
                       .catch(e => {
@@ -58,17 +58,26 @@ export default (test, reporter, device) => {
     })
   }
 
-  const shouldRunSetup = index => {
-    // only run on the first repeat
-    return index <= 0
+  const shouldRunSetup = (repeat, index) => {
+    // repetition
+    if (index > 0) {
+      if (repeat && typeof repeat === 'object') {
+        return !!repeat.setup
+      }
+      return false
+    }
+    // always run first time
+    return true
   }
 
-  const shouldRunTeardown = (test, index) => {
-    // only run on the last repeat
-    if (!test.repeat) {
+  const shouldRunTeardown = (repeat, index) => {
+    // always run on the last repeat
+    if (index == nrRepetitions(repeat) - 1) {
       return true
     }
-    return index == nrRepetitions(test.repeat) - 1
+    if (repeat && typeof repeat === 'object') {
+      return !!repeat.teardown
+    }
   }
 
   const runSetup = method => {
