@@ -1,5 +1,5 @@
 export default {
-  title: 'Dummy - Sleep',
+  title: 'Dummy - Sleep - 1',
   description: 'Testing sleeping between test steps',
   steps: [
     {

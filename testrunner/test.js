@@ -4,6 +4,13 @@ import executeAsPromise from './lib/executeAsPromise'
 
 export default (test, reporter, device) => {
   const runTest = (test, index) => {
+    if ('sleep' in test) {
+      if (typeof test.sleep === 'function') {
+        test.sleep = test.sleep()
+      }
+      reporter.log('Sleeping for ' + test.sleep + ' seconds')
+    }
+
     return new Promise((resolve, reject) => {
       setTimeout(
         () => {
@@ -52,8 +59,8 @@ export default (test, reporter, device) => {
             }
           )
         },
-        // wait for 2 seconds between repeating a test (but not on the first run!)
-        Math.min(1, index) * 2000
+        // sleep for 2 seconds between repeating a test (but not on the first run!)
+        test.sleep ? test.sleep * 1000 : Math.min(1, index) * 2000
       )
     })
   }
