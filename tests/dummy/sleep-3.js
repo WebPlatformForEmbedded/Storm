@@ -1,5 +1,5 @@
 export default {
-  title: 'Dummy - Sleep - 2',
+  title: 'Dummy - Sleep - 3',
   description:
     'Testing sleeping for random amount of seconds (function based) before starting a test',
   sleep: () => {
