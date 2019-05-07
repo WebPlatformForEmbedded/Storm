@@ -40,7 +40,7 @@ export default (step, reporter, index) => {
         }
 
         setTimeout(() => {
-          reporter.log((index > 0 ? 'Repeating ' : 'Executing ') + step.description)
+          reporter.log((index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + step.description)
 
           let result
 

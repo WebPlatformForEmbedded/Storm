@@ -22,8 +22,9 @@ export default [
   require('./dummy/repeat-5.js').default,
   require('./dummy/repeat-6.js').default,
   require('./dummy/repeat-7.js').default,
+  require('./dummy/repeat-8.js').default,
 
-  // require('./dummy.tesgitt.js').default,
+  // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,
   // require('./youtube.test.js').default,
   // require('./timeout-requests.test.js').default,

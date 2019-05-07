@@ -116,20 +116,30 @@ export default (test, reporter, device) => {
           if (step.repeat && typeof step.repeat === 'function') {
             step.repeat = step.repeat()
           }
-          // repeat steps (defaults to only once)
-          contra.each.series(
-            Array(nrRepetitions(step.repeat)).fill(step),
-            (repeatStep, index, repeat) => {
-              runStep(repeatStep, index)
-                .then(() => {
-                  repeat()
-                })
-                .catch(err => next(err))
-            },
-            err => {
-              next(err)
-            }
-          )
+
+          let index = 0
+          let start = new Date()
+
+          const queue = contra.queue((job, done) => {
+            runStep(job, index)
+              .then(() => {
+                if (shouldRepeat(step.repeat, index, start)) {
+                  queue.push(step, () => {
+                    index++
+                  })
+                }
+                done()
+              })
+              .catch(err => next(err))
+          })
+
+          queue.push(step, () => {
+            index++
+          })
+
+          queue.on('drain', () => {
+            next()
+          })
         },
         err => {
           err ? reject(err) : resolve()
@@ -162,6 +172,22 @@ export default (test, reporter, device) => {
       return repeat.times || 1
     }
     return repeat || 1
+  }
+
+  const shouldRepeat = (repeat, index, start) => {
+    if (typeof repeat === 'number') {
+      return repeat > index
+    }
+    if (typeof repeat === 'object' && repeat.times) {
+      return repeat.times > index
+    }
+    if (typeof repeat === 'object' && repeat.seconds) {
+      const now = new Date()
+      const difference = (now.getTime() - start.getTime()) / 1000
+      return repeat.seconds > difference
+    }
+
+    return false
   }
 
   return {
