@@ -16,6 +16,8 @@ export default (test, reporter, device) => {
         () => {
           reporter.init(test)
 
+          reporter.log((index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + test.title)
+
           contra.series(
             [
               // first run setup of test
@@ -59,8 +61,8 @@ export default (test, reporter, device) => {
             }
           )
         },
-        // sleep for 2 seconds between repeating a test (but not on the first run!)
-        test.sleep ? test.sleep * 1000 : Math.min(1, index) * 2000
+        // sleep for 500ms between repeating a test (but not on the first run!)
+        test.sleep ? test.sleep * 1000 : Math.min(1, index) * 500
       )
     })
   }
@@ -196,20 +198,36 @@ export default (test, reporter, device) => {
         if (test.repeat && typeof test.repeat === 'function') {
           test.repeat = test.repeat()
         }
-        contra.each.series(
-          Array(nrRepetitions(test.repeat)).fill(test),
-          (repeatTest, index, repeat) => {
-            runTest(repeatTest, index)
-              .then(repeat)
-              .catch(e => {
-                repeat(e)
-              })
-          },
-          err => {
-            reporter.finished(test, err)
-            err ? reject(err) : resolve()
-          }
-        )
+
+        let index = 0
+        let start = new Date()
+        let error = null
+
+        const queue = contra.queue((job, done) => {
+          runTest(job, index)
+            .then(() => {
+              if (shouldRepeat(test.repeat, index, start)) {
+                queue.push(test, () => {
+                  index++
+                })
+              }
+              done()
+            })
+            .catch(err => {
+              error = err
+              reject(err)
+              done()
+            })
+        })
+
+        queue.push(test, () => {
+          index++
+        })
+
+        queue.on('drain', () => {
+          reporter.finished(test, error)
+          resolve()
+        })
       })
     },
   }
