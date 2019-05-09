@@ -1,4 +1,6 @@
-export default (step, reporter, index) => {
+import dotObjectKey from './lib/dotObjectKey'
+
+export default (test, step, reporter, index) => {
   // todo: more / better validations of step
   if ('description' in step === false) {
     throw Error('No description supplied for step')
@@ -19,7 +21,7 @@ export default (step, reporter, index) => {
 
   const validate = (step, result, resolve, reject) => {
     try {
-      if (step.validate(result) === true) {
+      if (step.validate.call(step, result) === true) {
         return resolve(result)
       } else {
         return reject(new Error('Validation failed'))
@@ -27,6 +29,16 @@ export default (step, reporter, index) => {
     } catch (e) {
       reject(e)
     }
+  }
+
+  // merge in some extra functionalality in the step
+  step = {
+    ...step,
+    ...{
+      context(key) {
+        return dotObjectKey(test.context, key)
+      },
+    },
   }
 
   return {
@@ -43,7 +55,6 @@ export default (step, reporter, index) => {
           reporter.log((index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + step.description)
 
           let result
-
           try {
             result = step.test.apply(
               step,

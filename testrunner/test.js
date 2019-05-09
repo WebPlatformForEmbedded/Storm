@@ -111,7 +111,7 @@ export default (test, reporter, device) => {
           reporter.step(test, step)
 
           // make device info available in the step as this.device
-          step.device = device
+          step.device = { foo: 'bar' }
 
           // Note: putting this logic here, means that calculated times to repeat this step
           // will be the same for each test repetition (and not re evaluated each time) ...
@@ -153,7 +153,7 @@ export default (test, reporter, device) => {
   const runStep = (step, index) => {
     return new Promise((resolve, reject) => {
       try {
-        return Step(step, reporter, index)
+        return Step(test, step, reporter, index)
           .exec()
           .then(() => {
             reporter.pass(test, step)
