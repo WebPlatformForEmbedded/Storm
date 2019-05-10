@@ -7,13 +7,16 @@
     "ui:build": "cd ui && npm run build",
     "ui:serve": "http-server ./ui/dist -p 2020 -o",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install",
+    "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install && cd ../cli && npm install",
     "cli:run": "node ./cli",
     "lint": "eslint '**/*.{js,vue}'",
     "lint:fix": "eslint '**/*.{js,vue}' --fix"
   },
   "lint-staged": {
-    "*.{js,vue}": ["npm run lint:fix", "git add"]
+    "*.{js,vue}": [
+      "npm run lint:fix",
+      "git add"
+    ]
   },
   "husky": {
     "hooks": {
