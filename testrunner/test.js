@@ -60,7 +60,15 @@ export default (test, reporter, device) => {
                     next(e)
                   })
               },
-              // after steps run teardown
+              // after steps run final validate (if it exists)
+              next => {
+                runValidate(test)
+                  .then(next)
+                  .catch(e => {
+                    next(e)
+                  })
+              },
+              // finally run teardown
               next => {
                 shouldRunTeardown(test.repeat, index)
                   ? runTeardown(test.teardown)
@@ -187,6 +195,26 @@ export default (test, reporter, device) => {
           })
       } catch (e) {
         reject(e)
+      }
+    })
+  }
+
+  const runValidate = test => {
+    return new Promise((resolve, reject) => {
+      if (test.validate && typeof test.validate === 'function') {
+        try {
+          if (test.validate.call(test) === true) {
+            return resolve()
+          } else {
+            return reject(new Error('Test validation failed'))
+          }
+        } catch (e) {
+          reject(e)
+        }
+      }
+      // if no validate method, just resolve
+      else {
+        resolve()
       }
     })
   }

@@ -28,6 +28,9 @@ export default [
   require('./dummy/context-1.js').default,
   require('./dummy/data-1.js').default,
   require('./dummy/data-2.js').default,
+  require('./dummy/test-validate-1.js').default,
+  require('./dummy/test-validate-2.js').default,
+  require('./dummy/test-validate-3.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,

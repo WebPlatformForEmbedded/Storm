@@ -24,7 +24,7 @@ export default (test, step, reporter, index) => {
       if (step.validate.call(step, result) === true) {
         return resolve(result)
       } else {
-        return reject(new Error('Validation failed'))
+        return reject(new Error('Step validation failed'))
       }
     } catch (e) {
       reject(e)
