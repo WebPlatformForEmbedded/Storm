@@ -1,8 +1,7 @@
-export default (method, args) => {
+export default (method, args, context) => {
   let result
-
   if (method && typeof method === 'function') {
-    result = method.apply(null, args)
+    result = method.apply(context, args)
   }
 
   // not a promise, so let's return one

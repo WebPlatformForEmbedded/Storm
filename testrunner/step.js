@@ -31,11 +31,13 @@ export default (test, step, reporter, index) => {
     }
   }
 
-  // merge in some extra functionalality in the step
+  // merge in some extra functionality in the step
   step = {
     ...{
-      context(key) {
-        return dotObjectKey.get(test.context, key)
+      $context: {
+        read(key) {
+          return dotObjectKey.get(test.context, key)
+        },
       },
       store(key, value) {
         test.data = dotObjectKey.assign(test.data, key, value)

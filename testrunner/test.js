@@ -101,14 +101,14 @@ export default (test, reporter, device) => {
     if (method && typeof method === 'function') {
       reporter.log('Running Test Setup')
     }
-    return executeAsPromise(method)
+    return executeAsPromise(method, null, test)
   }
 
   const runTeardown = method => {
     if (method && typeof method === 'function') {
       reporter.log('Running Test Teardown')
     }
-    return executeAsPromise(method)
+    return executeAsPromise(method, null, test)
   }
 
   const runSteps = steps => {
