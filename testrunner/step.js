@@ -33,12 +33,18 @@ export default (test, step, reporter, index) => {
 
   // merge in some extra functionalality in the step
   step = {
-    ...step,
     ...{
       context(key) {
-        return dotObjectKey(test.context, key)
+        return dotObjectKey.get(test.context, key)
+      },
+      store(key, value) {
+        test.data = dotObjectKey.assign(test.data, key, value)
+      },
+      read(key) {
+        return dotObjectKey.get(test.data, key)
       },
     },
+    ...step,
   }
 
   return {

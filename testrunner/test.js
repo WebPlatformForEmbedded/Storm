@@ -3,6 +3,14 @@ import Step from './step'
 import executeAsPromise from './lib/executeAsPromise'
 
 export default (test, reporter, device) => {
+  // merge in some extra stuff in the test
+  test = {
+    ...{
+      context: {},
+      data: {},
+    },
+    ...test,
+  }
   const runTest = (test, index) => {
     if ('sleep' in test) {
       if (typeof test.sleep === 'function') {
