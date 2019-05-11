@@ -39,11 +39,13 @@ export default (test, step, reporter, index) => {
           return dotObjectKey.get(test.context, key)
         },
       },
-      store(key, value) {
-        test.data = dotObjectKey.assign(test.data, key, value)
-      },
-      read(key) {
-        return dotObjectKey.get(test.data, key)
+      $data: {
+        store(key, value) {
+          test.data = dotObjectKey.assign(test.data, key, value)
+        },
+        read(key) {
+          return dotObjectKey.get(test.data, key)
+        },
       },
     },
     ...step,

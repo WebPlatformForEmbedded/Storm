@@ -27,6 +27,7 @@ export default [
   require('./dummy/repeat-10.js').default,
   require('./dummy/context-1.js').default,
   require('./dummy/data-1.js').default,
+  require('./dummy/data-2.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,

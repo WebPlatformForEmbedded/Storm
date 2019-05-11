@@ -1,6 +1,7 @@
 import contra from 'contra'
 import Step from './step'
 import executeAsPromise from './lib/executeAsPromise'
+import dotObjectKey from './lib/dotObjectKey'
 
 export default (test, reporter, device) => {
   // merge in some extra stuff in the test
@@ -8,6 +9,19 @@ export default (test, reporter, device) => {
     ...{
       context: {},
       data: {},
+      $context: {
+        read(key) {
+          return dotObjectKey.get(test.context, key)
+        },
+      },
+      $data: {
+        store(key, value) {
+          test.data = dotObjectKey.assign(test.data, key, value)
+        },
+        read(key) {
+          return dotObjectKey.get(test.data, key)
+        },
+      },
     },
     ...test,
   }
