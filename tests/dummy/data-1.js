@@ -26,5 +26,23 @@ export default {
       },
       assert: 'I am foo! I am nested foo!',
     },
+    {
+      description: 'Setting and reading falsy data',
+      test() {
+        this.$data.store('zero', 0)
+        this.$data.store('false', false)
+        this.$data.store('empty_string', '')
+        this.$data.store('null', null)
+        return true
+      },
+      validate() {
+        return (
+          this.$data.read('zero') === 0 &&
+          this.$data.read('false') === false &&
+          this.$data.read('empty_string') === '' &&
+          this.$data.read('null') === null
+        )
+      },
+    },
   ],
 }
