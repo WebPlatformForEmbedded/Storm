@@ -22,6 +22,9 @@ export default (test, reporter, device) => {
           return dotObjectKey.get(test.data, key)
         },
       },
+      $log(msg) {
+        reporter.log(msg)
+      },
     },
     ...test,
   }

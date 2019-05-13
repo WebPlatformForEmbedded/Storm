@@ -47,6 +47,9 @@ export default (test, step, reporter, index) => {
           return dotObjectKey.get(test.data, key)
         },
       },
+      $log(msg) {
+        reporter.log(msg)
+      },
     },
     ...step,
   }
