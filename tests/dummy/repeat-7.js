@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Repeat - 7',
   description: 'Testing that a test will sleep for 5 seconds between repetitions',
   sleep: 5,

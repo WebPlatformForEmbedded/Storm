@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Repeat - 3',
   description:
     'Testing that setup and teardown are run only 1 by default when repeating an entire test',

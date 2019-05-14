@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Basic functionality',
   description:
     'Testing synchronous and asynchronous tests with assert and custom validation methods',

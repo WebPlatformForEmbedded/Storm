@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Repeat - 4',
   description:
     'Testing that we can run a test twice and run a step 3 times by passing an object as repeat value (and use it to potentially configure repeat better)',

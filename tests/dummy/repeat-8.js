@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Repeat - 8',
   description: 'Testing that we can repeat a test step for 10 seconds',
   steps: [

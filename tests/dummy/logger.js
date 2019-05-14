@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Logger - 1',
   description: 'Testing that you can send custom log messages to the reporter',
   setup() {

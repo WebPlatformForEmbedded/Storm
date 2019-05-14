@@ -3,7 +3,6 @@ const calculateRandomRepeat = max => {
 }
 
 export default {
-  id: 1,
   title: 'Dummy - Repeat - 5',
   description:
     'Testing that we can repeat a test and a step a random nr. of times by passing an function as repeat value',

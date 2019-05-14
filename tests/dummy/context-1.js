@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Context - 1',
   description:
     'Testing that a test can have a context of variables that can be accessed in test steps via a `this.$context.read` method',

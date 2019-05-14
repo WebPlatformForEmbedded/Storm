@@ -1,5 +1,4 @@
 export default {
-  id: 1,
   title: 'Dummy - Data - 1',
   description: 'Testing that data can be stored inside a test, which can be read in a test step',
   steps: [
