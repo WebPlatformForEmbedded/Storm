@@ -141,40 +141,52 @@ export default (test, reporter, device) => {
       contra.each.series(
         steps,
         (step, next) => {
-          reporter.step(test, step)
-
-          // make device info available in the step as this.device
-          step.device = { foo: 'bar' }
-
-          // Note: putting this logic here, means that calculated times to repeat this step
-          // will be the same for each test repetition (and not re evaluated each time) ...
-          if (step.repeat && typeof step.repeat === 'function') {
-            step.repeat = step.repeat()
-          }
-
-          let index = 0
-          let start = new Date()
-
-          const queue = contra.queue((job, done) => {
-            runStep(job, index)
-              .then(() => {
-                if (shouldRepeat(step.repeat, index, start)) {
-                  queue.push(step, () => {
-                    index++
-                  })
-                }
-                done()
+          // do we have nested steps?
+          if (step.steps) {
+            reporter.step(test, step)
+            runSteps(step.steps)
+              .then(next)
+              .catch(e => {
+                next(e)
               })
-              .catch(err => next(err))
-          })
+          }
+          // normal step
+          else {
+            reporter.step(test, step)
 
-          queue.push(step, () => {
-            index++
-          })
+            // make device info available in the step as this.device
+            step.device = { foo: 'bar' }
 
-          queue.on('drain', () => {
-            next()
-          })
+            // Note: putting this logic here, means that calculated times to repeat this step
+            // will be the same for each test repetition (and not re evaluated each time) ...
+            if (step.repeat && typeof step.repeat === 'function') {
+              step.repeat = step.repeat()
+            }
+
+            let index = 0
+            let start = new Date()
+
+            const queue = contra.queue((job, done) => {
+              runStep(job, index)
+                .then(() => {
+                  if (shouldRepeat(step.repeat, index, start)) {
+                    queue.push(step, () => {
+                      index++
+                    })
+                  }
+                  done()
+                })
+                .catch(err => next(err))
+            })
+
+            queue.push(step, () => {
+              index++
+            })
+
+            queue.on('drain', () => {
+              next()
+            })
+          }
         },
         err => {
           err ? reject(err) : resolve()
