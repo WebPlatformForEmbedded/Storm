@@ -60,9 +60,14 @@ export default {
       return this.test.steps.length
     },
     nrStepsWithRepetitions() {
-      return this.test.steps.reduce((nr, step) => {
-        return nr + (step.repeat || 1)
-      }, 0)
+      return Array.isArray(this.test.steps.reduce)
+        ? this.test.steps.reduce((nr, step) => {
+            return nr + (step.repeat || 1)
+          }, 0)
+        : Object.keys(this.test.steps).reduce((nr, key) => {
+            const step = this.test.steps[key]
+            return nr + (step.repeat || 1)
+          }, 0)
     },
     completedSteps() {
       return this.testMessages.filter(message => {
