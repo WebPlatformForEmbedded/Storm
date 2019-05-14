@@ -242,6 +242,10 @@ export default (test, reporter, device) => {
       return repeat.seconds > difference
     }
 
+    if (typeof repeat === 'object' && repeat.until && typeof repeat.until === 'function') {
+      return !!!repeat.until.apply(test)
+    }
+
     return false
   }
 
