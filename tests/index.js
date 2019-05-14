@@ -33,6 +33,7 @@ export default [
   require('./dummy/test-validate-2.js').default,
   require('./dummy/test-validate-3.js').default,
   require('./dummy/logger.js').default,
+  require('./dummy/steps-as-object.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,
