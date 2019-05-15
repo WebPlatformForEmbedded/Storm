@@ -15,12 +15,12 @@ export default {
     console.log('❌  Step  `' + step.description + '` failed', err)
   },
   success(test) {
-    console.log('👍  Success')
+    console.log('👍  Success ' + test.title)
   },
   error(test, err) {
-    console.log('😭  Error', err)
+    console.log('😭  Error ' + test.title, err)
   },
   finished(test) {
-    console.log('🏁  Test finished running')
+    console.log('🏁  Test ' + test.title + ' finished running')
   },
 }

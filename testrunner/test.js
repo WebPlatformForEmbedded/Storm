@@ -141,10 +141,10 @@ export default (test, reporter, device) => {
       contra.each.series(
         steps,
         (step, next) => {
-          // do we have nested steps?
+          // do we have nested steps (i.e. a nested 'test')
           if (step.steps) {
             reporter.step(test, step)
-            runSteps(step.steps)
+            execTest(step)
               .then(next)
               .catch(e => {
                 next(e)
@@ -261,43 +261,45 @@ export default (test, reporter, device) => {
     return false
   }
 
-  return {
-    exec() {
-      return new Promise((resolve, reject) => {
-        if (test.repeat && typeof test.repeat === 'function') {
-          test.repeat = test.repeat()
-        }
+  const execTest = test => {
+    return new Promise((resolve, reject) => {
+      if (test.repeat && typeof test.repeat === 'function') {
+        test.repeat = test.repeat()
+      }
 
-        let index = 0
-        let start = new Date()
-        let error = null
+      let index = 0
+      let start = new Date()
+      let error = null
 
-        const queue = contra.queue((job, done) => {
-          runTest(job, index)
-            .then(() => {
-              if (shouldRepeat(test.repeat, index, start)) {
-                queue.push(test, () => {
-                  index++
-                })
-              }
-              done()
-            })
-            .catch(err => {
-              error = err
-              reject(err)
-              done()
-            })
-        })
-
-        queue.push(test, () => {
-          index++
-        })
-
-        queue.on('drain', () => {
-          reporter.finished(test, error)
-          resolve()
-        })
+      const queue = contra.queue((job, done) => {
+        runTest(job, index)
+          .then(() => {
+            if (shouldRepeat(test.repeat, index, start)) {
+              queue.push(test, () => {
+                index++
+              })
+            }
+            done()
+          })
+          .catch(err => {
+            error = err
+            reject(err)
+            done()
+          })
       })
-    },
+
+      queue.push(test, () => {
+        index++
+      })
+
+      queue.on('drain', () => {
+        reporter.finished(test, error)
+        resolve()
+      })
+    })
+  }
+
+  return {
+    exec: () => execTest(test),
   }
 }

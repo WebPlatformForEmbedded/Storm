@@ -1,6 +1,6 @@
 export default {
-  title: 'Dummy - Nested steps',
-  description: 'Testing that we can nest steps',
+  title: 'Dummy - Nested tests - 1',
+  description: 'Testing that we can nest test',
   steps: [
     {
       description: 'This is a normal step',
@@ -9,7 +9,10 @@ export default {
       assert: 1,
     },
     {
-      description: 'These are some nested steps',
+      title: 'Sub test',
+      description: 'This is a nested test that should be repeated 2 times',
+      sleep: 4,
+      repeat: 2,
       steps: [
         {
           description: 'This is a first nested step',
@@ -24,7 +27,8 @@ export default {
           assert: 1,
         },
         {
-          description: 'These are some nested-nested steps',
+          title: 'Sub sub test',
+          description: 'This is a nested-nested test',
           steps: [
             {
               description: 'This is a first nested-nested step',
@@ -39,7 +43,15 @@ export default {
               assert: 1,
             },
             {
-              description: 'Going a level deeper!',
+              title: 'Sub sub sub test',
+              description: 'A deeply nested test that should repeat for 5 seconds',
+              sleep: 2,
+              setup() {
+                this.$log('I am a setup method inside a deeply nested test')
+              },
+              repeat: {
+                seconds: 5,
+              },
               steps: [
                 {
                   description: 'This is a first deep nested step',

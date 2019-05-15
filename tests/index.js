@@ -39,7 +39,7 @@ export default [
   require('./dummy/extending-3.js').default,
   require('./dummy/extending-4.js').default,
   require('./dummy/extending-5.js').default,
-  require('./dummy/nested-steps.js').default,
+  require('./dummy/nested-tests.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,
