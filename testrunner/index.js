@@ -1,4 +1,4 @@
-import test from './test'
+import Test from './test'
 import reporters from './reporters'
 
 export default (testCase, reporter, device) => {
@@ -8,7 +8,7 @@ export default (testCase, reporter, device) => {
   }
 
   return new Promise((resolve, reject) => {
-    test(testCase, reporter, device)
+    Test(testCase, reporter)
       .exec()
       .then(result => {
         resolve('Done running', result)

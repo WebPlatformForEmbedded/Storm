@@ -1,7 +1,11 @@
 export default (method, args, context) => {
   let result
   if (method && typeof method === 'function') {
-    result = method.apply(context, args)
+    try {
+      result = method.apply(context, args)
+    } catch (e) {
+      result = e
+    }
   }
 
   // not a promise, so let's return one

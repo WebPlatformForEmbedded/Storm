@@ -1,305 +1,190 @@
-import contra from 'contra'
+import Contra from 'contra'
 import Step from './step'
-import executeAsPromise from './lib/executeAsPromise'
 import dotObjectKey from './lib/dotObjectKey'
 
-export default (test, reporter, device) => {
-  // merge in some extra stuff in the test
-  test = {
-    ...{
-      context: {},
-      data: {},
-      $context: {
-        read(key) {
-          return dotObjectKey.get(test.context, key)
-        },
-      },
-      $data: {
-        store(key, value) {
-          test.data = dotObjectKey.assign(test.data, key, value)
-        },
-        read(key) {
-          return dotObjectKey.get(test.data, key)
-        },
-      },
-      $log(msg) {
-        reporter.log(msg)
-      },
-    },
-    ...test,
-  }
-  const runTest = (test, index) => {
-    if ('sleep' in test) {
-      if (typeof test.sleep === 'function') {
-        test.sleep = test.sleep()
-      }
-      reporter.log('Sleeping for ' + test.sleep + ' seconds')
+import {
+  shouldRepeat,
+  shouldRunSetup,
+  shouldRunTeardown,
+  runSetup,
+  runTeardown,
+  runValidate,
+  calculateSleep,
+  calculateRepeat,
+} from './support'
+
+const runTest = function(index) {
+  return new Promise((resolve, reject) => {
+    const sleep = calculateSleep(this.test.sleep)
+
+    if (sleep) {
+      this.reporter.log('Sleeping for ' + sleep / 1000 + ' seconds')
     }
+    setTimeout(
+      () => {
+        this.reporter.log(
+          (index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + this.test.title
+        )
 
-    return new Promise((resolve, reject) => {
-      setTimeout(
-        () => {
-          reporter.init(test)
-
-          reporter.log((index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + test.title)
-
-          contra.series(
-            [
-              // first run setup of test
-              next => {
-                shouldRunSetup(test.repeat, index)
-                  ? runSetup(test.setup)
-                      .then(next)
-                      .catch(e => {
-                        next(e)
-                      })
-                  : next()
-              },
-              // run the steps
-              next => {
-                runSteps(test.steps)
-                  .then(next)
-                  .catch(e => {
-                    next(e)
-                  })
-              },
-              // after steps run final validate (if it exists)
-              next => {
-                runValidate(test)
-                  .then(next)
-                  .catch(e => {
-                    next(e)
-                  })
-              },
-              // finally run teardown
-              next => {
-                shouldRunTeardown(test.repeat, index)
-                  ? runTeardown(test.teardown)
-                      .then(next)
-                      .catch(e => {
-                        next(e)
-                      })
-                  : next()
-              },
-            ],
-            // done!
-            (err, results) => {
-              if (err) {
-                reporter.error(test, err)
-                reject(err)
-              } else {
-                reporter.success(test)
-                resolve()
-              }
-            }
-          )
-        },
-        // sleep for 500ms between repeating a test (but not on the first run!)
-        test.sleep ? test.sleep * 1000 : Math.min(1, index) * 500
-      )
-    })
-  }
-
-  const shouldRunSetup = (repeat, index) => {
-    // repetition
-    if (index > 0) {
-      if (repeat && typeof repeat === 'object') {
-        return !!repeat.setup
-      }
-      return false
-    }
-    // always run first time
-    return true
-  }
-
-  const shouldRunTeardown = (repeat, index) => {
-    // always run on the last repeat
-    if (index == nrRepetitions(repeat) - 1) {
-      return true
-    }
-    if (repeat && typeof repeat === 'object') {
-      return !!repeat.teardown
-    }
-  }
-
-  const runSetup = method => {
-    if (method && typeof method === 'function') {
-      reporter.log('Running Test Setup')
-    }
-    return executeAsPromise(method, null, test)
-  }
-
-  const runTeardown = method => {
-    if (method && typeof method === 'function') {
-      reporter.log('Running Test Teardown')
-    }
-    return executeAsPromise(method, null, test)
-  }
-
-  const runSteps = steps => {
-    return new Promise((resolve, reject) => {
-      contra.each.series(
-        steps,
-        (step, next) => {
-          // do we have nested steps (i.e. a nested 'test')
-          if (step.steps) {
-            reporter.step(test, step)
-            execTest(step)
-              .then(next)
-              .catch(e => {
-                next(e)
-              })
-          }
-          // normal step
-          else {
-            reporter.step(test, step)
-
-            // make device info available in the step as this.device
-            step.device = { foo: 'bar' }
-
-            // Note: putting this logic here, means that calculated times to repeat this step
-            // will be the same for each test repetition (and not re evaluated each time) ...
-            if (step.repeat && typeof step.repeat === 'function') {
-              step.repeat = step.repeat()
-            }
-
-            let index = 0
-            let start = new Date()
-
-            const queue = contra.queue((job, done) => {
-              runStep(job, index)
-                .then(() => {
-                  if (shouldRepeat(step.repeat, index, start)) {
-                    queue.push(step, () => {
-                      index++
+        Contra.series(
+          [
+            // 1) test setup
+            next => {
+              shouldRunSetup(this.test.repeat, index)
+                ? runSetup(this, this.test.setup)
+                    .then(next)
+                    .catch(e => {
+                      next(e)
                     })
-                  }
-                  done()
+                : next()
+            },
+            // 2) test steps
+            next => {
+              runSteps
+                .call(this, this.test.steps)
+                .then(next)
+                .catch(e => {
+                  next(e)
                 })
-                .catch(err => next(err))
-            })
+            },
+            // 3) test validate
+            next => {
+              runValidate(this.test, this.test.validate)
+                .then(next)
+                .catch(e => {
+                  next(e)
+                })
+            },
+            //  4) test teardown (should this be in the done step to make sure it *always* runs?)
+            next => {
+              shouldRunTeardown(this.test.repeat, index)
+                ? runTeardown(this, this.test.teardown)
+                    .then(next)
+                    .catch(e => {
+                      next(e)
+                    })
+                : next()
+            },
+          ],
+          // 5) done
+          (err, results) => {
+            if (err) {
+              this.reporter.error(this.test, err)
+              reject(err)
+            } else {
+              this.reporter.success(this.test)
+              resolve()
+            }
+          }
+        )
+      },
+      // unless sleep is specified, sleep for 500ms between repeating a test (but not on the first run!)
+      sleep ? sleep : Math.min(1, index) * 500
+    )
+  })
+}
 
-            queue.push(step, () => {
-              index++
-            })
-
-            queue.on('drain', () => {
+const runSteps = function(steps) {
+  return new Promise((resolve, reject) => {
+    Contra.each.series(
+      steps,
+      (step, next) => {
+        // sub test
+        if (step.steps) {
+          step = { ...step, ...{ context: this.test.context, data: this.test.data } }
+          makeTest(step, this.reporter)
+            .exec()
+            .then(next)
+            .catch(e => next(e))
+        } else {
+          Step(this.test, step, this.reporter)
+            .exec()
+            .then(() => {
               next()
             })
-          }
-        },
-        err => {
-          err ? reject(err) : resolve()
+            .catch(e => next(e))
         }
-      )
-    })
-  }
-
-  const runStep = (step, index) => {
-    return new Promise((resolve, reject) => {
-      try {
-        return Step(test, step, reporter, index)
-          .exec()
-          .then(() => {
-            reporter.pass(test, step)
-            resolve()
-          })
-          .catch(err => {
-            reporter.fail(test, step, err)
-            reject(err)
-          })
-      } catch (e) {
-        reject(e)
+      },
+      err => {
+        err ? reject(err) : resolve()
       }
-    })
-  }
+    )
+  })
+}
 
-  const runValidate = test => {
-    return new Promise((resolve, reject) => {
-      if (test.validate && typeof test.validate === 'function') {
-        try {
-          if (test.validate.call(test) === true) {
-            return resolve()
-          } else {
-            return reject(new Error('Test validation failed'))
-          }
-        } catch (e) {
-          reject(e)
-        }
-      }
-      // if no validate method, just resolve
-      else {
-        resolve()
-      }
-    })
-  }
-
-  const nrRepetitions = repeat => {
-    if (typeof repeat === 'object' && repeat.times) {
-      return repeat.times || 1
-    }
-    return repeat || 1
-  }
-
-  const shouldRepeat = (repeat, index, start) => {
-    if (typeof repeat === 'number') {
-      return repeat > index
-    }
-    if (typeof repeat === 'object' && repeat.times) {
-      return repeat.times > index
-    }
-    if (typeof repeat === 'object' && repeat.seconds) {
-      const now = new Date()
-      const difference = (now.getTime() - start.getTime()) / 1000
-      return repeat.seconds > difference
-    }
-
-    if (typeof repeat === 'object' && repeat.until && typeof repeat.until === 'function') {
-      return !!!repeat.until.apply(test)
-    }
-
-    return false
-  }
-
-  const execTest = test => {
-    return new Promise((resolve, reject) => {
-      if (test.repeat && typeof test.repeat === 'function') {
-        test.repeat = test.repeat()
-      }
-
-      let index = 0
-      let start = new Date()
-      let error = null
-
-      const queue = contra.queue((job, done) => {
-        runTest(job, index)
-          .then(() => {
-            if (shouldRepeat(test.repeat, index, start)) {
-              queue.push(test, () => {
-                index++
-              })
-            }
-            done()
-          })
-          .catch(err => {
-            error = err
-            reject(err)
-            done()
-          })
-      })
-
-      queue.push(test, () => {
-        index++
-      })
-
-      queue.on('drain', () => {
-        reporter.finished(test, error)
-        resolve()
-      })
-    })
-  }
-
+const Mixin = function() {
   return {
-    exec: () => execTest(test),
+    $log: this.reporter.log,
+    $context: {
+      read: function(key) {
+        return dotObjectKey.get(this.context, key)
+      }.bind(this),
+    },
+    $data: {
+      read: function(key) {
+        return dotObjectKey.get(this.data, key)
+      }.bind(this),
+      store: function(key, value) {
+        dotObjectKey.assign(this.data, key, value)
+      }.bind(this),
+    },
+    // $http,
+    // $moment,
   }
 }
+
+const makeTest = (testCase, reporter) => {
+  const defaults = {
+    data: {},
+    context: {},
+  }
+
+  // calculate repeat
+  testCase.repeat = calculateRepeat(testCase.repeat)
+
+  return {
+    reporter,
+    test: Object.assign(
+      // Mixin functionality into the test case
+      Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter } })),
+      { ...defaults, ...testCase }
+    ),
+    exec() {
+      // execue the test (multiple times depending on repeat)
+      return new Promise((resolve, reject) => {
+        let index = 0
+        let start = new Date()
+        let error = null
+
+        const queue = Contra.queue((job, done) => {
+          runTest
+            .call(job, index)
+            .then(() => {
+              done()
+              if (shouldRepeat(job.test, job.test.repeat, index, start)) {
+                queue.push(job, () => {
+                  index++
+                })
+              }
+            })
+            .catch(err => {
+              error = err
+              reject(err)
+              done()
+            })
+        })
+
+        queue.push(this, () => {
+          index++
+        })
+
+        queue.on('drain', () => {
+          this.reporter.finished(this.test, error)
+          resolve()
+        })
+      })
+    },
+  }
+}
+
+export default makeTest

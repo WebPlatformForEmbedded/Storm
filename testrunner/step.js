@@ -1,97 +1,103 @@
-import dotObjectKey from './lib/dotObjectKey'
+import Contra from 'contra'
+import { shouldRepeat, runValidate, calculateSleep } from './support'
+import executeAsPromise from './lib/executeAsPromise'
 
-export default (test, step, reporter, index) => {
-  // todo: more / better validations of step
-  if ('description' in step === false) {
-    throw Error('No description supplied for step')
-  }
+const runStep = function(index) {
+  return new Promise((resolve, reject) => {
+    const sleep = calculateSleep(this.step.sleep)
 
-  // setup default validate function if doesn't exist
-  if ('validate' in step === false) {
-    if ('params' in step === false) {
-      step.params = true
+    if (sleep) {
+      this.reporter.log('Sleeping for ' + sleep / 1000 + ' seconds')
     }
-    if ('assert' in step === false) {
-      step.assert = step.params
-    }
-    step.validate = x => {
-      return x === step.assert
-    }
-  }
 
-  const validate = (step, result, resolve, reject) => {
-    try {
-      if (step.validate.call(step, result) === true) {
-        return resolve(result)
-      } else {
-        return reject(new Error('Step validation failed'))
-      }
-    } catch (e) {
-      reject(e)
-    }
-  }
+    setTimeout(() => {
+      this.reporter.log(
+        (index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + this.step.description
+      )
 
-  // merge in some extra functionality in the step
-  step = {
-    ...{
-      $context: {
-        read(key) {
-          return dotObjectKey.get(test.context, key)
-        },
-      },
-      $data: {
-        store(key, value) {
-          test.data = dotObjectKey.assign(test.data, key, value)
-        },
-        read(key) {
-          return dotObjectKey.get(test.data, key)
-        },
-      },
-      $log(msg) {
-        reporter.log(msg)
-      },
-    },
-    ...step,
-  }
-
-  return {
-    exec() {
-      return new Promise((resolve, reject) => {
-        if ('sleep' in step) {
-          if (typeof step.sleep === 'function') {
-            step.sleep = step.sleep()
-          }
-          reporter.log('Sleeping for ' + step.sleep + ' seconds')
-        }
-
-        setTimeout(() => {
-          reporter.log((index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + step.description)
-
-          let result
-          try {
-            result = step.test.apply(
-              step,
-              step.params instanceof Array ? step.params : [step.params]
+      Contra.waterfall(
+        [
+          // execute test function
+          next => {
+            // this could be abstracted in a prettier way?
+            executeAsPromise(
+              this.step.test,
+              this.step.params instanceof Array ? this.step.params : [this.step.params],
+              this.step
             )
-          } catch (e) {
-            return reject(e)
+              .then(result => {
+                next(null, result)
+              })
+              .catch(err => next(err))
+          },
+          // validate the result
+          (result, next) => {
+            if (!this.step.validate && this.step.assert) {
+              this.step.validate = x => x === this.step.assert
+            }
+            runValidate(this.test, this.step.validate, result)
+              .then(next)
+              .catch(e => {
+                next(e)
+              })
+          },
+        ],
+        // done!
+        (err, results) => {
+          if (err) {
+            this.reporter.fail(this.test, this.step, err)
+            reject(err)
+          } else {
+            this.reporter.pass(this.test, this.step)
+            resolve()
           }
+        }
+      )
+    }, sleep || 500)
+  })
+}
 
-          // asynchronous test function
-          if (result.then && typeof result.then === 'function') {
-            result
-              .then(res => {
-                validate(step, res, resolve, reject)
-              })
-              .catch(err => {
-                return reject(err)
-              })
-          }
-          // synchronous test function
-          else {
-            validate(step, result, resolve, reject)
-          }
-        }, Number(step.sleep) * 1000 || 500)
+export default (test, step, reporter) => {
+  return {
+    reporter,
+    test,
+    step: Object.assign(
+      // Mix test functionality into the step
+      Object.create(test.__proto__),
+      step
+    ),
+    exec() {
+      // execute the step (multiple times depending on repeat)
+      return new Promise((resolve, reject) => {
+        let index = 0
+        let start = new Date()
+        // let error = null
+
+        const queue = Contra.queue((job, done) => {
+          runStep
+            .call(job, index)
+            .then(() => {
+              done()
+              if (shouldRepeat(job.test, job.step.repeat, index, start)) {
+                queue.push(job, () => {
+                  index++
+                })
+              }
+            })
+            .catch(err => {
+              // error = err
+              reject(err)
+              done()
+            })
+        })
+
+        queue.push(this, () => {
+          index++
+        })
+
+        queue.on('drain', () => {
+          resolve()
+        })
       })
     },
   }
