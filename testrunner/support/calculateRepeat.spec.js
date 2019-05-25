@@ -4,7 +4,7 @@ require = require('esm')(module)
 const test = require('tape')
 const calculateRepeat = require('./calculateRepeat').default
 
-test('calculateRepeat - type', assert => {
+test('calculateRepeat - Type', assert => {
   const expected = 'function'
   const actual = typeof calculateRepeat
 
