@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tape **/*.spec.js | faucet"
   },
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "dependencies": {
     "axios": "^0.18.0",
     "contra": "^1.9.4"
+  },
+  "devDependencies": {
+    "faucet": "0.0.1",
+    "tape": "^4.10.1"
   }
 }
