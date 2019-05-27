@@ -3,28 +3,28 @@ import test from 'tape-promise/tape'
 import Runner from '../index'
 import Reporter from '../reporters/tdd'
 
-import testCase from '../../tests/dummy/sleep-1'
+import testCase from '../../tests/dummy/sleep-2'
 
 const reporter = Reporter()
 
-test('Sleep 1 - steps', assert => {
+test('Sleep 2 - test', assert => {
   const start = new Date()
 
   Runner(testCase, reporter).then(res => {
     const results = reporter.results
 
-    // 7 steps should pass
-    let expected = 7
+    // 1 steps should pass
+    let expected = 1
     let actual = results.map(item => item.action).filter(item => item === 'pass').length
-    assert.equal(actual, expected, 'should have 7 passing steps')
+    assert.equal(actual, expected, 'should have 1 passing step')
 
-    // 4 steps should have a sleep
-    expected = 4
+    // 1 sleep log
+    expected = 1
     actual = results.filter(item => item.action === 'sleep').length
-    assert.equal(actual, expected, 'should have 4 steps with sleep')
+    assert.equal(actual, expected, 'should have 1 log of sleep')
 
-    // reported sleep should be 13,5 seconds
-    expected = 13.5
+    // reported sleep should be 5 seconds
+    expected = 5
     actual =
       results
         .filter(item => item.action === 'sleep')
@@ -32,16 +32,13 @@ test('Sleep 1 - steps', assert => {
           return total + item.arguments[0]
         }, 0) / 1000
 
-    assert.equal(actual, expected, 'should report a total of 13,5 seconds of sleep')
+    assert.equal(actual, expected, 'should report a total of 5 seconds of sleep')
 
-    // test should take at least 13,5 seconds to finish
-    expected = 13.5
+    // test should take at least 5 seconds to finish
+    expected = 5
     actual = (new Date() - start) / 1000
 
-    assert.ok(
-      actual >= actual,
-      'should take at least 13,5 seconds to finish (actual: ' + actual + ')'
-    )
+    assert.ok(actual >= actual, 'should take at least 5 seconds to finish (actual: ' + actual + ')')
 
     // test should be a success
     expected = true
