@@ -7,7 +7,7 @@ const timeout = function(wait) {
 
     const timer = setTimeout(() => {
       cleanup()
-      reject('Max execution time exceeded')
+      reject(new Error('Max execution time exceeded'))
     }, this.timeout * 1000)
 
     const cleanup = () => {
