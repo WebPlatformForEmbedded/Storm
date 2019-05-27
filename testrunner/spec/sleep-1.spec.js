@@ -39,7 +39,7 @@ test('Sleep 1 - steps', assert => {
     actual = (new Date() - start) / 1000
 
     assert.ok(
-      actual >= actual,
+      actual >= expected,
       'should take at least 13,5 seconds to finish (actual: ' + actual + ')'
     )
 
