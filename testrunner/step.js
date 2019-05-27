@@ -7,7 +7,7 @@ const runStep = function(index) {
     const sleep = calculateSleep(this.step.sleep)
 
     if (sleep) {
-      this.reporter.log('Sleeping for ' + sleep / 1000 + ' seconds')
+      this.reporter.sleep(sleep)
     }
 
     setTimeout(() => {

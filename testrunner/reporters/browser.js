@@ -8,6 +8,9 @@ export default {
   log(msg) {
     write('➡️  ' + msg)
   },
+  sleep(milliseconds) {
+    write('😴  Sleeping for ' + milliseconds / 1000 + ' seconds')
+  },
   pass(test, step) {
     write('✅  Step `' + step.description + '` passed')
   },

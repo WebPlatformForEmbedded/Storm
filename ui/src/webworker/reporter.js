@@ -29,6 +29,14 @@ export default worker => {
         },
       })
     },
+    sleep(milliseconds) {
+      worker.postMessage({
+        type: 'sleep',
+        payload: {
+          seconds: milliseconds / 1000,
+        },
+      })
+    },
     pass(test, step) {
       worker.postMessage({
         type: 'pass',

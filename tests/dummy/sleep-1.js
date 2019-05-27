@@ -37,18 +37,19 @@ export default {
       params: 1,
       assert: 1,
     },
-    {
-      description:
-        'A test with a sleep value with a function (that returns a number) should be executed with a delay (at the next minute change)',
-      test: x => x,
-      sleep: () => {
-        const date = new Date()
-        const secondsToNextMinute = 60 - date.getSeconds()
-        return secondsToNextMinute
-      },
-      params: 1,
-      assert: 1,
-    },
+    // difficult to test with TDD
+    // {
+    //   description:
+    //     'A test with a sleep value with a function (that returns a number) should be executed with a delay (at the next minute change)',
+    //   test: x => x,
+    //   sleep: () => {
+    //     const date = new Date()
+    //     const secondsToNextMinute = 60 - date.getSeconds()
+    //     return secondsToNextMinute
+    //   },
+    //   params: 1,
+    //   assert: 1,
+    // },
     {
       description:
         'A test with a sleep value with a function (that does not return a number) should be executed immediately',

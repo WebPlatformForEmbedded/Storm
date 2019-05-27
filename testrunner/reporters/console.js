@@ -8,6 +8,9 @@ export default {
   log(msg) {
     console.log('➡️  ' + msg)
   },
+  sleep(milliseconds) {
+    console.log('😴  Sleeping for ' + milliseconds / 1000 + ' seconds')
+  },
   pass(test, step) {
     console.log('✅  Step `' + step.description + '` passed')
   },
