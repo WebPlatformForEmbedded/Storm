@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "test": "tape **/*.spec.js | tap-diff"
+    "test": "tape -r esm **/*.spec.js | tap-diff"
   },
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "dependencies": {
@@ -11,6 +11,7 @@
     "contra": "^1.9.4"
   },
   "devDependencies": {
+    "esm": "^3.2.25",
     "tap-diff": "^0.1.1",
     "tape": "^4.10.1",
     "tape-promise": "^4.0.0"

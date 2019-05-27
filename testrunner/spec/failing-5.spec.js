@@ -1,16 +1,13 @@
-// eslint-disable-next-line
-require = require('esm')(module)
+import test from 'tape-promise/tape'
 
-const tape = require('tape')
-const _promise = require('tape-promise').default
-const test = _promise(tape)
+import Runner from '../index'
+import Reporter from '../reporters/tdd'
 
-const Runner = require('../index').default
-const testCase = require('../../tests/dummy/failing-2').default
+import testCase from '../../tests/dummy/failing-5'
 
-const reporter = require('../reporters/tdd').default()
+const reporter = Reporter()
 
-test('Failing 4 - stop running steps after failure', assert => {
+test('Failing 5 - stop running steps after failure', assert => {
   Runner(testCase, reporter)
     .then(res => {})
     .catch(() => {

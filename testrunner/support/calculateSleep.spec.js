@@ -1,8 +1,5 @@
-// eslint-disable-next-line
-require = require('esm')(module)
-
-const test = require('tape')
-const calculateSleep = require('./calculateSleep').default
+import test from 'tape'
+import calculateSleep from './calculateSleep'
 
 test('calculateSleep - Type', assert => {
   const expected = 'function'

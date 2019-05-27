@@ -1,14 +1,11 @@
-// eslint-disable-next-line
-require = require('esm')(module)
+import test from 'tape-promise/tape'
 
-const tape = require('tape')
-const _promise = require('tape-promise').default
-const test = _promise(tape)
+import Runner from '../index'
+import Reporter from '../reporters/tdd'
 
-const Runner = require('../index').default
-const testCase = require('../../tests/dummy/basic').default
+import testCase from '../../tests/dummy/basic'
 
-const reporter = require('../reporters/tdd').default()
+const reporter = Reporter()
 
 test('Basic test', assert => {
   Runner(testCase, reporter).then(res => {
@@ -32,7 +29,3 @@ test('Basic test', assert => {
     assert.end()
   })
 })
-
-// Runner(Tests[0], 'console')
-//   .then(() => {})
-//   .catch(() => {})

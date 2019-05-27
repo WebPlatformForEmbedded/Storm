@@ -1,8 +1,5 @@
-// eslint-disable-next-line
-require = require('esm')(module)
-
-const test = require('tape')
-const getNrRepeats = require('./getNrRepeats').default
+import test from 'tape'
+import getNrRepeats from './getNrRepeats'
 
 test('getNrRepeats - Type', assert => {
   const expected = 'function'
