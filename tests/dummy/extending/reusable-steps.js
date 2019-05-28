@@ -1,12 +1,12 @@
 export const asyncAssert = {
-  description: 'A synchronous test with assert',
+  description: 'A reusable synchronous test with assert',
   test: x => x,
   params: 1,
   assert: 1,
 }
 
 export const repeatTwice = {
-  description: 'Test that should run twice',
+  description: 'Reusable step that should run twice',
   test: x => x,
   params: 1,
   assert: 1,
@@ -14,7 +14,7 @@ export const repeatTwice = {
 }
 
 export const randomSleep = {
-  description: 'A test with a random sleep value',
+  description: 'A reusable step with a random sleep value',
   test: x => x,
   sleep: () => {
     return Math.floor(Math.random() * 10) + 1
