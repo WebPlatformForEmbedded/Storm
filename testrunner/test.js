@@ -91,7 +91,10 @@ const runSteps = function(steps) {
       (step, next) => {
         // sub test
         if (step.steps) {
-          step = { ...step, ...{ context: this.test.context, data: this.test.data } }
+          step = {
+            ...step,
+            ...{ context: { ...this.test.context, ...step.context }, data: this.test.data },
+          }
           makeTest(step, this.reporter)
             .exec()
             .then(next)

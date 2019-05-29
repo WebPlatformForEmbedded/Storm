@@ -3,16 +3,15 @@ import test from 'tape-promise/tape'
 import Runner from '../index'
 import Reporter from '../reporters/tdd'
 
-import testCase from '../../tests/dummy/nested-tests'
+import testCase from '../../tests/dummy/nested-tests-1'
 
 const reporter = Reporter()
 
-test('Nested Tests', assert => {
+test('Nested Tests - 1', assert => {
   const start = new Date()
 
   Runner(testCase, reporter).then(res => {
     const results = reporter.results
-    console.log(results)
 
     let actual
     let expected
