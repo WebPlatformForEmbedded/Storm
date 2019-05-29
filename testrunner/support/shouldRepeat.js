@@ -1,9 +1,9 @@
 const shouldRepeat = (context, repeat, index, start) => {
   if (typeof repeat === 'number') {
-    return repeat > index + 1
+    return repeat > index
   }
   if (typeof repeat === 'object' && repeat.times) {
-    return repeat.times > index + 1
+    return repeat.times > index
   }
   if (typeof repeat === 'object' && repeat.seconds) {
     const now = new Date()
