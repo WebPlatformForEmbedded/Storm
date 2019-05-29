@@ -11,7 +11,7 @@ export default {
     {
       title: 'Sub test',
       description: 'This is a nested test that should be repeated 2 times',
-      sleep: 4,
+      sleep: 2,
       repeat: 2,
       steps: [
         {
@@ -45,12 +45,11 @@ export default {
             {
               title: 'Sub sub sub test',
               description: 'A deeply nested test that should repeat for 5 seconds',
-              sleep: 2,
               setup() {
                 this.$log('I am a setup method inside a deeply nested test')
               },
               repeat: {
-                seconds: 5,
+                seconds: 6,
               },
               steps: [
                 {
