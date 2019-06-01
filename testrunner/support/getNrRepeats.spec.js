@@ -19,3 +19,19 @@ test('getNrRepeats - Object as input', assert => {
   assert.equal(actual, expected, 'nr of repeats should read the `times` key of an object')
   assert.end()
 })
+
+test('getNrRepeats - false as input', assert => {
+  const expected = 1
+  const actual = getNrRepeats(false)
+
+  assert.equal(actual, expected, 'nr of repeats should default to 1 if passed false')
+  assert.end()
+})
+
+test('getNrRepeats - null as input', assert => {
+  const expected = 1
+  const actual = getNrRepeats(null)
+
+  assert.equal(actual, expected, 'nr of repeats should default to 1 if passed null')
+  assert.end()
+})
