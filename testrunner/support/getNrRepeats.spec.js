@@ -21,17 +21,17 @@ test('getNrRepeats - Object as input', assert => {
 })
 
 test('getNrRepeats - false as input', assert => {
-  const expected = 1
+  const expected = 0
   const actual = getNrRepeats(false)
 
-  assert.equal(actual, expected, 'nr of repeats should default to 1 if passed false')
+  assert.equal(actual, expected, 'nr of repeats should default to 0 if passed false')
   assert.end()
 })
 
 test('getNrRepeats - null as input', assert => {
-  const expected = 1
+  const expected = 0
   const actual = getNrRepeats(null)
 
-  assert.equal(actual, expected, 'nr of repeats should default to 1 if passed null')
+  assert.equal(actual, expected, 'nr of repeats should default to 0 if passed null')
   assert.end()
 })
