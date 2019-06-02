@@ -12,7 +12,7 @@ test('Extending 3 - replacing steps with reusable steps', assert => {
     const results = reporter.results
 
     // 7 steps should pass
-    let expected = 7 // 2 repeat twice steps
+    let expected = 9 // 2 repeat twice steps
     let actual = results.map(item => item.action).filter(item => item === 'pass').length
     assert.equal(actual, expected, 'should have 7 passing steps (replaced 4 steps from from basic)')
 
@@ -31,7 +31,7 @@ test('Extending 3 - replacing steps with reusable steps', assert => {
     assert.equal(actual, expected, 'should not call any of the steps from the extended basic test')
 
     // should  call all of the new reusable steps
-    expected = 7
+    expected = 9
     actual = results.filter(item => {
       return (
         item.action === 'log' &&

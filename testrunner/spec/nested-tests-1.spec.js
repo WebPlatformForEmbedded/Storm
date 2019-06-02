@@ -38,16 +38,16 @@ test('Nested Tests - 1', assert => {
 
     assert.equal(actual, expected, 'should execute the 2 normal tests once')
 
-    // should execute the nested test twice
-    expected = 2
+    // should execute the nested test 3 times
+    expected = 3
     actual = results.filter(item => {
       return item.action === 'log' && item.arguments[0].includes('Sub test')
     }).length
 
-    assert.equal(actual, expected, 'should execute the 2 normal tests once')
+    assert.equal(actual, expected, 'should execute the nested test 3 times')
 
-    // steps of nested test should be executed twice
-    expected = 2
+    // steps of nested test should be executed 3 times
+    expected = 3
     actual = results.filter(item => {
       return (
         item.action === 'log' && item.arguments[0].includes('Executing This is a first nested step')
@@ -57,15 +57,15 @@ test('Nested Tests - 1', assert => {
     assert.equal(actual, expected, 'should execute the steps of the nested test upon each repeat')
 
     // Sub sub test
-    expected = 2
+    expected = 3
     actual = results.filter(item => {
       return item.action === 'log' && item.arguments[0].includes('Executing Sub sub test')
     }).length
 
-    assert.equal(actual, expected, 'should execute sub sub test twice')
+    assert.equal(actual, expected, 'should execute sub sub test 3 times')
 
-    // I am a setup method inside a deeply nested test twice
-    expected = 2
+    // I am a setup method inside a deeply nested test 3 times
+    expected = 3
     actual = results.filter(item => {
       return (
         item.action === 'log' &&
@@ -73,7 +73,7 @@ test('Nested Tests - 1', assert => {
       )
     }).length
 
-    assert.equal(actual, expected, 'should run the setup method of the deeply nested test twice')
+    assert.equal(actual, expected, 'should run the setup method of the deeply nested test 3 times')
 
     // Sub sub sub test at least 4 times
     let min = 4
@@ -83,13 +83,13 @@ test('Nested Tests - 1', assert => {
 
     assert.ok(actual >= min, 'Sub sub sub test should run at least 4 times (actual ' + actual + ')')
 
-    // test should take at least 12 seconds to finish
-    expected = 6 * 2 // repeat for 6 seconds, repeat 2 times
+    // test should take at least 18 seconds to finish
+    expected = 6 * 3 // repeat for 6 seconds, repeat 3 times
     actual = (new Date() - start) / 1000
 
     assert.ok(
       actual >= expected,
-      'should take at least 12 seconds to finish (actual: ' + actual + ')'
+      'should take at least 18 seconds to finish (actual: ' + actual + ')'
     )
 
     // test should be a success

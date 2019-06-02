@@ -13,18 +13,18 @@ test('Repeat 1 - steps', assert => {
   Runner(testCase, reporter).catch(() => {
     const results = reporter.results
 
-    // Test that should run twice
-    let expected = 2
+    // Test that should run 3 times (initial + 2 repeats)
+    let expected = 3
     let actual = results.filter(item => {
       return (
         item.action === 'log' &&
         item.arguments.length &&
         typeof item.arguments[0] === 'string' &&
-        item.arguments[0].includes('Test that should run twice')
+        item.arguments[0].includes('Test that should run three times')
       )
     }).length
 
-    assert.equal(actual, expected, 'should have 2 executions of `Test that should run twice`')
+    assert.equal(actual, expected, 'should have 3 executions of `Test that should run three times`')
 
     // Test that should run only once
     expected = 1
@@ -39,15 +39,15 @@ test('Repeat 1 - steps', assert => {
 
     assert.equal(actual, expected, 'should have 1 execution of `Test that should run only once`')
 
-    // Test with asynchronous function (3 second timeout) that should run twice
-    expected = 2
+    // Test with asynchronous function (3 second timeout) that should run three times
+    expected = 3
     actual = results.filter(item => {
       return (
         item.action === 'log' &&
         item.arguments.length &&
         typeof item.arguments[0] === 'string' &&
         item.arguments[0].includes(
-          'Test with asynchronous function (3 second timeout) that should run twice'
+          'Test with asynchronous function (3 second timeout) that should run three times'
         )
       )
     }).length
@@ -55,7 +55,7 @@ test('Repeat 1 - steps', assert => {
     assert.equal(
       actual,
       expected,
-      'should have 2 executions of `Test with asynchronous function (3 second timeout) that should run twice`'
+      'should have 3 executions of `Test with asynchronous function (3 second timeout) that should run three times`'
     )
 
     // test should take at least 6seconds to finish

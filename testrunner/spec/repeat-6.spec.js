@@ -11,7 +11,7 @@ test('Repeat 6 - setup / teardown executed every repeat', assert => {
   Runner(testCase, reporter).then(() => {
     const results = reporter.results
 
-    let expected = 2
+    let expected = 3
     let actual = results.filter(item => {
       return (
         item.action === 'log' &&
@@ -21,26 +21,26 @@ test('Repeat 6 - setup / teardown executed every repeat', assert => {
       )
     }).length
 
-    assert.equal(actual, expected, 'should have 2 executions of the testcase `Dummy - Repeat - 6`')
+    assert.equal(actual, expected, 'should have 3 executions of the testcase `Dummy - Repeat - 6`')
 
     // 4 steps should pass
-    expected = 4
+    expected = 6
     actual = results.map(item => item.action).filter(item => item === 'pass').length
-    assert.equal(actual, expected, 'should have 4 passing steps (2 steps, 2 test repeats)')
+    assert.equal(actual, expected, 'should have 4 passing steps (2 steps, 3 test executions)')
 
-    // should call the setup method twice
+    // should call the setup method 3 times
     actual =
       results.filter(item => {
         return item.arguments && item.arguments[0] === 'Running Test Setup'
-      }).length === 2
-    assert.ok(actual, 'should call setup method twice')
+      }).length === 3
+    assert.ok(actual, 'should call setup method 3 times')
 
-    // should call the teardown method twice
+    // should call the teardown method 3 times
     actual =
       results.filter(item => {
         return item.arguments && item.arguments[0] === 'Running Test Teardown'
-      }).length === 2
-    assert.ok(actual, 'should call teardown method twice')
+      }).length === 3
+    assert.ok(actual, 'should call teardown method 3 times')
 
     // should run setup and teardown the correct order
     let firstSetup = results.findIndex(item => {

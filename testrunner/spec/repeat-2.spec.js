@@ -12,7 +12,7 @@ test('Repeat 2 - test', assert => {
     const results = reporter.results
 
     // Dummy - Repeat - 2
-    let expected = 3
+    let expected = 4 // initial execution + 3 repeats
     let actual = results.filter(item => {
       return (
         item.action === 'log' &&
@@ -22,12 +22,16 @@ test('Repeat 2 - test', assert => {
       )
     }).length
 
-    assert.equal(actual, expected, 'should have 3 executions of the testcase `Dummy - Repeat - 2`')
+    assert.equal(
+      actual,
+      expected,
+      'should have 4 executions (initial execution + 3 repeats) of the testcase `Dummy - Repeat - 2`'
+    )
 
-    // 6 steps should pass
-    expected = 6
+    // 8 steps should pass
+    expected = 8
     actual = results.map(item => item.action).filter(item => item === 'pass').length
-    assert.equal(actual, expected, 'should have 6 passing steps (2 steps, 3 test repeats)')
+    assert.equal(actual, expected, 'should have 8 passing steps (2 steps, 4 test executions)')
 
     assert.end()
   })

@@ -14,8 +14,8 @@ test('Repeat 5 - defined as function', assert => {
     let actual
     let expected
 
-    let min = 2
-    let max = 4
+    let min = 3
+    let max = 5
 
     let testRepeats = (actual = results.filter(item => {
       return (
@@ -33,8 +33,8 @@ test('Repeat 5 - defined as function', assert => {
         ')'
     )
 
-    min = 2 * testRepeats
-    max = 6 * testRepeats
+    min = 3 * testRepeats
+    max = 7 * testRepeats
 
     let stepRepeats = (actual = results.filter(item => {
       return (
@@ -49,7 +49,7 @@ test('Repeat 5 - defined as function', assert => {
 
     assert.skip(
       // actual >= min && actual <= max,
-      'TODO: should have between 2 and 6 executions per test repeat (' +
+      'TODO: should have between 3 and 7 executions per test repeat (' +
         testRepeats +
         ') of the step `Just a basic test step that should run a random amount of times` (actual - ' +
         stepRepeats +

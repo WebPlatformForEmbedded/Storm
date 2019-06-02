@@ -3,7 +3,7 @@ export default {
   description: 'Testing if we can repeat a test step 2 times',
   steps: [
     {
-      description: 'Test that should run twice',
+      description: 'Test that should run three times',
       test: x => x,
       params: 1,
       assert: 1,
@@ -16,7 +16,7 @@ export default {
       assert: 1,
     },
     {
-      description: 'Test with asynchronous function (3 second timeout) that should run twice',
+      description: 'Test with asynchronous function (3 second timeout) that should run three times',
       test: () => {
         return new Promise(resolve =>
           setTimeout(() => {
