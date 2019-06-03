@@ -1,5 +1,6 @@
 import Contra from 'contra'
 import Moment from 'moment'
+import Axios from 'axios'
 import Step from './step'
 import dotObjectKey from './lib/dotObjectKey'
 
@@ -132,7 +133,7 @@ const Mixin = function() {
         dotObjectKey.assign(this.data, key, value)
       }.bind(this),
     },
-    // $http,
+    $http: Axios,
     $moment: Moment,
   }
 }
