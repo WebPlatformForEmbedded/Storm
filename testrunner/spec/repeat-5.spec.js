@@ -47,9 +47,9 @@ test('Repeat 5 - defined as function', assert => {
       )
     }).length)
 
-    assert.skip(
-      // actual >= min && actual <= max,
-      'TODO: should have between 3 and 7 executions per test repeat (' +
+    assert.ok(
+      actual >= min && actual <= max,
+      'Should have between 3 and 7 executions per test repeat (' +
         testRepeats +
         ') of the step `Just a basic test step that should run a random amount of times` (actual - ' +
         stepRepeats +

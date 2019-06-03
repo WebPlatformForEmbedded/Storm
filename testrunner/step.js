@@ -1,5 +1,5 @@
 import Contra from 'contra'
-import { shouldRepeat, runValidate, calculateSleep } from './support'
+import { shouldRepeat, runValidate, calculateSleep, calculateRepeat } from './support'
 import executeAsPromise from './lib/executeAsPromise'
 
 const runStep = function(index) {
@@ -9,6 +9,8 @@ const runStep = function(index) {
     if (sleep) {
       this.reporter.sleep(sleep)
     }
+
+    this.step.repeat = calculateRepeat(this.step.repeat)
 
     setTimeout(() => {
       this.reporter.log(
