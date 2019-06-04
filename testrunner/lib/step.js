@@ -1,6 +1,11 @@
 import Contra from 'contra'
-import { shouldRepeat, runValidate, calculateSleep, calculateRepeat } from './support'
-import executeAsPromise from './lib/executeAsPromise'
+import {
+  shouldRepeat,
+  runValidate,
+  calculateSleep,
+  calculateRepeat,
+  executeAsPromise,
+} from './support'
 
 const runStep = function(index) {
   return new Promise((resolve, reject) => {

@@ -6,6 +6,8 @@ import runTeardown from './runTeardown'
 import runValidate from './runValidate'
 import calculateSleep from './calculateSleep'
 import calculateRepeat from './calculateRepeat'
+import dotObjectKey from './dotObjectKey'
+import executeAsPromise from './executeAsPromise'
 
 export {
   shouldRepeat,
@@ -16,4 +18,6 @@ export {
   runValidate,
   calculateSleep,
   calculateRepeat,
+  dotObjectKey,
+  executeAsPromise,
 }

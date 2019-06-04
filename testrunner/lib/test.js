@@ -2,7 +2,6 @@ import Contra from 'contra'
 import Moment from 'moment'
 import Axios from 'axios'
 import Step from './step'
-import dotObjectKey from './lib/dotObjectKey'
 
 import {
   shouldRepeat,
@@ -13,6 +12,7 @@ import {
   runValidate,
   calculateSleep,
   calculateRepeat,
+  dotObjectKey,
 } from './support'
 
 const runTest = function(index) {

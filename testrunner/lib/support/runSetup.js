@@ -1,4 +1,4 @@
-import executeAsPromise from '../lib/executeAsPromise'
+import executeAsPromise from './executeAsPromise'
 
 const runSetup = (context, method) => {
   if (method && typeof method === 'function') {

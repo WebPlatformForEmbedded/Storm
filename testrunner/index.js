@@ -1,4 +1,4 @@
-import Test from './test'
+import Test from './lib/test'
 import reporters from './reporters'
 
 export default (testCase, reporter, device) => {
