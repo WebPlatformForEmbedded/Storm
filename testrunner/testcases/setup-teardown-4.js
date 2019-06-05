@@ -2,9 +2,9 @@ export default {
   title: 'Dummy - Setup / Teardown - 4',
   description:
     'Testing a test with an asynchronous Setup and a asynchronous Teardown method (see console.log)',
-  setup: () => {
+  setup() {
     return new Promise(resolve => {
-      console.log(
+      this.$log(
         'I am an asynchronous Setup method. I should finish running before the steps start. I take 3 seconds to finish.'
       )
       setTimeout(() => {
@@ -12,9 +12,9 @@ export default {
       }, 3000)
     })
   },
-  teardown: () => {
+  teardown() {
     return new Promise(resolve => {
-      console.log(
+      this.$log(
         'I am an asynchronous Teardown method. I should run after the steps and I take 3 seconds to finish.'
       )
       setTimeout(() => {

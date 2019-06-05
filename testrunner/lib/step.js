@@ -11,11 +11,13 @@ const runStep = function(index) {
   return new Promise((resolve, reject) => {
     const sleep = calculateSleep(this.step.sleep)
 
+    index === 0 ? this.reporter.step(this.tes, this.step) : null
+
     if (sleep) {
       this.reporter.sleep(sleep)
     }
 
-    this.step.repeat = calculateRepeat(this.step.repeat)
+    this.step.repeat = calculateRepeat(this.step.repeat, this.step)
 
     setTimeout(() => {
       this.reporter.log(

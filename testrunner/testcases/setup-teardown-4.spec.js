@@ -15,7 +15,7 @@ test('Setup Teardown 4 - Asynchronous', assert => {
 
     // should run the setup method first
     let expected = { action: 'log', arguments: ['Running Test Setup'] }
-    let actual = results[1]
+    let actual = results[2]
     assert.deepEqual(actual, expected, 'should run the setup method first')
 
     // 1 step should pass
@@ -30,7 +30,7 @@ test('Setup Teardown 4 - Asynchronous', assert => {
 
     // should run the teardown method last
     expected = { action: 'log', arguments: ['Running Test Teardown'] }
-    actual = results[4]
+    actual = results[7]
     assert.deepEqual(actual, expected, 'should run the teardown method last')
 
     // test should take at least 6 seconds to finish

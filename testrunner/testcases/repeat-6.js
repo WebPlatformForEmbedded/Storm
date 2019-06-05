@@ -6,11 +6,11 @@ export default {
     setup: true, // defaults to false
     teardown: true, // defaults to false
   },
-  setup: () => {
-    console.log('I am a Setup method. I should run before the steps, and on every repeat')
+  setup() {
+    this.$log('I am a Setup method. I should run before the steps, and on every repeat')
   },
-  teardown: () => {
-    console.log('I am a Teardown method. I should run after the steps, and on every repeat')
+  teardown() {
+    this.$log('I am a Teardown method. I should run after the steps, and on every repeat')
   },
   steps: [
     {

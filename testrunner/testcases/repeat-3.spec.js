@@ -35,7 +35,7 @@ test('Repeat 3 - setup / teardown executed once', assert => {
 
     // should run the setup method first
     expected = { action: 'log', arguments: ['Running Test Setup'] }
-    actual = results[1]
+    actual = results[2]
     assert.deepEqual(actual, expected, 'should run the setup method first')
 
     // should call the setup method once
@@ -54,7 +54,7 @@ test('Repeat 3 - setup / teardown executed once', assert => {
 
     // should run the teardown method last
     expected = { action: 'log', arguments: ['Running Test Teardown'] }
-    actual = results[results.length - 3]
+    actual = results[results.length - 4]
     assert.deepEqual(actual, expected, 'should run the teardown method last')
 
     assert.end()

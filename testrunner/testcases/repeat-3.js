@@ -3,11 +3,11 @@ export default {
   description:
     'Testing that setup and teardown are run only 1 by default when repeating an entire test',
   repeat: 3,
-  setup: () => {
-    console.log('I am a Setup method. I should run before the steps, but only once')
+  setup() {
+    this.$log('I am a Setup method. I should run before the steps, but only once')
   },
-  teardown: () => {
-    console.log(
+  teardown() {
+    this.$log(
       'I am a Teardown method. I should run after the steps, but only once and on the last test repetition'
     )
   },

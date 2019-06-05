@@ -17,6 +17,8 @@ import {
 
 const runTest = function(index) {
   return new Promise((resolve, reject) => {
+    this.reporter.init(this.test)
+
     const sleep = calculateSleep(this.test.sleep)
 
     if (sleep) {
@@ -144,16 +146,18 @@ const makeTest = (testCase, reporter) => {
     context: {},
   }
 
+  const test = Object.assign(
+    // Mixin functionality into the test case
+    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter } })),
+    { ...defaults, ...testCase }
+  )
+
   // calculate repeat
-  testCase.repeat = calculateRepeat(testCase.repeat)
+  test.repeat = calculateRepeat(testCase.repeat, test)
 
   return {
     reporter,
-    test: Object.assign(
-      // Mixin functionality into the test case
-      Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter } })),
-      { ...defaults, ...testCase }
-    ),
+    test,
     exec() {
       // execue the test (multiple times depending on repeat)
       return new Promise((resolve, reject) => {

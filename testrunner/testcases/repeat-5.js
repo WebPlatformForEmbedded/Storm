@@ -6,9 +6,9 @@ export default {
   title: 'Dummy - Repeat - 5',
   description:
     'Testing that we can repeat a test and a step a random nr. of times by passing an function as repeat value',
-  repeat: () => {
+  repeat() {
     const randomRepeats = calculateRandomRepeat(3)
-    console.log('Repeating test ' + randomRepeats + ' times')
+    this.$log('Repeating test ' + randomRepeats + ' times')
     // returned as an object
     return {
       times: randomRepeats,
@@ -20,9 +20,9 @@ export default {
       test: x => x,
       params: 1,
       assert: 1,
-      repeat: () => {
+      repeat() {
         const randomRepeats = calculateRandomRepeat(5)
-        console.log('Repeating step ' + randomRepeats + ' times')
+        this.$log('Repeating step ' + randomRepeats + ' times')
         // returned as a value
         return randomRepeats
       },

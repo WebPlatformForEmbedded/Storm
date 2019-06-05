@@ -1,8 +1,8 @@
 export default {
   title: 'Dummy - Setup / Teardown - 2',
   description: 'Testing a Teardown method (see console.log) after a test with a failing step',
-  teardown: () => {
-    console.log('I am Teardown method. I should run after the (failing) step')
+  teardown() {
+    this.$log('I am Teardown method. I should run after the (failing) step')
   },
   steps: [
     {

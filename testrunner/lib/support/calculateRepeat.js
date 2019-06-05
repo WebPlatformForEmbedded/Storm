@@ -1,6 +1,6 @@
-const calculateRepeat = repeat => {
+const calculateRepeat = (repeat, context) => {
   if (repeat && typeof repeat === 'function') {
-    repeat = repeat()
+    repeat = repeat.call(context)
   }
   return repeat
 }

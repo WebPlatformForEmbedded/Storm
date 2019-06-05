@@ -23,7 +23,7 @@ export default {
     },
   ],
   validate() {
-    console.log('Running (failing) final test validation')
+    this.$log('Running (failing) final test validation')
     return 1 < 0
   },
 }

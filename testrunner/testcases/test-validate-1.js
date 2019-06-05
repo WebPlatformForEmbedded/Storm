@@ -30,7 +30,7 @@ export default {
     },
   ],
   validate() {
-    console.log('Running final test validation')
+    this.$log('Running final test validation')
     return 1 > 0
   },
 }
