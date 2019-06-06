@@ -42,6 +42,8 @@ export default [
   require('../testrunner/testcases/nested-tests-1.js').default,
   require('../testrunner/testcases/nested-tests-2.js').default,
   require('../testrunner/testcases/nested-tests-3.js').default,
+  require('../testrunner/testcases/validation-helpers-1.js').default,
+  require('../testrunner/testcases/validation-helpers-2.js').default,
 
   // require('./dummy.test.js').default,
   // require('./helpers.test.js').default,

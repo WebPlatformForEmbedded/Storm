@@ -2,6 +2,7 @@ import Inquirer from 'inquirer'
 import ChexkboxPlus from 'inquirer-checkbox-plus-prompt'
 import Chalk from 'chalk'
 import Contra from 'contra'
+import Moment from 'moment'
 
 import Runner from '../testrunner'
 import Tests from '../tests'
@@ -34,6 +35,50 @@ const listTests = tests => {
 const clearConsole = () => {
   process.stdout.write('\x1b[2J')
   process.stdout.write('\x1b[0f')
+}
+
+let start
+const startRunning = () => {
+  start = Moment()
+  console.log(
+    Chalk.yellow(
+      [
+        renderSeparator('='),
+        center('Starting TestRunner'),
+        center(start.format('DD-MM-YYYY h:mm:s')),
+        renderSeparator('='),
+      ].join('\n')
+    )
+  )
+}
+
+const finishRunning = () => {
+  let end = Moment()
+  let duration = Moment.duration(end.diff(start))
+  if (duration.asSeconds() < 60) {
+    duration = duration.asSeconds() + ' seconds'
+  } else {
+    duration = duration.asMinutes() + ' minutes'
+  }
+  console.log(
+    Chalk.yellow(
+      [
+        renderSeparator('='),
+        center('Finished running tests'),
+        center(end.format('DD-MM-YYYY h:mm:s')),
+        center(['Duration:', duration].join(' ')),
+        renderSeparator('='),
+      ].join('\n')
+    )
+  )
+}
+
+const renderSeparator = separator => {
+  return Chalk.dim((separator || '-').repeat(process.stdout.columns))
+}
+
+const center = str => {
+  return ' '.repeat((process.stdout.columns - str.length) / 2) + str
 }
 
 const run = async () => {
@@ -71,15 +116,23 @@ const run = async () => {
   Inquirer.prompt(questions).then(answers => {
     if (answers.TESTS.length) {
       clearConsole()
-      Contra.each.series(answers.TESTS, (test, next) => {
-        Runner(Tests[test], Reporter())
-          .then(() => {
-            setTimeout(next, 1500)
-          })
-          .catch(() => {
-            setTimeout(() => next(), 1500)
-          })
-      })
+      startRunning()
+
+      Contra.each.series(
+        answers.TESTS,
+        (test, next) => {
+          Runner(Tests[test], Reporter())
+            .then(() => {
+              setTimeout(next, 1000)
+            })
+            .catch(() => {
+              setTimeout(() => next(), 1000)
+            })
+        },
+        () => {
+          finishRunning()
+        }
+      )
     } else {
       console.log(Chalk.red('Please select 1 or more tests to run!'))
       setTimeout(() => {

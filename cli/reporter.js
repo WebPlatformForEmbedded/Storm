@@ -89,8 +89,6 @@ const icon = status => {
 }
 
 const render = log => {
-  // LogUpdate.clear()
-
   const output = [
     renderTestHeader(log.test),
     renderSteps(log.steps),
