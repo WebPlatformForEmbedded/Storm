@@ -12,6 +12,7 @@
     "contra": "^1.9.4",
     "esm": "^3.2.22",
     "inquirer": "^6.3.1",
+    "inquirer-checkbox-plus-prompt": "^1.0.1",
     "log-update": "^3.2.0"
   }
 }
