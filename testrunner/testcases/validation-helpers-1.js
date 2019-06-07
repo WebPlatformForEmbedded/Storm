@@ -27,6 +27,15 @@ export default {
         return this.$expect(result).toContain('Cat')
       },
     },
+    {
+      description: 'Validating that we can do negative expectations with .not',
+      test() {
+        return ['Cat', 'Dog', 'Rabbit', 'Horse']
+      },
+      validate(result) {
+        return this.$expect(result).not.toContain('Chicken')
+      },
+    },
   ],
   validate() {
     return this.$expect('hello').toHaveLength(5)

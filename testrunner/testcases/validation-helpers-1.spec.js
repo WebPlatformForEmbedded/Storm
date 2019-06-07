@@ -12,9 +12,9 @@ test('Validation helper 1', assert => {
     const results = reporter.results
 
     // 4 steps should pass
-    let expected = 3
+    let expected = 4
     let actual = results.map(item => item.action).filter(item => item === 'pass').length
-    assert.equal(actual, expected, 'should have 3 passing steps')
+    assert.equal(actual, expected, 'should have 4 passing steps')
 
     // test should be a success
     expected = true
