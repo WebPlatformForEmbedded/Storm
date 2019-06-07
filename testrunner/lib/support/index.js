@@ -8,6 +8,7 @@ import calculateSleep from './calculateSleep'
 import calculateRepeat from './calculateRepeat'
 import dotObjectKey from './dotObjectKey'
 import executeAsPromise from './executeAsPromise'
+import expect from './expect'
 
 export {
   shouldRepeat,
@@ -20,4 +21,5 @@ export {
   calculateRepeat,
   dotObjectKey,
   executeAsPromise,
+  expect,
 }

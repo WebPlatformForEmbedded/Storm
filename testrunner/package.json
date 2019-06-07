@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "contra": "^1.9.4",
+    "expect": "^24.8.0",
     "moment": "^2.24.0"
   },
   "devDependencies": {

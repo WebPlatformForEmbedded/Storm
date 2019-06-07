@@ -1,6 +1,7 @@
 import Contra from 'contra'
 import Moment from 'moment'
 import Axios from 'axios'
+
 import Step from './step'
 
 import {
@@ -13,6 +14,7 @@ import {
   calculateSleep,
   calculateRepeat,
   dotObjectKey,
+  expect,
 } from './support'
 
 const runTest = function(index) {
@@ -137,6 +139,7 @@ const Mixin = function() {
     },
     $http: Axios,
     $moment: Moment,
+    $expect: expect,
   }
 }
 
