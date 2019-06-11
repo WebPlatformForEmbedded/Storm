@@ -22,6 +22,17 @@ test('expect - return all the assert methods from the expect library', assert =>
   assert.end()
 })
 
+test('expect - return custom expect matchers', assert => {
+  const methods = ['toBeWithinRange', 'toBeHttpNotFound', 'tobeHttpSuccess', 'toBeHttpStatus']
+  const availableMethods = Object.keys(expect(true))
+
+  methods.forEach(method => {
+    assert.ok(availableMethods.indexOf(method) > -1, 'Expect should have `' + method + '` method')
+  })
+
+  assert.end()
+})
+
 test('expect - return true on pass, error on fail', assert => {
   let expected = true
   let actual = expect('hello').toBe('hello')

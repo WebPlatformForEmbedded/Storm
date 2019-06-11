@@ -1,4 +1,7 @@
 import Expect from 'expect'
+import extensions from './expect/index.js'
+
+Expect.extend(extensions)
 
 const wrapper = expect => {
   return new Proxy(expect, {
