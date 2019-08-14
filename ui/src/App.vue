@@ -3,7 +3,7 @@
     <header
       class="bg-black px-2 h-12 w-full z-30 pin-t flex flex-wrap content-center shadow-md fixed"
     >
-      <h1 class="text-xl text-offwhite">WPE Test Framework 2.0</h1>
+      <h1 class="text-xl text-offwhite">Storm Test Runner</h1>
     </header>
     <div class="flex flex-row fixed mt-12 pin-b pin-t w-full">
       <nav class="bg-white h-full z-10 w-48 pt-6 pr-4 overflow-auto">
