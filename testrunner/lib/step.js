@@ -11,7 +11,7 @@ const runStep = function(index) {
   return new Promise((resolve, reject) => {
     const sleep = calculateSleep(this.step.sleep)
 
-    index === 0 ? this.reporter.step(this.tes, this.step) : null
+    index === 0 ? this.reporter.step(this.test, this.step) : null
 
     if (sleep) {
       this.reporter.sleep(sleep)
