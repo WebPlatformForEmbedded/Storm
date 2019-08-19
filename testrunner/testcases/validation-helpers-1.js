@@ -7,7 +7,7 @@ export default {
       test: x => x,
       params: true,
       validate(result) {
-        return this.$expect(result).toBe(true)
+        return this.$expect(result).to.be.equal(true)
       },
     },
     {
@@ -15,7 +15,7 @@ export default {
       test: x => x,
       params: 10,
       validate(result) {
-        return this.$expect(result).toBeGreaterThan(1)
+        return this.$expect(result).to.be.greaterThan(1)
       },
     },
     {
@@ -24,7 +24,7 @@ export default {
         return ['Cat', 'Dog', 'Rabbit', 'Horse']
       },
       validate(result) {
-        return this.$expect(result).toContain('Cat')
+        return this.$expect(result).to.contain('Cat')
       },
     },
     {
@@ -33,11 +33,11 @@ export default {
         return ['Cat', 'Dog', 'Rabbit', 'Horse']
       },
       validate(result) {
-        return this.$expect(result).not.toContain('Chicken')
+        return this.$expect(result).not.to.contain('Chicken')
       },
     },
   ],
   validate() {
-    return this.$expect('hello').toHaveLength(5)
+    return this.$expect('hello').to.have.length(5)
   },
 }

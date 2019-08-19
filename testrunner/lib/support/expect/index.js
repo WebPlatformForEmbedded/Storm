@@ -1,6 +1,6 @@
-import toBeWithinRange from './toBeWithinRange'
-import toBeHttpStatus from './toBeHttpStatus'
-import toBeHttpSuccess from './toBeHttpSuccess'
-import toBeHttpNotFound from './toBeHttpNotFound'
+import withinRange from './withinRange'
+import httpStatus from './httpStatus'
+import httpSuccess from './httpSuccess'
+import httpNotFound from './httpNotFound'
 
-export default { toBeWithinRange, toBeHttpStatus, toBeHttpSuccess, toBeHttpNotFound }
+export default { withinRange, httpStatus, httpSuccess, httpNotFound }

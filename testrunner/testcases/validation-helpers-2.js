@@ -7,7 +7,7 @@ export default {
       test: x => x,
       params: true,
       validate(result) {
-        return this.$expect(result).toBe(false)
+        return this.$expect(result).to.be(false)
       },
     },
   ],

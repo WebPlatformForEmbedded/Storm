@@ -10,7 +10,7 @@ export default {
         return randomInt
       },
       validate(result) {
-        return this.$expect(result).toBeWithinRange(0, 10)
+        return this.$expect(result).to.be.withinRange(0, 10)
       },
     },
     {
@@ -24,7 +24,7 @@ export default {
           })
       },
       validate(response) {
-        return this.$expect(response).toBeHttpSuccess()
+        return this.$expect(response).to.be.httpSuccess()
       },
     },
     {
@@ -35,7 +35,7 @@ export default {
         })
       },
       validate(response) {
-        return this.$expect(response).toBeHttpNotFound()
+        return this.$expect(response).to.be.httpNotFound()
       },
     },
   ],

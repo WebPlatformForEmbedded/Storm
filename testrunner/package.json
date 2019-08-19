@@ -8,8 +8,8 @@
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "dependencies": {
     "axios": "^0.18.0",
+    "chai": "^4.2.0",
     "contra": "^1.9.4",
-    "expect": "^24.8.0",
     "moment": "^2.24.0"
   },
   "devDependencies": {
