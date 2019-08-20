@@ -1,19 +1,15 @@
 {
-  "name": "wpetestframework",
-  "version": "2.0.0",
-  "main": "index.js",
+  "name": "storm",
+  "version": "0.0.1",
+  "author": "Michiel van der Geest <hello@michielvandergeest.com>",
+  "main": "src/index.js",
   "scripts": {
-    "start": "npm run ui:build && npm run ui:serve",
-    "ui:build": "cd ui && npm run build",
-    "ui:serve": "http-server ./ui/dist -p 2020 -o",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install-all": "npm install && cd ui && npm install && cd ../testrunner && npm install && cd ../cli && npm install",
-    "cli:run": "node ./cli",
-    "lint": "eslint '**/*.{js,vue}'",
-    "lint:fix": "eslint '**/*.{js,vue}' --fix"
+    "test": "tape -r esm tests/*.spec.js | tap-diff",
+    "lint": "eslint '**/*.js'",
+    "lint:fix": "eslint '**/*.js' --fix"
   },
   "lint-staged": {
-    "*.{js,vue}": [
+    "*.js": [
       "npm run lint:fix",
       "git add"
     ]
@@ -25,15 +21,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WebPlatformForEmbedded/WPETestFramework.git"
+    "url": "git+https://github.com/WebPlatformForEmbedded/Storm.git"
   },
-  "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "bugs": {
-    "url": "https://github.com/WebPlatformForEmbedded/WPETestFramework/issues"
+    "url": "https://github.com/WebPlatformForEmbedded/Storm/issues"
   },
-  "homepage": "https://github.com/WebPlatformForEmbedded/WPETestFramework#readme",
+  "homepage": "https://github.com/WebPlatformForEmbedded/Storm#readme",
   "dependencies": {
-    "http-server": "^0.11.1"
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "contra": "^1.9.4",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -41,8 +39,13 @@
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-vue": "^5.2.2",
+    "esm": "^3.2.25",
     "husky": "^2.1.0",
     "lint-staged": "^8.1.5",
-    "prettier": "^1.17.0"
+    "prettier": "^1.17.0",
+    "sinon": "^7.4.1",
+    "tap-diff": "^0.1.1",
+    "tape": "^4.11.0",
+    "tape-promise": "^4.0.0"
   }
 }

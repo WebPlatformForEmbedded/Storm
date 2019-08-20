@@ -1,13 +1,10 @@
 # Storm Test Runner
 
-## Test Case Features
-
-### Context
+## Test Case Features - Context
 
 Often your test cases depend on some context, i.e. certain variables and values that determine crucial parts of your tests.
 
-While you are free to declare your own variables in a Test case JS file,
-the test runner offers the possibility to define contextual data inline in the test case, using the `context` property.
+While you are free to declare your own variables in a Test case's JS file, the test runner offers the possibility to define _contextual data_ inline in the test case, using the `context` property.
 
 The context property accepts an object, but it does not care about the structure of this object. It can contain any value, including (deep) nested objects.
 
@@ -45,8 +42,7 @@ The specified context can be accessed via the convinience method `this.$context.
 }
 ```
 
-The context convenience object is exposed as `this.$context` is pretty much any function of a Test case: you can use it in `setup()` and `teardown()`, in a Tests step's `test()` and `validate()` function, but also in the `repeat()` and `sleep()` functions.
+The context convenience object is exposed as `this.$context` in pretty anywhere in a Test case: you can use it in `setup()` and `teardown()`, in a Tests step's `test()` and `validate()` function, but also in the `repeat()` and `sleep()` functions.
 
 Context is defined once per Test case and is *read only* as the `$context` object only exposes a `read()` method.
 
-Todo: advanced: when extending test, you can reuse the same test (i.e. start stop plugin) without rwriting test logic. Only specify the context and extend it with another test
