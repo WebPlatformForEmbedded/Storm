@@ -4,7 +4,8 @@
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape -r esm tests/*.spec.js | tap-diff",
+
+    "test": "tape -r esm './{,!(node_modules)/**}/*.spec.js' | tap-diff",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint '**/*.js' --fix"
   },
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/WebPlatformForEmbedded/Storm#readme",
   "dependencies": {
+    "ThunderJS": "github:WebPlatformForEmbedded/ThunderJS#v1.1.2",
     "axios": "^0.18.0",
     "chai": "^4.2.0",
     "contra": "^1.9.4",

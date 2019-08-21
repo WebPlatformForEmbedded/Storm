@@ -101,7 +101,7 @@ const runSteps = function(steps) {
             ...step,
             ...{ context: { ...this.test.context, ...step.context }, data: this.test.data },
           }
-          makeTest(step, this.reporter)
+          makeTest(step, this.reporter, this.thunderJS)
             .exec()
             .then(next)
             .catch(e => next(e))
@@ -123,6 +123,7 @@ const runSteps = function(steps) {
 
 const Mixin = function() {
   return {
+    $thunder: this.thunderJS,
     $log: this.reporter.log,
     $context: {
       read: function(key) {
@@ -143,7 +144,7 @@ const Mixin = function() {
   }
 }
 
-const makeTest = (testCase, reporter) => {
+const makeTest = (testCase, reporter, thunderJS) => {
   const defaults = {
     data: {},
     context: {},
@@ -151,7 +152,7 @@ const makeTest = (testCase, reporter) => {
 
   const test = Object.assign(
     // Mixin functionality into the test case
-    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter } })),
+    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter, thunderJS } })),
     { ...defaults, ...testCase }
   )
 
@@ -160,6 +161,7 @@ const makeTest = (testCase, reporter) => {
 
   return {
     reporter,
+    thunderJS,
     test,
     exec() {
       // execue the test (multiple times depending on repeat)
