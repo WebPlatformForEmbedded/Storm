@@ -30,7 +30,12 @@ test('runValidate - passing a failing validate function', assert => {
 })
 
 test('runValidate - passing not a function (i.e. string)', assert => {
-  const result = runValidate({}, '', true)
+  let result
+  try {
+    result = runValidate({}, '', true)
+  } catch (e) {
+    //
+  }
 
   let actual = typeof result.then === 'function' && typeof result.catch === 'function'
   assert.ok(actual, 'should return a promise')
