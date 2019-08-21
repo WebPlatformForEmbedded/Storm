@@ -18,7 +18,7 @@ const wrapper = expect => {
             original.apply(target, args)
             return true
           } catch (e) {
-            return e.message
+            return e
           }
         }
       }
