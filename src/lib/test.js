@@ -17,6 +17,8 @@ import {
   expect,
 } from './support'
 
+import thunderRemoteControl from './support/thunder/remoteControl'
+
 const runTest = function(index) {
   return new Promise((resolve, reject) => {
     this.reporter.init(this.test)
@@ -123,7 +125,10 @@ const runSteps = function(steps) {
 
 const Mixin = function() {
   return {
-    $thunder: this.thunderJS,
+    $thunder: {
+      api: this.thunderJS,
+      remoteControl: thunderRemoteControl.apply(this, [this.thunderJS]),
+    },
     $log: this.reporter.log,
     $context: {
       read: function(key) {
