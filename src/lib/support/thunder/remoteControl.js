@@ -90,7 +90,7 @@ export default function(thunderJS) {
       return call.apply(null, ['exit', ...arguments])
     },
     key(key) {
-      return call.apply(null, ['exit', ...arguments])
+      return call.apply(null, [key, ...arguments])
     },
   }
 }
