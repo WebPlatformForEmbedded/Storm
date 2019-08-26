@@ -18,6 +18,7 @@ import {
 } from './support'
 
 import thunderRemoteControl from './support/thunder/remoteControl'
+import sequence from './support/sequence'
 
 const runTest = function(index) {
   return new Promise((resolve, reject) => {
@@ -146,6 +147,7 @@ const Mixin = function() {
     $http: Axios,
     $moment: Moment,
     $expect: expect,
+    $sequence: sequence,
   }
 }
 
