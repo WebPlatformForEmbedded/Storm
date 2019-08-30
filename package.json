@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/WebPlatformForEmbedded/Storm#readme",
   "dependencies": {
-    "ThunderJS": "github:WebPlatformForEmbedded/ThunderJS#v1.1.3",
+    "ThunderJS": "github:WebPlatformForEmbedded/ThunderJS#v1.1.4",
     "axios": "^0.18.0",
     "chai": "^4.2.0",
     "contra": "^1.9.4",
