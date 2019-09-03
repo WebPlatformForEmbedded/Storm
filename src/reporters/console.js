@@ -5,8 +5,8 @@ export default {
   step(test, step) {
     console.log('🚀  Starting step `' + step.description + '`')
   },
-  log(msg) {
-    console.log('➡️  ' + msg)
+  log() {
+    console.log.apply(null, ['➡️  ', ...arguments])
   },
   sleep(milliseconds) {
     console.log('😴  Sleeping for ' + milliseconds / 1000 + ' seconds')
