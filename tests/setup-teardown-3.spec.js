@@ -28,6 +28,7 @@ test('Setup Teardown 3 - not functions', assert => {
       results.filter(item => {
         return item.arguments && item.arguments[0] === 'Running Test Teardown'
       }).length === 0
+
     assert.ok(actual, 'should not call teardown method')
 
     assert.end()

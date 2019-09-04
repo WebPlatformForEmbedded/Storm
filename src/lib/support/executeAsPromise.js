@@ -6,16 +6,23 @@ export default (method, args, context) => {
     } catch (e) {
       result = e
     }
+  } else {
+    result = method
   }
 
-  // not a promise, so let's return one
-  if (!(result && result.then && typeof result.then === 'function')) {
+  // if it looks like a duck .. ehm ... promise and talks like a promise, let's assume it's a promise
+  if (
+    result !== null &&
+    typeof result === 'object' &&
+    result.then &&
+    typeof result.then === 'function'
+  ) {
+    return result
+  }
+  // otherwise make a promise
+  else {
     return new Promise(resolve => {
       resolve(result)
     })
-  }
-  // return the existing promise
-  else {
-    return result
   }
 }

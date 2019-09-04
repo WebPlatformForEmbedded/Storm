@@ -38,3 +38,16 @@ test('executeAsPromise - pass a normal function', assert => {
 
   assert.end()
 })
+
+test('executeAsPromise - pass a value (i.e. not a function)', assert => {
+  let actual = executeAsPromise('hello!')
+  assert.ok(
+    typeof actual.then === 'function' && typeof actual.catch === 'function',
+    'should return a promise when passed a value'
+  )
+
+  actual.then(val => {
+    assert.equal(val, 'hello!', 'should return the passed value as the return of the promise')
+    assert.end()
+  })
+})

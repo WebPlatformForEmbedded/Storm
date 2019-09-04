@@ -9,60 +9,60 @@ import {
 
 const runStep = function(index) {
   return new Promise((resolve, reject) => {
-    const sleep = calculateSleep(this.step.sleep)
+    calculateSleep(this.step.sleep).then(sleep => {
+      index === 0 ? this.reporter.step(this.test, this.step) : null
 
-    index === 0 ? this.reporter.step(this.test, this.step) : null
+      if (sleep) {
+        this.reporter.sleep(sleep)
+      }
 
-    if (sleep) {
-      this.reporter.sleep(sleep)
-    }
+      this.step.repeat = calculateRepeat(this.step.repeat, this.step)
 
-    this.step.repeat = calculateRepeat(this.step.repeat, this.step)
+      setTimeout(() => {
+        this.reporter.log(
+          (index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + this.step.description
+        )
 
-    setTimeout(() => {
-      this.reporter.log(
-        (index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + this.step.description
-      )
-
-      Contra.waterfall(
-        [
-          // execute test function
-          next => {
-            // this could be abstracted in a prettier way?
-            executeAsPromise(
-              this.step.test,
-              this.step.params instanceof Array ? this.step.params : [this.step.params],
-              this.step
-            )
-              .then(result => {
-                next(null, result)
-              })
-              .catch(err => next(err))
-          },
-          // validate the result
-          (result, next) => {
-            if (!this.step.validate && this.step.assert) {
-              this.step.validate = x => x === this.step.assert
+        Contra.waterfall(
+          [
+            // execute test function
+            next => {
+              // this could be abstracted in a prettier way?
+              executeAsPromise(
+                this.step.test,
+                this.step.params instanceof Array ? this.step.params : [this.step.params],
+                this.step
+              )
+                .then(result => {
+                  next(null, result)
+                })
+                .catch(err => next(err))
+            },
+            // validate the result
+            (result, next) => {
+              if (!this.step.validate && this.step.assert) {
+                this.step.validate = x => x === this.step.assert
+              }
+              runValidate(this.test, this.step.validate, result)
+                .then(next)
+                .catch(e => {
+                  next(e)
+                })
+            },
+          ],
+          // done!
+          (err, results) => {
+            if (err) {
+              this.reporter.fail(this.test, this.step, err)
+              reject(err)
+            } else {
+              this.reporter.pass(this.test, this.step)
+              resolve()
             }
-            runValidate(this.test, this.step.validate, result)
-              .then(next)
-              .catch(e => {
-                next(e)
-              })
-          },
-        ],
-        // done!
-        (err, results) => {
-          if (err) {
-            this.reporter.fail(this.test, this.step, err)
-            reject(err)
-          } else {
-            this.reporter.pass(this.test, this.step)
-            resolve()
           }
-        }
-      )
-    }, sleep || 500)
+        )
+      }, sleep || 500)
+    })
   })
 }
 

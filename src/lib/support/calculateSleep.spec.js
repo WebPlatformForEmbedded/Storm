@@ -10,12 +10,31 @@ test('calculateSleep - Type', assert => {
   assert.end()
 })
 
+test('calculateSleep - return as promise', assert => {
+  const actualValue = calculateSleep(2)
+
+  assert.ok(
+    typeof actualValue.then === 'function' && typeof actualValue.catch === 'function',
+    'should return a promise when passed a value'
+  )
+
+  const actualFunction = calculateSleep(() => {})
+
+  assert.ok(
+    typeof actualFunction.then === 'function' && typeof actualFunction.catch === 'function',
+    'should return a promise when passed a function'
+  )
+
+  assert.end()
+})
+
 test('calculateSleep - Convert seconds to milliseconds', assert => {
   const expected = 2000
-  const actual = calculateSleep(2)
 
-  assert.equal(actual, expected, 'seconds should be multiplied by 1000')
-  assert.end()
+  calculateSleep(2).then(actual => {
+    assert.equal(actual, expected, 'seconds should be multiplied by 1000')
+    assert.end()
+  })
 })
 
 test('calculateSleep - Sleep as a function', assert => {
@@ -23,12 +42,13 @@ test('calculateSleep - Sleep as a function', assert => {
     return 2.5 * 2
   }
   const expected = 5000
-  const actual = calculateSleep(sleepFunction)
 
-  assert.equal(
-    actual,
-    expected,
-    'seconds to sleep should be properly calculated when passed as a function'
-  )
-  assert.end()
+  calculateSleep(sleepFunction).then(actual => {
+    assert.equal(
+      actual,
+      expected,
+      'seconds to sleep should be properly calculated when passed as a function'
+    )
+    assert.end()
+  })
 })
