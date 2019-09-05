@@ -1,6 +1,6 @@
 # Storm (aka WPE Test Framework)
 
-Storm is an automated test runner for Thunder](https://github.com/WebPlatformForEmbedded/Thunder) based devices. This is the core of the Storm test runner, where the actual magic happens.
+Storm is an automated test runner for [Thunder](https://github.com/WebPlatformForEmbedded/Thunder) based devices. This is the core of the Storm test runner, where the actual magic happens.
 If you are looking to run Storm, please see 'How to use' section below.
 
 ## How to use
