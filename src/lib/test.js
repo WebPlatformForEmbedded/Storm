@@ -145,7 +145,7 @@ const Mixin = function() {
       read: function(key) {
         return dotObjectKey.get(this.data, key)
       }.bind(this),
-      store: function(key, value) {
+      write: function(key, value) {
         dotObjectKey.assign(this.data, key, value)
       }.bind(this),
     },

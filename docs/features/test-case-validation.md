@@ -26,7 +26,7 @@ Contrary to test steps validation methods, the final validation method *doesn't*
 
         // do a request retrieve CPU from STB (fake code!!)
         const cpu = request.getcpu()
-        this.$data.store('cpu_loads', cpu_loads.push(cpu))
+        this.$data.write('cpu_loads', cpu_loads.push(cpu))
         return cpu
       },
       validate(cpu) {

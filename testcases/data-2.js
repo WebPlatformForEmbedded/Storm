@@ -2,7 +2,7 @@ export default {
   title: 'Dummy - Data - 2',
   description: 'Testing that data can be initiated in a setup method',
   setup() {
-    this.$data.store('bla', 'I was created during setup')
+    this.$data.write('bla', 'I was created during setup')
   },
   steps: [
     {

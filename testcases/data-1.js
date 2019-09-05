@@ -5,7 +5,7 @@ export default {
     {
       description: 'Storing and reading some simple data',
       test() {
-        this.$data.store('foo', 'I am foo!')
+        this.$data.write('foo', 'I am foo!')
         return this.$data.read('foo')
       },
       assert: 'I am foo!',
@@ -13,7 +13,7 @@ export default {
     {
       description: 'Storing and reading some nested data',
       test() {
-        this.$data.store('bar.baz.foo', 'I am nested foo!')
+        this.$data.write('bar.baz.foo', 'I am nested foo!')
         return this.$data.read('bar.baz.foo')
       },
       assert: 'I am nested foo!',
@@ -28,10 +28,10 @@ export default {
     {
       description: 'Setting and reading falsy data',
       test() {
-        this.$data.store('zero', 0)
-        this.$data.store('false', false)
-        this.$data.store('empty_string', '')
-        this.$data.store('null', null)
+        this.$data.write('zero', 0)
+        this.$data.write('false', false)
+        this.$data.write('empty_string', '')
+        this.$data.write('null', null)
         return true
       },
       validate() {

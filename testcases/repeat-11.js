@@ -12,8 +12,8 @@ export default {
   title: 'Dummy - Repeat - 11',
   description: 'Testing that we can repeat a step until a certain condition is met',
   setup() {
-    this.$data.store('cpu_loads', [])
-    this.$data.store('step_count', 0)
+    this.$data.write('cpu_loads', [])
+    this.$data.write('step_count', 0)
   },
   repeat: {
     until() {
@@ -30,10 +30,10 @@ export default {
         const cpu_loads = this.$data.read('cpu_loads')
         // simulate cpu load between 50 and 100
         cpu_loads.push(randomInt(50, 100))
-        this.$data.store('cpu_loads', cpu_loads)
+        this.$data.write('cpu_loads', cpu_loads)
 
         // ioncrement step count
-        this.$data.store('step_count', this.$data.read('step_count') + 1)
+        this.$data.write('step_count', this.$data.read('step_count') + 1)
 
         return x
       },

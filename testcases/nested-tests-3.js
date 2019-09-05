@@ -1,18 +1,18 @@
 const incrementCount = (dataObj, key) => {
-  dataObj.store(key, dataObj.read(key) + 1)
+  dataObj.write(key, dataObj.read(key) + 1)
 }
 export default {
   title: 'Dummy - Nested tests - 3',
   description: 'Testing that we read and store data in nested tests',
   setup() {
-    this.$data.store('stepcount', 0)
+    this.$data.write('stepcount', 0)
   },
   steps: [
     {
       description: 'Step that sets some data',
       test() {
         incrementCount(this.$data, 'stepcount')
-        this.$data.store('hello', 'Hello from first step of parent test')
+        this.$data.write('hello', 'Hello from first step of parent test')
         return true
       },
       assert: true,
@@ -35,7 +35,7 @@ export default {
           description: 'Store some data in sub test',
           test() {
             incrementCount(this.$data, 'stepcount')
-            this.$data.store('hi', 'Hi from second step of sub test')
+            this.$data.write('hi', 'Hi from second step of sub test')
             return this.$data.read('hi')
           },
           assert: 'Hi from second step of sub test',
@@ -57,7 +57,7 @@ export default {
               description: 'Setting data in sub sub test',
               test() {
                 incrementCount(this.$data, 'stepcount')
-                this.$data.store('bye', 'Bye from second step of sub sub test')
+                this.$data.write('bye', 'Bye from second step of sub sub test')
                 return this.$data.read('bye')
               },
               assert: 'Bye from second step of sub sub test',

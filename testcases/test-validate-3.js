@@ -2,7 +2,7 @@ export default {
   title: 'Dummy - Test validate - 3',
   description: 'Testing that a final test validate can use data set in steps',
   setup() {
-    this.$data.store('cpu_loads', [])
+    this.$data.write('cpu_loads', [])
   },
   steps: [
     {
@@ -10,7 +10,7 @@ export default {
       test(params) {
         const cpu_loads = this.$data.read('cpu_loads')
         cpu_loads.push(100)
-        this.$data.store('cpu_loads', cpu_loads)
+        this.$data.write('cpu_loads', cpu_loads)
         return params
       },
       params: 1,
@@ -21,7 +21,7 @@ export default {
       test(params) {
         const cpu_loads = this.$data.read('cpu_loads')
         cpu_loads.push(80)
-        this.$data.store('cpu_loads', cpu_loads)
+        this.$data.write('cpu_loads', cpu_loads)
         return params
       },
       params: 2,
@@ -32,7 +32,7 @@ export default {
       test(params) {
         const cpu_loads = this.$data.read('cpu_loads')
         cpu_loads.push(90)
-        this.$data.store('cpu_loads', cpu_loads)
+        this.$data.write('cpu_loads', cpu_loads)
         return params
       },
       params: 3,
