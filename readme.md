@@ -10,3 +10,7 @@ To run the test runner you need a frontend, something that executes/manages the 
 ## Documentation
 
 Documentation on test syntax and reporters can be found [here](https://github.com/WebPlatformForEmbedded/Storm/blob/master/docs/readme.md)
+
+## Test cases
+
+The storm test cases are stored in a seperate repository which can be found [here](https://github.com/WebPlatformForEmbedded/Storm-Testcases)
