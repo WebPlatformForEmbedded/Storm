@@ -1,10 +1,12 @@
-# WPE Test Framework 2.0
+# Storm (aka WPE Test Framework)
 
-WIP !!
+Storm is an automated test runner for Thunder](https://github.com/WebPlatformForEmbedded/Thunder) based devices. This is the core of the Storm test runner, where the actual magic happens.
+If you are looking to run Storm, please see 'How to use' section below.
 
 ## How to use
 
-1. Clone this repository and checkout the `dev` branch
-2. Run `npm run install-all` (or `yarn install-all`) to install the NPM dependencies accross the project
-3. Run `npm start` (or `yarn start`) to compile the UI and serve it in a browser
-4. Run `npm cli:run` (or `yarn cli:run`) to run a test from the command line
+To run the test runner you need a frontend, something that executes/manages the storm core. For an example test runner please go over to [Storm-CLI](https://github.com/WebPlatformForEmbedded/Storm-CLI)
+
+## Documentation
+
+Documentation on test syntax and reporters can be found [here](https://github.com/WebPlatformForEmbedded/Storm/blob/master/docs/readme.md)
