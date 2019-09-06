@@ -24,77 +24,79 @@ const runTest = function(index) {
   return new Promise((resolve, reject) => {
     this.reporter.init(this.test)
 
-    calculateSleep(this.test.sleep).then(sleep => {
-      if (sleep) {
-        this.reporter.sleep(sleep)
-      }
+    calculateSleep(this.test, this.test.sleep)
+      .then(sleep => {
+        if (sleep) {
+          this.reporter.sleep(sleep)
+        }
 
-      setTimeout(
-        () => {
-          this.reporter.log(
-            (index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + this.test.title
-          )
+        setTimeout(
+          () => {
+            this.reporter.log(
+              (index > 0 ? 'Repeating (' + index + ') ' : 'Executing ') + this.test.title
+            )
 
-          Contra.series(
-            [
-              // 1) test setup
-              next => {
-                shouldRunSetup(this.test.repeat, index)
-                  ? runSetup(this, this.test.setup)
-                      .then(res => {
-                        next()
-                      })
-                      .catch(e => {
-                        next(e)
-                      })
-                  : next()
-              },
-              // 2) test steps
-              next => {
-                runSteps
-                  .call(this, this.test.steps)
-                  .then(next)
-                  .catch(e => {
-                    next(e)
-                  })
-              },
-              // 3) test validate
-              next => {
-                runValidate(this.test, this.test.validate)
-                  .then(next)
-                  .catch(e => {
-                    next(e)
-                  })
-              },
-              //  4) test teardown (should this be in the done step to make sure it *always* runs?)
-              next => {
-                shouldRunTeardown(this.test.repeat, index)
-                  ? runTeardown(this, this.test.teardown)
-                      .then(res => {
-                        next()
-                      })
-                      .catch(e => {
-                        next(e)
-                      })
-                  : next()
-              },
-            ],
-            // 5) done
-            (err, results) => {
-              if (err) {
-                this.reporter.error(this.test, err)
-                reject(err)
-              } else {
-                this.reporter.success(this.test)
-                resolve()
+            Contra.series(
+              [
+                // 1) test setup
+                next => {
+                  shouldRunSetup(this.test.repeat, index)
+                    ? runSetup(this, this.test.setup)
+                        .then(res => {
+                          next()
+                        })
+                        .catch(e => {
+                          next(e)
+                        })
+                    : next()
+                },
+                // 2) test steps
+                next => {
+                  runSteps
+                    .call(this, this.test.steps)
+                    .then(next)
+                    .catch(e => {
+                      next(e)
+                    })
+                },
+                // 3) test validate
+                next => {
+                  runValidate(this.test, this.test.validate)
+                    .then(next)
+                    .catch(e => {
+                      next(e)
+                    })
+                },
+                //  4) test teardown (should this be in the done step to make sure it *always* runs?)
+                next => {
+                  shouldRunTeardown(this.test.repeat, index)
+                    ? runTeardown(this, this.test.teardown)
+                        .then(res => {
+                          next()
+                        })
+                        .catch(e => {
+                          next(e)
+                        })
+                    : next()
+                },
+              ],
+              // 5) done
+              (err, results) => {
+                if (err) {
+                  this.reporter.error(this.test, err)
+                  reject(err)
+                } else {
+                  this.reporter.success(this.test)
+                  resolve()
+                }
               }
-            }
-          )
-        },
-        // unless sleep is specified, sleep for 500ms between repeating a test (but not on the first run!)
-        sleep ? sleep : Math.min(1, index) * 500
-      )
-    })
+            )
+          },
+          // unless sleep is specified, sleep for 500ms between repeating a test (but not on the first run!)
+          sleep ? sleep : Math.min(1, index) * 500
+        )
+      })
+      .catch(reject)
   })
 }
 
