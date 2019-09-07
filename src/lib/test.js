@@ -24,7 +24,7 @@ const runTest = function(index) {
   return new Promise((resolve, reject) => {
     this.reporter.init(this.test)
 
-    calculateSleep(this.test, this.test.sleep)
+    calculateSleep(this.test.sleep, this.test)
       .then(sleep => {
         if (sleep) {
           this.reporter.sleep(sleep)
@@ -62,8 +62,11 @@ const runTest = function(index) {
                 // 3) test validate
                 next => {
                   runValidate(this.test, this.test.validate)
-                    .then(next)
+                    .then(res => {
+                      next(null, res)
+                    })
                     .catch(e => {
+                      console.log('catch', e)
                       next(e)
                     })
                 },

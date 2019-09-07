@@ -42,3 +42,42 @@ test('runValidate - passing not a function (i.e. string)', assert => {
 
   assert.end()
 })
+
+test('runValidate - passing a passing promise', assert => {
+  let result = runValidate(
+    {},
+    new Promise(resolve => {
+      resolve('hello')
+    }).then(res => res === 'hello'),
+    'hello'
+  )
+
+  let actual = typeof result.then === 'function' && typeof result.catch === 'function'
+  assert.ok(actual, 'should return a promise')
+
+  result.then(actual => {
+    assert.ok(actual, 'should return true')
+
+    assert.end()
+  })
+})
+
+test('runValidate - passing a failing promise', assert => {
+  let result = runValidate(
+    {},
+    new Promise(resolve => {
+      resolve('bye')
+    }).then(res => res === 'hello'),
+    'hello'
+  )
+
+  let actual = typeof result.then === 'function' && typeof result.catch === 'function'
+  assert.ok(actual, 'should return a promise')
+
+  result.then(console.log).catch(e => {
+    let expected = 'Validation failed'
+    let actual = e.message
+    assert.equals(expected, actual, 'should throw an error `Validation failed`')
+    assert.end()
+  })
+})

@@ -1,20 +1,14 @@
-const runValidate = (context, validate, result) => {
+import executeAsPromise from './executeAsPromise'
+
+const runValidate = (context, validate, expected) => {
   return new Promise((resolve, reject) => {
-    if (validate && typeof validate === 'function') {
-      try {
-        if (validate.call(context, result) === true) {
-          return resolve()
-        } else {
-          return reject(new Error('Validation failed'))
-        }
-      } catch (e) {
+    executeAsPromise(validate, [expected], context)
+      .then(result => {
+        return result === false ? reject(new Error('Validation failed')) : resolve(result)
+      })
+      .catch(e => {
         reject(e)
-      }
-    }
-    // if no validate method, just resolve
-    else {
-      resolve()
-    }
+      })
   })
 }
 

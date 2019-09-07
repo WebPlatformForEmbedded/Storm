@@ -7,9 +7,11 @@ import testCase from '../testcases/error-2'
 
 const reporter = Reporter()
 
-test('Error 1 - error in validation function', assert => {
+test('Error 2 - error in validation function', assert => {
   Runner(testCase, reporter)
-    .then(res => {})
+    .then(res => {
+      console.log('the result', res)
+    })
     .catch(() => {
       const results = reporter.results
 

@@ -1,6 +1,6 @@
 import executeAsPromise from './executeAsPromise'
 
-const calculateSleep = (context, sleep) => {
+const calculateSleep = (sleep, context) => {
   return executeAsPromise(sleep, null, context).then(sleep => sleep * 1000)
 }
 

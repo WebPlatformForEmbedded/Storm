@@ -9,7 +9,7 @@ import {
 
 const runStep = function(index) {
   return new Promise((resolve, reject) => {
-    calculateSleep(this.step, this.step.sleep)
+    calculateSleep(this.step.sleep, this.step)
       .then(sleep => {
         index === 0 ? this.reporter.step(this.test, this.step) : null
 
@@ -45,7 +45,9 @@ const runStep = function(index) {
                   this.step.validate = x => x === this.step.assert
                 }
                 runValidate(this.test, this.step.validate, result)
-                  .then(next)
+                  .then(res => {
+                    next(null, res)
+                  })
                   .catch(e => {
                     next(e)
                   })

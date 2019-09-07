@@ -30,9 +30,9 @@ test('Error 1 - error in test function', assert => {
       assert.equal(actual, expected, 'should have an error')
 
       // todo: should have a more clear error message
-      expected = 'Validation failed'
+      expected = 'foo is not defined'
       actual = result[0].arguments[1].message
-      assert.equal(actual, expected, 'error message should be `Validation failed`')
+      assert.equal(actual, expected, 'error message should be `foo is not defined`')
 
       assert.end()
     })

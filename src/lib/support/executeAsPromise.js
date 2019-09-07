@@ -21,8 +21,12 @@ export default (method, args, context) => {
   }
   // otherwise make a promise
   else {
-    return new Promise(resolve => {
-      resolve(result)
+    return new Promise((resolve, reject) => {
+      if (result instanceof Error) {
+        reject(result)
+      } else {
+        resolve(result)
+      }
     })
   }
 }
