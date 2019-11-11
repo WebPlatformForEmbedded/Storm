@@ -24,7 +24,7 @@ const runTest = function(index) {
   return new Promise((resolve, reject) => {
     this.reporter.init(this.test)
 
-    calculateSleep(this.test.sleep, this.test)
+    calculateSleep((index === 0 && this.test.sleepOnce) || this.test.sleep, this.test)
       .then(sleep => {
         if (sleep) {
           this.reporter.sleep(sleep)

@@ -9,7 +9,7 @@ import {
 
 const runStep = function(index) {
   return new Promise((resolve, reject) => {
-    calculateSleep(this.step.sleep, this.step)
+    calculateSleep((index === 0 && this.step.sleepOnce) || this.step.sleep, this.step)
       .then(sleep => {
         index === 0 ? this.reporter.step(this.test, this.step) : null
 

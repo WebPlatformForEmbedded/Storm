@@ -46,3 +46,7 @@ You can specify how long the Test Runner should *pauze* (or sleep) between Test 
   ]
 }
 ```
+
+### Sleep once
+
+When you use the [Repeat](./repeat.md)-funtionality, it's important to realize that the waiting time is taken into account for _every_ repetition of the test or step. In case you want to pauze only on the first iteration, you can specify a `sleepOnce` value. The sleepOnce functionality is identical to the `sleep` functionality, with the exception that it only executed only once.
