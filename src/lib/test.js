@@ -187,6 +187,18 @@ const makeTest = (testCase, reporter, thunderJS) => {
         let start = new Date()
         let error = null
 
+        thunderJS.on('connect', () => {
+          this.reporter.log('Connected to Thunder JSON-RPC interface')
+        })
+
+        thunderJS.on('error', () => {
+          this.reporter.error('Error from JSON-RPC interface')
+        })
+
+        thunderJS.on('disconnect', () => {
+          this.reporter.log('Disconnected from Thunder JSON-RPC interface')
+        })
+
         const queue = Contra.queue((job, done) => {
           runTest
             .call(job, index)
