@@ -50,7 +50,7 @@ export default function(thunderJS) {
       .fill(() => {
         return new Promise((resolve, reject) => {
           thunderJS.RemoteControl.send({
-            device: 'DevInput',
+            device: 'Web',
             code: keyMapping[key],
             key: '',
             modifiers: [''],
