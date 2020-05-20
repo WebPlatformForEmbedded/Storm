@@ -61,6 +61,10 @@ const runTest = function(index) {
                 },
                 // 3) test validate
                 next => {
+                  if (!this.test.validate) {
+                    return next()
+                  }
+
                   runValidate(this.test, this.test.validate)
                     .then(res => {
                       next(null, res)
