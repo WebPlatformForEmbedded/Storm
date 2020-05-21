@@ -1,4 +1,4 @@
-import baseTest from './basic.js'
+import baseTest from './basic.test.js'
 import { randomSleep } from './extending/reusable-steps.js'
 
 export default {

@@ -1,4 +1,4 @@
-import baseTest from './basic.js'
+import baseTest from './basic.test.js'
 
 export default {
   ...baseTest,
