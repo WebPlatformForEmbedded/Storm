@@ -14,7 +14,7 @@ export default (testCase, reporter, thunderConfig) => {
     Test(testCase, reporter, thunderJS)
       .exec()
       .then(result => {
-        resolve('Done running', result)
+        resolve(result)
       })
       .catch(err => {
         reject(err)
