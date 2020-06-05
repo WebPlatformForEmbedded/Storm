@@ -41,8 +41,8 @@ const runStep = function(index) {
               },
               // validate the result
               (result, next) => {
-                if (!this.step.validate && this.step.assert) {
-                  this.step.validate = x => x === this.step.assert
+                if (!this.step.validate) {
+                  this.step.validate = x => x === (this.step.assert ? this.step.assert : x)
                 }
                 runValidate(this.test, this.step.validate, result)
                   .then(res => {
