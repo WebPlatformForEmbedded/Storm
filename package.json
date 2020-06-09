@@ -1,6 +1,6 @@
 {
   "name": "storm",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "Michiel van der Geest <hello@michielvandergeest.com>",
   "main": "src/index.js",
   "scripts": {
