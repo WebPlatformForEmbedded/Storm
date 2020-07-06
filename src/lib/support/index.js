@@ -1,6 +1,5 @@
 import shouldRepeat from './shouldRepeat'
 import shouldRunSetup from './shouldRunSetup'
-import shouldRunTeardown from './shouldRunTeardown'
 import runSetup from './runSetup'
 import runTeardown from './runTeardown'
 import runValidate from './runValidate'
@@ -13,7 +12,6 @@ import expect from './expect'
 export {
   shouldRepeat,
   shouldRunSetup,
-  shouldRunTeardown,
   runSetup,
   runTeardown,
   runValidate,

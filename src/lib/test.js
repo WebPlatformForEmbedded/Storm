@@ -7,7 +7,6 @@ import Step from './step'
 import {
   shouldRepeat,
   shouldRunSetup,
-  shouldRunTeardown,
   runSetup,
   runTeardown,
   runValidate,
@@ -74,28 +73,29 @@ const runTest = function(index) {
                       next(e)
                     })
                 },
-                //  4) test teardown (should this be in the done step to make sure it *always* runs?)
-                next => {
-                  shouldRunTeardown(this.test.repeat, index)
-                    ? runTeardown(this, this.test.teardown)
-                        .then(res => {
-                          next()
-                        })
-                        .catch(e => {
-                          next(e)
-                        })
-                    : next()
-                },
               ],
               // 5) done
               (err, results) => {
-                if (err) {
-                  this.reporter.error(this.test, err)
-                  reject(err)
-                } else {
-                  this.reporter.success(this.test)
-                  resolve()
+                const done = () => {
+                  if (err) {
+                    this.reporter.error(this.test, err)
+                    reject(err)
+                  } else {
+                    this.reporter.success(this.test)
+                    resolve()
+                  }
                 }
+
+                // always run test teardown
+                !!this.test.teardown
+                  ? runTeardown(this, this.test.teardown)
+                      .then(res => {
+                        done(res)
+                      })
+                      .catch(e => {
+                        done()
+                      })
+                  : done()
               }
             )
           },
