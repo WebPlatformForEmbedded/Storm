@@ -18,6 +18,12 @@ import {
 
 import thunderRemoteControl from './support/thunder/remoteControl'
 import sequence from './support/sequence'
+import {
+  getChoiceAsInputFromRawList, getChoiceAsInputFromUser,
+  getConfirmationFromUser,
+  getPasswordAsInputFromUser,
+  getTextAsInputFromUser
+} from "./support/prompt";
 
 const runTest = function(index) {
   return new Promise((resolve, reject) => {
@@ -41,12 +47,12 @@ const runTest = function(index) {
                 next => {
                   shouldRunSetup(this.test.repeat, index)
                     ? runSetup(this, this.test.setup)
-                        .then(res => {
-                          next()
-                        })
-                        .catch(e => {
-                          next(e)
-                        })
+                      .then(res => {
+                        next()
+                      })
+                      .catch(e => {
+                        next(e)
+                      })
                     : next()
                 },
                 // 2) test steps
@@ -89,12 +95,12 @@ const runTest = function(index) {
                 // always run test teardown
                 !!this.test.teardown
                   ? runTeardown(this, this.test.teardown)
-                      .then(res => {
-                        done(res)
-                      })
-                      .catch(e => {
-                        done()
-                      })
+                    .then(res => {
+                      done(res)
+                    })
+                    .catch(e => {
+                      done()
+                    })
                   : done()
               }
             )
@@ -149,6 +155,24 @@ const Mixin = function() {
       read: function(key) {
         return dotObjectKey.get(this.context, key)
       }.bind(this),
+    },
+    $prompt: {
+      // getConfirmationFromUser,
+      choice: function(msg, choice) {
+        return getChoiceAsInputFromUser(this, msg, choice)
+      },
+      text: function(msg) {
+        return getTextAsInputFromUser(this, msg)
+      },
+      rawlist: function(message, choice) {
+        return getChoiceAsInputFromRawList(this, message, choice)
+      },
+      password: function(message) {
+        return getPasswordAsInputFromUser(this, message)
+      },
+      confirm: function(){
+        return getConfirmationFromUser(this)
+      }
     },
     $data: {
       read: function(key) {
