@@ -159,20 +159,20 @@ const Mixin = function() {
     },
     $prompt: {
       // getConfirmationFromUser,
-      choice: function(msg, choice) {
-        return getChoiceAsInputFromUser(msg, choice)
+      choice: function(msg, choice, waitTime) {
+        return getChoiceAsInputFromUser(msg, choice, waitTime)
       },
-      text: function(msg) {
-        return getTextAsInputFromUser(msg)
+      text: function(msg, waitTime) {
+        return getTextAsInputFromUser(msg, waitTime)
       },
-      rawlist: function(message, choice) {
-        return getChoiceAsInputFromRawList(message, choice)
+      rawlist: function(message, choice, waitTime) {
+        return getChoiceAsInputFromRawList(message, choice, waitTime)
       },
-      password: function(message) {
-        return getPasswordAsInputFromUser(message)
+      password: function(message, waitTime) {
+        return getPasswordAsInputFromUser(message, waitTime)
       },
-      confirm: function() {
-        return getConfirmationFromUser()
+      confirm: function(waitTime) {
+        return getConfirmationFromUser(waitTime)
       },
     },
     $data: {
