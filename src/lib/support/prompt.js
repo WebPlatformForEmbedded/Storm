@@ -1,27 +1,62 @@
 const inquirer = require('inquirer')
 
-export const getChoiceAsInputFromUser = (msg, choice) => {
-  return inquirer.prompt({
-    type: 'checkbox',
-    name: 'data',
-    choices: [...choice],
-    message: msg,
-  }).then(answers => {
-    return answers.data
+export const getChoiceAsInputFromUser = (msg, choice, waitTime) => {
+  let p1 = inquirer
+    .prompt({
+      type: 'checkbox',
+      name: 'data',
+      choices: [...choice],
+      message: msg,
+    })
+    .then(answers => {
+      return answers.data
+    })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, waitTime * 1000)
+  }).then(() => {
+    return { result: false }
   })
-}
-export const getTextAsInputFromUser = (msg) => {
-  return inquirer.prompt({
-    type: 'input',
-    name: 'input',
-    message: msg,
-  }).then(answers => {
-    return answers.input
-  })
+  return Promise.race([p1, p2])
+    .then(res => {
+      if (res.result === false) {
+        throw new Error('User not selected any option')
+      }
+      return res
+    })
+    .catch(err => {
+      console.log(`Error: ${err.message}`)
+    })
 }
 
-export const getChoiceAsInputFromRawList = (message, choice ) => {
-  return inquirer
+export const getTextAsInputFromUser = (msg, waitTime) => {
+  let p1 = inquirer
+    .prompt({
+      type: 'input',
+      name: 'input',
+      message: msg,
+    })
+    .then(answers => {
+      return answers.input
+    })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, waitTime * 1000)
+  }).then(() => {
+    return { result: false }
+  })
+  return Promise.race([p1, p2])
+    .then(res => {
+      if (res.result === false) {
+        throw new Error('User not selected any option')
+      }
+      return res
+    })
+    .catch(err => {
+      console.log(`Error: ${err.message}`)
+    })
+}
+
+export const getChoiceAsInputFromRawList = (message, choice, waitTime) => {
+  let p1 = inquirer
     .prompt([
       {
         type: 'rawlist',
@@ -30,36 +65,82 @@ export const getChoiceAsInputFromRawList = (message, choice ) => {
         choices: [...choice],
       },
     ])
-    .then((answers) => {
+    .then(answers => {
       return answers.rawlist
-    });
+    })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, waitTime * 1000)
+  }).then(() => {
+    return { result: false }
+  })
+  return Promise.race([p1, p2])
+    .then(res => {
+      if (res.result === false) {
+        throw new Error('User not selected any option')
+      }
+      return res
+    })
+    .catch(err => {
+      console.log(`Error: ${err.message}`)
+    })
 }
-export const getPasswordAsInputFromUser = (msg) => {
-  return inquirer
+export const getPasswordAsInputFromUser = (msg, waitTime) => {
+  let p1 = inquirer
     .prompt([
       {
         type: 'password',
         message: msg,
         name: 'password',
-        mask: '*'
+        mask: '*',
       },
-    ]).then((answers) => {
+    ])
+    .then(answers => {
       return answers.password
-    });
+    })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, waitTime * 1000)
+  }).then(() => {
+    return { result: false }
+  })
+  return Promise.race([p1, p2])
+    .then(res => {
+      if (res.result === false) {
+        throw new Error('User not selected any option')
+      }
+      return res
+    })
+    .catch(err => {
+      console.log(`Error: ${err.message}`)
+    })
 }
 
-export const getConfirmationFromUser = (str) => {
-  return inquirer
+export const getConfirmationFromUser = (str, waitTime) => {
+  let p1 = inquirer
     .prompt([
       {
-        name: "confirm",
-        type: "confirm",
+        name: 'confirm',
+        type: 'confirm',
         message: str,
       },
     ])
-    .then((answer) => {
-      return(answer.confirm);
-    });
+    .then(answer => {
+      return answer.confirm
+    })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, waitTime * 1000)
+  }).then(() => {
+    return { result: false }
+  })
+  return Promise.race([p1, p2])
+    .then(res => {
+      if (res.result === false) {
+        throw new Error('User not selected any option')
+      }
+      return res
+    })
+    .catch(err => {
+      console.log(`Error: ${err.message}`)
+    })
 }
 
 export default {
@@ -67,5 +148,5 @@ export default {
   getTextAsInputFromUser,
   getPasswordAsInputFromUser,
   getConfirmationFromUser,
-  getChoiceAsInputFromUser
+  getChoiceAsInputFromUser,
 }
