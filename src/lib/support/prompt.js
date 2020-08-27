@@ -12,20 +12,12 @@ export const getChoiceAsInputFromUser = (msg, choice, waitTime) => {
       return answers.data
     })
   let p2 = new Promise((resolve, reject) => {
-    setTimeout(resolve, waitTime * 1000)
+    setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    return { result: false }
+    throw new Error('User not entered the input')
   })
-  return Promise.race([p1, p2])
-    .then(res => {
-      if (res.result === false) {
-        throw new Error('User not selected any option')
-      }
-      return res
-    })
-    .catch(err => {
-      console.log(`Error: ${err.message}`)
-    })
+  return Promise.race([p1, p2]).then(res => { return res})
+    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 
 export const getTextAsInputFromUser = (msg, waitTime) => {
@@ -39,20 +31,12 @@ export const getTextAsInputFromUser = (msg, waitTime) => {
       return answers.input
     })
   let p2 = new Promise((resolve, reject) => {
-    setTimeout(resolve, waitTime * 1000)
+    setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    return { result: false }
+    throw new Error('User not entered the input')
   })
-  return Promise.race([p1, p2])
-    .then(res => {
-      if (res.result === false) {
-        throw new Error('User not selected any option')
-      }
-      return res
-    })
-    .catch(err => {
-      console.log(`Error: ${err.message}`)
-    })
+  return Promise.race([p1, p2]).then(res => { return res})
+    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 
 export const getChoiceAsInputFromRawList = (message, choice, waitTime) => {
@@ -69,20 +53,12 @@ export const getChoiceAsInputFromRawList = (message, choice, waitTime) => {
       return answers.rawlist
     })
   let p2 = new Promise((resolve, reject) => {
-    setTimeout(resolve, waitTime * 1000)
+    setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    return { result: false }
+    throw new Error('User not entered the input')
   })
-  return Promise.race([p1, p2])
-    .then(res => {
-      if (res.result === false) {
-        throw new Error('User not selected any option')
-      }
-      return res
-    })
-    .catch(err => {
-      console.log(`Error: ${err.message}`)
-    })
+  return Promise.race([p1, p2]).then(res => { return res})
+    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 export const getPasswordAsInputFromUser = (msg, waitTime) => {
   let p1 = inquirer
@@ -98,20 +74,12 @@ export const getPasswordAsInputFromUser = (msg, waitTime) => {
       return answers.password
     })
   let p2 = new Promise((resolve, reject) => {
-    setTimeout(resolve, waitTime * 1000)
+    setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    return { result: false }
+    throw new Error('User not entered the input')
   })
-  return Promise.race([p1, p2])
-    .then(res => {
-      if (res.result === false) {
-        throw new Error('User not selected any option')
-      }
-      return res
-    })
-    .catch(err => {
-      console.log(`Error: ${err.message}`)
-    })
+  return Promise.race([p1, p2]).then(res => { return res})
+    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 
 export const getConfirmationFromUser = (str, waitTime) => {
@@ -127,21 +95,14 @@ export const getConfirmationFromUser = (str, waitTime) => {
       return answer.confirm
     })
   let p2 = new Promise((resolve, reject) => {
-    setTimeout(resolve, waitTime * 1000)
+    setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    return { result: false }
+    throw new Error('User not entered the input')
   })
-  return Promise.race([p1, p2])
-    .then(res => {
-      if (res.result === false) {
-        throw new Error('User not selected any option')
-      }
-      return res
-    })
-    .catch(err => {
-      console.log(`Error: ${err.message}`)
-    })
+  return Promise.race([p1, p2]).then(res => { return res })
+    .catch(err => { console.log(`Error: ${err.message}`)})
 }
+
 
 export default {
   getChoiceAsInputFromRawList,
