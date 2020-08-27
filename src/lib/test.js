@@ -158,7 +158,6 @@ const Mixin = function() {
       }.bind(this),
     },
     $prompt: {
-      // getConfirmationFromUser,
       choice: function(msg, choice, waitTime) {
         return getChoiceAsInputFromUser(msg, choice, waitTime)
       },
@@ -171,8 +170,8 @@ const Mixin = function() {
       password: function(message, waitTime) {
         return getPasswordAsInputFromUser(message, waitTime)
       },
-      confirm: function(waitTime) {
-        return getConfirmationFromUser(waitTime)
+      confirm: function(message, waitTime) {
+        return getConfirmationFromUser(message, waitTime)
       },
     },
     $data: {
