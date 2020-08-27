@@ -1,11 +1,13 @@
 const inquirer = require('inquirer')
 
-export const getChoiceAsInputFromUser = (msg, choice, waitTime) => {
+const errMessage = 'User not provided any input'
+
+export const selectChoices = (msg, choices, waitTime) => {
   let p1 = inquirer
     .prompt({
       type: 'checkbox',
       name: 'data',
-      choices: [...choice],
+      choices: [...choices],
       message: msg,
     })
     .then(answers => {
@@ -14,13 +16,31 @@ export const getChoiceAsInputFromUser = (msg, choice, waitTime) => {
   let p2 = new Promise((resolve, reject) => {
     setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    throw new Error('User not entered the input')
+    throw new Error(errMessage)
   })
   return Promise.race([p1, p2]).then(res => { return res})
-    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 
-export const getTextAsInputFromUser = (msg, waitTime) => {
+export const selectOption = (msg, option, waitTime) => {
+  let p1 = inquirer
+    .prompt({
+      type: 'list',
+      name: 'data',
+      choices: [...option],
+      message: msg,
+    })
+    .then(answers => {
+      return answers.data
+    })
+  let p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, waitTime*1000)
+  }).then(() => {
+    throw new Error(errMessage)
+  })
+  return Promise.race([p1, p2]).then(res => { return res})
+}
+
+export const enterText = (msg, waitTime) => {
   let p1 = inquirer
     .prompt({
       type: 'input',
@@ -33,13 +53,12 @@ export const getTextAsInputFromUser = (msg, waitTime) => {
   let p2 = new Promise((resolve, reject) => {
     setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    throw new Error('User not entered the input')
+    throw new Error(errMessage)
   })
   return Promise.race([p1, p2]).then(res => { return res})
-    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 
-export const getChoiceAsInputFromRawList = (message, choice, waitTime) => {
+export const enterNumberForChoice = (message, choice, waitTime) => {
   let p1 = inquirer
     .prompt([
       {
@@ -55,12 +74,11 @@ export const getChoiceAsInputFromRawList = (message, choice, waitTime) => {
   let p2 = new Promise((resolve, reject) => {
     setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    throw new Error('User not entered the input')
+    throw new Error(errMessage)
   })
   return Promise.race([p1, p2]).then(res => { return res})
-    .catch(err => { console.log(`Error: ${err.message}`)})
 }
-export const getPasswordAsInputFromUser = (msg, waitTime) => {
+export const enterPassword = (msg, waitTime) => {
   let p1 = inquirer
     .prompt([
       {
@@ -76,19 +94,18 @@ export const getPasswordAsInputFromUser = (msg, waitTime) => {
   let p2 = new Promise((resolve, reject) => {
     setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    throw new Error('User not entered the input')
+    throw new Error(errMessage)
   })
   return Promise.race([p1, p2]).then(res => { return res})
-    .catch(err => { console.log(`Error: ${err.message}`)})
 }
 
-export const getConfirmationFromUser = (str, waitTime) => {
+export const getConfirmationFromUser = (message, waitTime) => {
   let p1 = inquirer
     .prompt([
       {
         name: 'confirm',
         type: 'confirm',
-        message: str,
+        message: message,
       },
     ])
     .then(answer => {
@@ -97,17 +114,17 @@ export const getConfirmationFromUser = (str, waitTime) => {
   let p2 = new Promise((resolve, reject) => {
     setTimeout(resolve, waitTime*1000)
   }).then(() => {
-    throw new Error('User not entered the input')
+    throw new Error(errMessage)
   })
-  return Promise.race([p1, p2]).then(res => { return res })
-    .catch(err => { console.log(`Error: ${err.message}`)})
+  return Promise.race([p1, p2]).then(res => { return res})
 }
 
 
 export default {
-  getChoiceAsInputFromRawList,
-  getTextAsInputFromUser,
-  getPasswordAsInputFromUser,
+  enterNumberForChoice,
+  enterText,
+  enterPassword,
   getConfirmationFromUser,
-  getChoiceAsInputFromUser,
+  selectChoices,
+  selectOption
 }

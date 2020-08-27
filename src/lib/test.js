@@ -19,11 +19,12 @@ import {
 import thunderRemoteControl from './support/thunder/remoteControl'
 import sequence from './support/sequence'
 import {
-  getChoiceAsInputFromRawList,
-  getChoiceAsInputFromUser,
+  enterNumberForChoice,
+  enterText,
+  enterPassword,
   getConfirmationFromUser,
-  getPasswordAsInputFromUser,
-  getTextAsInputFromUser,
+  selectChoices,
+  selectOption
 } from './support/prompt'
 
 const runTest = function(index) {
@@ -158,17 +159,20 @@ const Mixin = function() {
       }.bind(this),
     },
     $prompt: {
-      choice: function(msg, choice, waitTime) {
-        return getChoiceAsInputFromUser(msg, choice, waitTime)
+      selectChoices: function(msg, choice, waitTime) {
+        return selectChoices(msg, choice, waitTime)
       },
-      text: function(msg, waitTime) {
-        return getTextAsInputFromUser(msg, waitTime)
+      enterText: function(msg, waitTime) {
+        return enterText(msg, waitTime)
       },
-      rawlist: function(message, choice, waitTime) {
-        return getChoiceAsInputFromRawList(message, choice, waitTime)
+      selectOption: function(msg, choices, waitTime){
+        return selectOption(msg, choices, waitTime)
       },
-      password: function(message, waitTime) {
-        return getPasswordAsInputFromUser(message, waitTime)
+      enterChoiceNumber: function(message, choice, waitTime) {
+        return enterNumberForChoice(message, choice, waitTime)
+      },
+      enterPassword: function(message, waitTime) {
+        return enterPassword(message, waitTime)
       },
       confirm: function(message, waitTime) {
         return getConfirmationFromUser(message, waitTime)
