@@ -2,7 +2,7 @@ const inquirer = require('inquirer')
 
 const errMessage = 'User not provided any input'
 
-export const selectChoices = (msg, choices, waitTime) => {
+export const selectChoices = (msg, choices, waitTime = 10) => {
   let p1 = inquirer
     .prompt({
       type: 'checkbox',
@@ -21,7 +21,7 @@ export const selectChoices = (msg, choices, waitTime) => {
   return Promise.race([p1, p2]).then(res => { return res})
 }
 
-export const selectOption = (msg, option, waitTime) => {
+export const selectOption = (msg, option, waitTime = 10) => {
   let p1 = inquirer
     .prompt({
       type: 'list',
@@ -40,7 +40,7 @@ export const selectOption = (msg, option, waitTime) => {
   return Promise.race([p1, p2]).then(res => { return res})
 }
 
-export const enterText = (msg, waitTime) => {
+export const enterText = (msg, waitTime = 10) => {
   let p1 = inquirer
     .prompt({
       type: 'input',
@@ -58,7 +58,7 @@ export const enterText = (msg, waitTime) => {
   return Promise.race([p1, p2]).then(res => { return res})
 }
 
-export const enterNumberForChoice = (message, choice, waitTime) => {
+export const enterNumberForChoice = (message, choice, waitTime = 10) => {
   let p1 = inquirer
     .prompt([
       {
@@ -78,7 +78,8 @@ export const enterNumberForChoice = (message, choice, waitTime) => {
   })
   return Promise.race([p1, p2]).then(res => { return res})
 }
-export const enterPassword = (msg, waitTime) => {
+
+export const enterPassword = (msg, waitTime = 10) => {
   let p1 = inquirer
     .prompt([
       {
@@ -99,7 +100,7 @@ export const enterPassword = (msg, waitTime) => {
   return Promise.race([p1, p2]).then(res => { return res})
 }
 
-export const getConfirmationFromUser = (message, waitTime) => {
+export const getConfirmationFromUser = (message, waitTime = 10) => {
   let p1 = inquirer
     .prompt([
       {
