@@ -118,7 +118,7 @@ const runSteps = function(steps) {
             ...step,
             ...{ context: { ...this.test.context, ...step.context }, data: this.test.data },
           }
-          makeTest(step, this.reporter, this.thunderJS)
+          makeTest(step, this.reporter, this.thunderJS, this.prompt)
             .exec()
             .then(next)
             .catch(e => next(e))
@@ -151,22 +151,22 @@ const Mixin = function() {
       }.bind(this),
     },
     $prompt: {
-      selectChoices: function(msg, choice, waitTime) {
+      selectChoices: (msg, choice, waitTime) => {
         return this.prompt.selectChoices(msg, choice, waitTime)
       },
-      enterText: function(msg, waitTime) {
+      enterText: (msg, waitTime) => {
         return this.prompt.enterText(msg, waitTime)
       },
-      selectOption: function(msg, choices, waitTime) {
+      selectOption: (msg, choices, waitTime) => {
         return this.prompt.selectOption(msg, choices, waitTime)
       },
-      enterChoiceNumber: function(message, choice, waitTime) {
+      enterChoiceNumber: (message, choice, waitTime) => {
         return this.prompt.enterNumberForChoice(message, choice, waitTime)
       },
-      enterPassword: function(message, waitTime) {
+      enterPassword: (message, waitTime) => {
         return this.prompt.enterPassword(message, waitTime)
       },
-      confirm: function(message, waitTime) {
+      confirm: (message, waitTime) => {
         return this.prompt.getConfirmationFromUser(message, waitTime)
       },
     },
@@ -189,12 +189,10 @@ const makeTest = (testCase, reporter, thunderJS, prompt) => {
   const defaults = {
     data: {},
     context: {},
-    prompt: {},
   }
-
   const test = Object.assign(
     // Mixin functionality into the test case
-    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter, thunderJS } }), prompt),
+    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter, thunderJS, prompt } })),
     { ...defaults, ...testCase }
   )
 
