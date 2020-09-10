@@ -18,6 +18,7 @@ import {
 
 import thunderRemoteControl from './support/thunder/remoteControl'
 import sequence from './support/sequence'
+let errMessagePrompt = 'Prompt not supported'
 
 const runTest = function(index) {
   return new Promise((resolve, reject) => {
@@ -118,7 +119,7 @@ const runSteps = function(steps) {
             ...step,
             ...{ context: { ...this.test.context, ...step.context }, data: this.test.data },
           }
-          makeTest(step, this.reporter, this.thunderJS)
+          makeTest(step, this.reporter, this.thunderJS, this.prompt)
             .exec()
             .then(next)
             .catch(e => next(e))
@@ -150,6 +151,50 @@ const Mixin = function() {
         return dotObjectKey.get(this.context, key)
       }.bind(this),
     },
+    $prompt: {
+      selectChoices: (msg, choice, waitTime) => {
+        if (this.prompt && typeof this.prompt.selectChoices === 'function')
+          return this.prompt.selectChoices(msg, choice, waitTime)
+        else {
+          throw new Error(errMessagePrompt)
+        }
+      },
+      enterText: (msg, waitTime) => {
+        if (this.prompt && typeof this.prompt.enterText === 'function')
+          return this.prompt.enterText(msg, waitTime)
+        else {
+          throw new Error(errMessagePrompt)
+        }
+      },
+      selectOption: (msg, choices, waitTime) => {
+        if (this.prompt && typeof this.prompt.selectOption === 'function')
+          return this.prompt.selectOption(msg, choices, waitTime)
+        else {
+          throw new Error(errMessagePrompt)
+        }
+      },
+      enterChoiceNumber: (message, choice, waitTime) => {
+        if (this.prompt && typeof this.prompt.enterNumberForChoice === 'function')
+          return this.prompt.enterNumberForChoice(message, choice, waitTime)
+        else {
+          throw new Error(errMessagePrompt)
+        }
+      },
+      enterPassword: (message, waitTime) => {
+        if (this.prompt && typeof this.prompt.enterPassword === 'function')
+          return this.prompt.enterPassword(message, waitTime)
+        else {
+          throw new Error(errMessagePrompt)
+        }
+      },
+      confirm: (message, waitTime) => {
+        if (this.prompt && typeof this.prompt.getConfirmationFromUser === 'function')
+          return this.prompt.getConfirmationFromUser(message, waitTime)
+        else {
+          throw new Error(errMessagePrompt)
+        }
+      },
+    },
     $data: {
       read: function(key) {
         return dotObjectKey.get(this.data, key)
@@ -165,15 +210,14 @@ const Mixin = function() {
   }
 }
 
-const makeTest = (testCase, reporter, thunderJS) => {
+const makeTest = (testCase, reporter, thunderJS, prompt) => {
   const defaults = {
     data: {},
     context: {},
   }
-
   const test = Object.assign(
     // Mixin functionality into the test case
-    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter, thunderJS } })),
+    Object.create(Mixin.call({ ...defaults, ...testCase, ...{ reporter, thunderJS, prompt } })),
     { ...defaults, ...testCase }
   )
 
@@ -184,6 +228,7 @@ const makeTest = (testCase, reporter, thunderJS) => {
     reporter,
     thunderJS,
     test,
+    prompt,
     exec() {
       // execue the test (multiple times depending on repeat)
       return new Promise((resolve, reject) => {
