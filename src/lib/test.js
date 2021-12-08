@@ -24,6 +24,17 @@ const runTest = function(index) {
   return new Promise((resolve, reject) => {
     this.reporter.init(this.test)
 
+    let testTimeout
+    if (this.test.timeout && Number.isInteger(this.test.timeout)) {
+      testTimeout = setTimeout(() => {
+        const timeoutError = new Error(`TEST TIMEOUT reach: ${this.test.timeout}s`)
+        this.reporter.error(this.test, timeoutError)
+        reject(timeoutError)
+      }, this.test.timeout * 1000)
+    }
+
+    const cleanTimeout = () => clearTimeout(testTimeout)
+
     calculateSleep((index === 0 && this.test.sleepOnce) || this.test.sleep, this.test)
       .then(sleep => {
         if (sleep) {
@@ -81,9 +92,11 @@ const runTest = function(index) {
                   if (err) {
                     this.reporter.error(this.test, err)
                     reject(err)
+                    cleanTimeout()
                   } else {
                     this.reporter.success(this.test)
                     resolve()
+                    cleanTimeout()
                   }
                 }
 
