@@ -32,7 +32,7 @@
     "axios": "^0.21.1",
     "chai": "^4.2.0",
     "contra": "^1.9.4",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
